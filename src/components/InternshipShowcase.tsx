@@ -157,8 +157,10 @@ export const InternshipShowcase = () => {
           </motion.div>
         </div>
 
-        {/* Expandable internship summary + timeline */}
-        <div>
+        {/* Expandable internship summary + timeline (three identical cards) */}
+        <div className="space-y-6">
+          <ExpandableInternshipCard />
+          <ExpandableInternshipCard />
           <ExpandableInternshipCard />
         </div>
       </motion.div>
