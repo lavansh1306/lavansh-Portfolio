@@ -1,0 +1,39 @@
+.nav-sidebar {
+  @apply fixed right-0 top-0 bottom-0 w-64 bg-[#0a0a0a] border-l border-[#1a1a1a] z-50;
+}
+
+.nav-link {
+  @apply flex items-center gap-3 p-3 rounded-lg transition-colors duration-200;
+}
+
+.nav-link-active {
+  @apply bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-violet-500/10 text-white;
+}
+
+.nav-icon {
+  @apply w-5 h-5 transition-colors duration-200;
+}
+
+.nav-icon-active {
+  @apply text-emerald-400;
+}
+
+.nav-text {
+  @apply font-mono text-sm tracking-wider;
+}
+
+.nav-indicator {
+  @apply absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8;
+  background: linear-gradient(to bottom, #10b981, #3b82f6, #8b5cf6);
+}
+
+.nav-logo {
+  @apply text-2xl font-bold;
+  background: linear-gradient(to right, #10b981, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-social-icon {
+  @apply w-5 h-5 text-gray-400 hover:text-white transition-colors;
+}

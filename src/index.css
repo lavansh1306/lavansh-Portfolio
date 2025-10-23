@@ -1,10 +1,87 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+@import './styles/glitch.css';
+@import './styles/holographic-nav.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* FUTURISTIC CINEMATIC DESIGN SYSTEM */
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    text-shadow: 
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px #0fa,
+      0 0 82px #0fa,
+      0 0 92px #0fa,
+      0 0 102px #0fa,
+      0 0 151px #0fa;
+  }
+  50% {
+    text-shadow: 
+      0 0 4px #fff,
+      0 0 7px #fff,
+      0 0 13px #fff,
+      0 0 25px #0fa,
+      0 0 45px #0fa,
+      0 0 55px #0fa,
+      0 0 70px #0fa,
+      0 0 100px #0fa;
+  }
+}
+
+@keyframes cyber-scan {
+  0% {
+    background-position: 0% -100%;
+  }
+  100% {
+    background-position: 0% 200%;
+  }
+}
+
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, rgba(16, 185, 129, 0.1) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(16, 185, 129, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+.neon-pulse {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.cyber-scan {
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-scan::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 255, 136, 0.1) 50%,
+    transparent 100%
+  );
+  animation: cyber-scan 2s linear infinite;
+}
 
 @layer base {
   :root {
@@ -101,10 +178,11 @@
   }
   
   /* Cursor Effects */
+  /*
   * {
     cursor: none;
   }
-  
+  */
   /* Custom Scrollbar */
   ::-webkit-scrollbar {
     width: 4px;

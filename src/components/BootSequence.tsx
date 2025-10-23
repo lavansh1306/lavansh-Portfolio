@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import '../styles/cyberpunk.css';
 
 interface BootSequenceProps {
   onComplete: () => void;
@@ -9,16 +12,15 @@ export const BootSequence = ({ onComplete }: BootSequenceProps) => {
   const [isComplete, setIsComplete] = useState(false);
 
   const bootSteps = [
-    "INITIALIZING NEURAL INTERFACE...",
-    "LOADING SUBJECT: LAVANSH",
-    "ACCESSING HACKATHON DATABASE [||||      ] 40%",
-    "ACCESSING HACKATHON DATABASE [||||||    ] 60%", 
-    "ACCESSING HACKATHON DATABASE [||||||||  ] 80%",
-    "ACCESSING HACKATHON DATABASE [||||||||||] 100%",
-    "COMPILING AMBITION.EXE",
-    "LOADING ACHIEVEMENTS MODULE",
-    "ESTABLISHING DIGITAL DOMINANCE...",
-    "SYSTEM READY. WELCOME TO THE FUTURE."
+    "INITIALIZING NEURAL INTERFACE v2.1.0...",
+    "LOADING SUBJECT: LAVANSH CHOUBEY",
+    "ACCESSING CREDENTIALS [||||      ] 40%",
+    "ACCESSING CREDENTIALS [||||||    ] 60%", 
+    "ACCESSING CREDENTIALS [||||||||  ] 80%",
+    "ACCESSING CREDENTIALS [||||||||||] 100%",
+    "COMPILING ENTERPRISE.PROFILE",
+    "ANALYZING TECHNICAL EXPERTISE...",
+    "SYSTEM READY. INITIATING PORTFOLIO SEQUENCE."
   ];
 
   useEffect(() => {
@@ -40,43 +42,122 @@ export const BootSequence = ({ onComplete }: BootSequenceProps) => {
 
   if (isComplete) {
     return (
-      <div className="fixed inset-0 bg-background flex items-center justify-center z-50 animate-[fadeOut_1s_ease-out_forwards]">
-        <div className="text-center">
-          <div className="text-4xl font-cyber text-primary animate-neon-pulse mb-8">
-            SYSTEM ONLINE
-          </div>
-          <div className="w-64 h-1 bg-gradient-neon animate-scan-line"></div>
+      <motion.div 
+        className="fixed inset-0 bg-black flex items-center justify-center z-50"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <div className="matrix-background"></div>
+        <div className="glitch-layer"></div>
+        <div className="radar-hud">
+          <div className="radar-line"></div>
         </div>
-      </div>
+        
+        <motion.div 
+          className="text-center relative z-10"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-[#00ff88] text-xl mb-6 glitch-text"
+          >
+            ACCESS GRANTED
+          </motion.div>
+          
+          <motion.div 
+            className="text-6xl font-mono text-[#00ff88] mb-8 tracking-widest neon-glow"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            SYSTEM ONLINE
+          </motion.div>
+          
+          <motion.div 
+            className="w-96 h-1 bg-gradient-to-r from-[#00ff88] to-[#00a2ff]"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+            style={{
+              boxShadow: '0 0 30px rgba(0,255,136,0.5)'
+            }}
+          />
+          
+          <motion.div 
+            className="mt-12 flex justify-center space-x-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+          >
+            <Link 
+              to="/portfolio"
+              className="px-8 py-3 bg-transparent border-2 border-[#00ff88] text-[#00ff88] rounded-lg button-hover"
+            >
+              View Portfolio
+            </Link>
+            <Link 
+              to="/contact"
+              className="px-8 py-3 bg-[#00ff88] text-black rounded-lg button-hover"
+            >
+              Contact Me
+            </Link>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="fixed inset-0 bg-background flex items-center justify-center z-50">
-      <div className="max-w-2xl w-full px-8">
+    <motion.div 
+      className="fixed inset-0 bg-black flex items-center justify-center z-50"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+    >
+      <div className="matrix-background"></div>
+      <div className="glitch-layer"></div>
+      
+      <div className="max-w-2xl w-full px-8 relative z-10">
         {/* Terminal Header */}
-        <div className="border border-primary/30 bg-void-light/50 backdrop-blur-sm">
-          <div className="flex items-center gap-2 p-4 border-b border-primary/20">
+        <motion.div 
+          className="border border-[#00ff88]/30 bg-black/50 backdrop-blur-sm shadow-[0_0_15px_rgba(0,255,136,0.3)]"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div 
+            className="flex items-center gap-2 p-4 border-b border-[#00ff88]/20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
             <div className="flex gap-2">
-              <div className="w-3 h-3 rounded-full bg-neon-red"></div>
-              <div className="w-3 h-3 rounded-full bg-neon-gold"></div>
-              <div className="w-3 h-3 rounded-full bg-neon-green"></div>
+              <div className="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_10px_rgba(255,0,0,0.5)]"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-400 shadow-[0_0_10px_rgba(255,255,0,0.5)]"></div>
+              <div className="w-3 h-3 rounded-full bg-[#00ff88] shadow-[0_0_10px_rgba(0,255,136,0.5)]"></div>
             </div>
-            <div className="text-sm font-matrix text-muted-foreground ml-4">
+            <div className="text-sm font-mono text-[#00ff88] ml-4 tracking-wider">
               NEURAL_INTERFACE_v2.1.0
             </div>
-          </div>
+          </motion.div>
           
           {/* Terminal Content */}
-          <div className="p-6 min-h-64 font-matrix">
+          <div className="p-6 min-h-[400px] font-mono">
             {bootSteps.slice(0, currentStep).map((step, index) => (
               <div 
                 key={index}
-                className={`text-primary mb-2 transition-all duration-300 ${
-                  index === currentStep - 1 ? 'animate-typing' : ''
+                className={`text-[#00ff88] mb-3 transition-all duration-300 ${
+                  index === currentStep - 1 ? 'animate-typing opacity-80' : ''
                 }`}
+                style={{
+                  textShadow: '0 0 10px rgba(0,255,136,0.5)'
+                }}
               >
-                <span className="text-neon-green mr-2">{'>'}</span>
+                <span className="text-[#00ff88] mr-2 opacity-90">{'>'}</span>
                 {step}
               </div>
             ))}
@@ -84,26 +165,29 @@ export const BootSequence = ({ onComplete }: BootSequenceProps) => {
             {/* Blinking cursor */}
             {currentStep <= bootSteps.length && (
               <div className="inline-flex items-center">
-                <span className="text-neon-green mr-2">{'>'}</span>
-                <span className="w-2 h-5 bg-primary animate-blink"></span>
+                <span className="text-[#00ff88] mr-2 opacity-90">{'>'}</span>
+                <span className="w-2 h-5 bg-[#00ff88] animate-[blink_1s_step-start_infinite] shadow-[0_0_10px_rgba(0,255,136,0.5)]"></span>
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
         
         {/* Progress bar */}
         <div className="mt-8">
-          <div className="w-full h-1 bg-void-medium rounded-full overflow-hidden">
+          <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden shadow-[0_0_10px_rgba(0,255,136,0.2)]">
             <div 
-              className="h-full bg-gradient-neon transition-all duration-500 ease-out"
-              style={{ width: `${(currentStep / bootSteps.length) * 100}%` }}
+              className="h-full bg-gradient-to-r from-[#00ff88] to-[#00a2ff] transition-all duration-500 ease-out"
+              style={{ 
+                width: `${(currentStep / bootSteps.length) * 100}%`,
+                boxShadow: '0 0 20px rgba(0,255,136,0.5)'
+              }}
             />
           </div>
-          <div className="text-center mt-2 text-sm font-matrix text-muted-foreground">
-            INITIALIZING... {Math.round((currentStep / bootSteps.length) * 100)}%
+          <div className="text-center mt-4 text-sm font-mono text-[#00ff88] tracking-wider">
+            SYSTEM INITIALIZATION: {Math.round((currentStep / bootSteps.length) * 100)}%
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

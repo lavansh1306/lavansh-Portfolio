@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { HolographicCard } from './HolographicCard';
 import { Mail, Github, Linkedin, MessageSquare, Send, Zap } from 'lucide-react';
 
@@ -8,7 +9,7 @@ const contactMethods = [
     name: 'Direct Neural Link',
     description: 'Primary communication channel',
     icon: Mail,
-    value: 'lavansh@neural.dev',
+    value: 'lavansh1201a@gmail.com',
     colorClass: 'text-neon-cyan',
     bgClass: 'bg-neon-cyan/20',
     borderClass: 'border-neon-cyan/30',
@@ -20,7 +21,7 @@ const contactMethods = [
     name: 'Code Repository Access',
     description: 'Witness the digital architecture',
     icon: Github,
-    value: 'github.com/lavansh',
+    value: 'github.com/lavansh1306',
     colorClass: 'text-neon-green',
     bgClass: 'bg-neon-green/20',
     borderClass: 'border-neon-green/30',
@@ -32,7 +33,7 @@ const contactMethods = [
     name: 'Professional Network',
     description: 'Corporate interface protocol',
     icon: Linkedin,
-    value: 'linkedin.com/in/lavansh',
+    value: 'linkedin.com/in/lavansh-choubey-683355314',
     colorClass: 'text-neon-purple',
     bgClass: 'bg-neon-purple/20',
     borderClass: 'border-neon-purple/30',
@@ -105,15 +106,25 @@ export const NeuralBridge = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
+        {/* Top decorative card grid removed to avoid duplication. The interactive card grid below handles contact selection. */}
+
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-5xl font-cyber text-primary animate-neon-pulse mb-4">
-            NEURAL BRIDGE INTERFACE
+            Connect With Me
           </h2>
           <div className="w-32 h-1 bg-gradient-neon mx-auto"></div>
           <p className="text-xl text-muted-foreground mt-6 font-matrix">
             Establish connection. Begin transmission.
           </p>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-4xl font-cyber text-neon-cyan mt-8 glitch-text"
+          >
+            Connect--Collaborate--Create
+          </motion.div>
         </div>
 
         {!selectedMethod ? (
@@ -149,9 +160,29 @@ export const NeuralBridge = () => {
                   </div>
                   
                   {/* Action Button */}
-                  <button className={`w-full py-2 border ${method.borderClass} ${method.colorClass} font-matrix text-sm ${method.hoverClass} transition-colors`}>
-                    {method.action}
-                  </button>
+                  {method.id === 'github' ? (
+                    <a
+                      href="https://github.com/lavansh1306"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`w-full py-2 border ${method.borderClass} ${method.colorClass} font-matrix text-sm ${method.hoverClass} transition-colors inline-block text-center`}
+                    >
+                      {method.action}
+                    </a>
+                  ) : method.id === 'linkedin' ? (
+                    <a
+                      href="https://linkedin.com/in/lavansh-choubey-683355314"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`w-full py-2 border ${method.borderClass} ${method.colorClass} font-matrix text-sm ${method.hoverClass} transition-colors inline-block text-center`}
+                    >
+                      {method.action}
+                    </a>
+                  ) : (
+                    <button className={`w-full py-2 border ${method.borderClass} ${method.colorClass} font-matrix text-sm ${method.hoverClass} transition-colors`}>
+                      {method.action}
+                    </button>
+                  )}
                 </div>
               </HolographicCard>
             ))}
@@ -229,7 +260,7 @@ export const NeuralBridge = () => {
           </div>
         )}
 
-        {/* Closing Statement */}
+        {/* Closing Statement With*/}
         <div className="text-center mt-16">
           <div className="inline-block">
             <h3 className="text-3xl font-cyber text-transparent bg-gradient-neon bg-clip-text animate-pulse">

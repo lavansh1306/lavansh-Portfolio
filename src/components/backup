@@ -1,0 +1,225 @@
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import '../styles/cyberpunk.css';
+
+interface BootSequenceProps {
+  onComplete: () => void;
+}
+
+export const BootSequence = ({ onComplete }: BootSequenceProps) => {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isComplete, setIsComplete] = useState(false);
+
+  const bootSteps = [
+    "INITIALIZING NEURAL INTERFACE v2.1.0...",
+    "LOADING SUBJECT: LAVANSH CHOUBEY",
+    "ACCESSING CREDENTIALS [||||      ] 40%",
+    "ACCESSING CREDENTIALS [||||||    ] 60%", 
+    "ACCESSING CREDENTIALS [||||||||  ] 80%",
+    "ACCESSING CREDENTIALS [||||||||||] 100%",
+    "COMPILING ENTERPRISE.PROFILE",
+    "ANALYZING TECHNICAL EXPERTISE...",
+    "SYSTEM READY. INITIATING PORTFOLIO SEQUENCE."
+  ];
+
+  useEffect(() => {
+    if (currentStep < bootSteps.length) {
+      const timer = setTimeout(() => {
+        setCurrentStep(prev => prev + 1);
+      }, currentStep === 0 ? 1000 : 800);
+      return () => clearTimeout(timer);
+    } else {
+      const completeTimer = setTimeout(() => {
+        setIsComplete(true);
+        setTimeout(() => {
+          onComplete();
+        }, 1000);
+      }, 1500);
+      return () => clearTimeout(completeTimer);
+    }
+  }, [currentStep, bootSteps.length, onComplete]);
+
+  if (isComplete) {
+    return (
+      <motion.div 
+        className="fixed inset-0 bg-black flex items-center justify-center z-50"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <div className="matrix-background"></div>
+        <div className="glitch-layer"></div>
+        <div className="radar-hud">
+          <div className="radar-line"></div>
+        </div>
+        
+        <motion.div 
+          className="text-center relative z-10"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-[#00ff88] text-xl mb-6 glitch-text"
+          >
+            ACCESS GRANTED
+          </motion.div>
+          
+          <motion.div 
+            className="text-6xl font-mono text-[#00ff88] mb-8 tracking-widest neon-glow"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            SYSTEM ONLINE
+          </motion.div>
+          
+          <motion.div 
+            className="w-96 h-1 bg-gradient-to-r from-[#00ff88] to-[#00a2ff]"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+            style={{
+              boxShadow: '0 0 30px rgba(0,255,136,0.5)'
+            }}
+          />
+          
+          <motion.div 
+            className="mt-12 flex justify-center space-x-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+          >
+            <a 
+              href="/resume.pdf" 
+              target="_blank"
+              className="px-8 py-3 bg-transparent border-2 border-[#00ff88] text-[#00ff88] rounded-lg button-hover"
+              rel="noopener noreferrer"
+            >
+              View Portfolio
+            </a>
+            <a 
+              href="/contact"
+              className="px-8 py-3 bg-[#00ff88] text-black rounded-lg button-hover"
+            >
+              Contact Me
+            </a>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div 
+      className="fixed inset-0 bg-black flex items-center justify-center z-50"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+    >
+      <div className="matrix-background"></div>
+      <div className="glitch-layer"></div>
+      
+      <div className="max-w-2xl w-full px-8 relative z-10">
+        <motion.div 
+          className="border border-[#00ff88]/30 bg-black/50 backdrop-blur-sm shadow-[0_0_15px_rgba(0,255,136,0.3)]"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div 
+            className="flex items-center gap-2 p-4 border-b border-[#00ff88]/20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <div className="flex gap-2">
+              <motion.div 
+                className="w-3 h-3 rounded-full bg-red-500"
+                animate={{ boxShadow: ['0 0 10px rgba(255,0,0,0.5)', '0 0 20px rgba(255,0,0,0.5)'] }}
+                transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+              />
+              <motion.div 
+                className="w-3 h-3 rounded-full bg-yellow-400"
+                animate={{ boxShadow: ['0 0 10px rgba(255,255,0,0.5)', '0 0 20px rgba(255,255,0,0.5)'] }}
+                transition={{ duration: 2, repeat: Infinity, repeatType: "reverse", delay: 0.3 }}
+              />
+              <motion.div 
+                className="w-3 h-3 rounded-full bg-[#00ff88]"
+                animate={{ boxShadow: ['0 0 10px rgba(0,255,136,0.5)', '0 0 20px rgba(0,255,136,0.5)'] }}
+                transition={{ duration: 2, repeat: Infinity, repeatType: "reverse", delay: 0.6 }}
+              />
+            </div>
+            <motion.div 
+              className="text-sm font-mono text-[#00ff88] ml-4 tracking-wider glitch-text"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              NEURAL_INTERFACE_v2.1.0
+            </motion.div>
+          </motion.div>
+
+          <div className="p-6 min-h-[400px] font-mono">
+            <AnimatePresence mode="wait">
+              {bootSteps.slice(0, currentStep).map((step, index) => (
+                <motion.div 
+                  key={index}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className={`text-[#00ff88] mb-3 ${
+                    index === currentStep - 1 ? 'glitch-text' : ''
+                  }`}
+                  style={{
+                    textShadow: '0 0 10px rgba(0,255,136,0.5)'
+                  }}
+                >
+                  <span className="text-[#00ff88] mr-2 opacity-90">{'>'}</span>
+                  {step}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            
+            {currentStep <= bootSteps.length && (
+              <motion.div 
+                className="inline-flex items-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                <span className="text-[#00ff88] mr-2 opacity-90">{'>'}</span>
+                <span className="w-2 h-5 bg-[#00ff88] animate-[blink_1s_step-start_infinite] shadow-[0_0_10px_rgba(0,255,136,0.5)]"></span>
+              </motion.div>
+            )}
+          </div>
+        </motion.div>
+        
+        <div className="mt-8">
+          <motion.div 
+            className="w-full h-1 bg-gray-800 rounded-full overflow-hidden shadow-[0_0_10px_rgba(0,255,136,0.2)]"
+          >
+            <motion.div 
+              className="h-full bg-gradient-to-r from-[#00ff88] to-[#00a2ff]"
+              initial={{ width: 0 }}
+              animate={{ width: `${(currentStep / bootSteps.length) * 100}%` }}
+              transition={{ duration: 0.5 }}
+              style={{ 
+                boxShadow: '0 0 20px rgba(0,255,136,0.5)'
+              }}
+            />
+          </motion.div>
+          <motion.div 
+            className="text-center mt-4 text-sm font-mono text-[#00ff88] tracking-wider"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            SYSTEM INITIALIZATION: {Math.round((currentStep / bootSteps.length) * 100)}%
+          </motion.div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
