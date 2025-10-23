@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { fadeInUp, hoverGrow } from '../lib/animations';
 
 const GlitchText = ({ children }: { children: React.ReactNode }) => {
   const [isGlitching, setIsGlitching] = useState(false);
@@ -97,10 +98,11 @@ export const MainHero = () => {
       
       <div className="relative z-10 h-full flex items-center justify-center">
         <div className="text-center px-4">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+          <motion.h1
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
             className="text-7xl md:text-8xl font-bold mb-6 tracking-tighter"
           >
             <span className="text-white">Lavansh</span>{' '}
@@ -109,38 +111,32 @@ export const MainHero = () => {
             </span>
           </motion.h1>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
             <h2 className="text-2xl md:text-3xl text-gray-300 font-light mb-8 tracking-wide">
               Software Architect • AI Engineer • Innovation Lead
             </h2>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6"
-          >
-            <a 
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
+            <motion.a
               href="https://drive.google.com/file/d/1Bq2aMXg6kc84LU1xtnYoe6n_7mNlNRpU/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
-              className="group px-8 py-3 bg-[#00ff88] text-black font-medium rounded-full hover:bg-[#00ff88]/90 transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
+              className="group px-8 py-3 bg-[#00ff88] text-black font-medium rounded-full flex items-center gap-2"
+              variants={hoverGrow}
+              whileHover="hover"
+              whileTap="tap"
             >
               View Resume
-              <svg 
-                className="w-4 h-4 transition-transform group-hover:translate-x-1" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
-            </a>
+            </motion.a>
           </motion.div>
 
           <motion.div

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { fadeInUp } from '../lib/animations';
 import * as THREE from 'three';
 import { useMotionValue, useSpring } from 'framer-motion';
 
@@ -287,11 +288,7 @@ export const HolographicNav = () => {
     >
       {/* Logo Section - Hide on mobile */}
       <div className="hidden md:block p-6 border-b border-[#1a1a1a]">
-        <motion.div
-          className="text-2xl font-bold bg-gradient-to-r from-emerald-400 via-blue-500 to-violet-600 bg-clip-text text-transparent"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
+        <motion.div className="text-2xl font-bold bg-gradient-to-r from-emerald-400 via-blue-500 to-violet-600 bg-clip-text text-transparent" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
           Neural Path
         </motion.div>
       </div>

@@ -6,7 +6,7 @@ This repository hosts my personal portfolio website. The content, design, and co
 Quick links
 - Live site: https://lavansh-portfolio-7i5p.vercel.app/
 - Resume: https://drive.google.com/file/d/1Bq2aMXg6kc84LU1xtnYoe6n_7mNlNRpU/view?usp=sharing
-- Contact: https://github.com/lavansh1306 (or add your preferred contact/email)
+- Contact: https://github.com/lavansh1306
 
 About
 -----

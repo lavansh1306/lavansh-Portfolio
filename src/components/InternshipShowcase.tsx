@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import * as THREE from 'three';
 import { Card } from './ui/card';
+import { ExpandableInternshipCard } from './ExpandableInternshipCard';
 
 interface Achievement {
   title: string;
@@ -38,27 +39,20 @@ const achievements: Achievement[] = [
 ];
 
 const HolographicText = ({ children }: { children: React.ReactNode }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  
   return (
-    <span
-      className="relative inline-block group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <span className={`
-        relative z-10 transition-all duration-300
-        ${isHovered ? 'text-white' : 'text-transparent'}
-        bg-clip-text bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500
-      `}>
+    <span className="relative inline-block group">
+      {/* Always-visible gradient text */}
+      <span className={`relative z-10 transition-all duration-300 bg-clip-text bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 text-transparent bg-300% animate-gradient-x`}>
         {children}
       </span>
-      {isHovered && (
-        <>
-          <span className="absolute inset-0 text-pink-500 animate-glitch-1 z-0">{children}</span>
-          <span className="absolute inset-0 text-cyan-500 animate-glitch-2 z-0">{children}</span>
-        </>
-      )}
+
+      {/* Glitch overlays always active */}
+      <span className="absolute inset-0 text-pink-500 animate-glitch-1 z-0" aria-hidden>
+        {children}
+      </span>
+      <span className="absolute inset-0 text-cyan-500 animate-glitch-2 z-0" aria-hidden>
+        {children}
+      </span>
     </span>
   );
 };
@@ -151,58 +145,21 @@ export const InternshipShowcase = () => {
       >
         <div className="text-center mb-16">
           <HolographicText>
-            <h2 className="text-5xl font-bold mb-4">AI/Software Intern</h2>
+            <h2 className="text-5xl font-bold mb-4">InternShip Experience</h2>
           </HolographicText>
           <motion.div
             className="text-2xl text-cyan-400"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 5 }}
           >
             Niramaya Health | 2025
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {achievements.map((achievement, index) => (
-            <motion.div
-              key={achievement.title}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-            >
-              <Card className="group relative overflow-hidden bg-black/50 backdrop-blur-sm border-[1px] border-gray-800 hover:border-cyan-500 transition-all duration-300 card-glow">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,transparent_0%,rgba(0,255,136,0.1)_50%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="p-6 relative z-10">
-                  <h3 className="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400 bg-300% animate-gradient-x">
-                    {achievement.title}
-                  </h3>
-                  <p className="text-gray-300 mb-4">{achievement.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {achievement.tech.map((tech) => (
-                      <motion.span
-                        key={tech}
-                        className="px-3 py-1 rounded-full text-sm bg-cyan-950/50 text-cyan-400 border border-cyan-800
-                          hover:bg-cyan-900/30 hover:border-cyan-400 transition-all duration-300 cursor-pointer
-                          relative group/tag"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <span className="relative z-10">{tech}</span>
-                        <motion.span
-                          className="absolute inset-0 rounded-full bg-cyan-400/20 scale-0 group-hover/tag:scale-100
-                            transition-transform duration-300 origin-center"
-                          style={{ zIndex: 0 }}
-                        />
-                      </motion.span>
-                    ))}
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          ))}
+        {/* Expandable internship summary + timeline */}
+        <div>
+          <ExpandableInternshipCard />
         </div>
       </motion.div>
 

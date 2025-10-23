@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import ParticleFieldSmall from './ParticleFieldSmall';
 
 export const AchievementShowcase = () => {
   const achievements = [
@@ -100,9 +101,14 @@ export const AchievementShowcase = () => {
               className="group"
             >
               <div className="relative overflow-hidden rounded-lg bg-gray-900 p-6 hover:bg-gray-800 transition-all duration-300 border border-gray-800 hover:border-[#00ff88]/50 h-full">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#00ff88]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
-                <div className="relative">
+                {/* Subtle particle background (toned down for Victory Archives) */}
+                <div className="absolute inset-0 pointer-events-none z-0">
+                  <ParticleFieldSmall density={0.00012} className="opacity-20" />
+                </div>
+
+                <div className="absolute inset-0 bg-gradient-to-br from-[#00ff88]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20" />
+
+                <div className="relative z-30">
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <span className={`px-3 py-1 rounded-full text-sm ${
