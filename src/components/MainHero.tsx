@@ -126,7 +126,7 @@ export const MainHero = () => {
             className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6"
           >
             <a 
-              href="https://drive.google.com/file/d/1SKtfs1WpOmrrrFuRvMBKV9uYurPQsPsz/view?usp=sharing"
+              href="https://drive.google.com/file/d/1Bq2aMXg6kc84LU1xtnYoe6n_7mNlNRpU/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               className="group px-8 py-3 bg-[#00ff88] text-black font-medium rounded-full hover:bg-[#00ff88]/90 transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
