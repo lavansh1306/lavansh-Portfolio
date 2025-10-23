@@ -1,73 +1,61 @@
-# Welcome to your Lovable project
 
-## Project info
+# Lavansh Choubey — Portfolio
 
-**URL**: https://lovable.dev/projects/a022914a-ba1c-4faa-8eda-504fea2d6b99
+This repository hosts my personal portfolio website. The content, design, and code in this repo are authored and maintained by me.
 
-## How can I edit this code?
+Quick links
+- Live site: https://lavansh-portfolio-7i5p.vercel.app/
+- Resume: https://drive.google.com/file/d/1Bq2aMXg6kc84LU1xtnYoe6n_7mNlNRpU/view?usp=sharing
+- Contact: https://github.com/lavansh1306 (or add your preferred contact/email)
 
-There are several ways of editing your application.
+About
+-----
+This site showcases my projects, achievements, and contact information. It's built with modern web tooling and optimized for fast local development and easy deployment.
 
-**Use Lovable**
+Technologies
+------------
+- Vite
+- React + TypeScript
+- Tailwind CSS
+- Framer Motion
+- react-three/fiber and three.js (for 3D visuals)
+- shadcn/ui + Radix UI
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a022914a-ba1c-4faa-8eda-504fea2d6b99) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Run locally
+-----------
+These are the commands I use to develop this site locally. Make sure you have a Node.js version supported by the project (Node 18+ is recommended).
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Install dependencies
+npm install
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Run dev server (hot-reload)
 npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build locally
+npm run preview
 ```
 
-**Edit a file directly in GitHub**
+Deployment
+----------
+I deploy the site using Vercel (recommended) or GitHub Pages.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- Vercel: Import the GitHub repository into Vercel and use the default build command (`npm run build`). If you use Node 18 and encounter dependency peer issues, enable `--legacy-peer-deps` or pin compatible package versions.
+- GitHub Pages: Build locally with `npm run build` and publish the `dist/` folder. A GitHub Actions workflow can be used to automate this.
 
-**Use GitHub Codespaces**
+Notes about dependencies and licenses
+-----------------------------------
+This project includes a number of third-party libraries. Please review their licenses if you plan to redistribute code or assets. The libraries used are standard open-source packages; any license requirements should be preserved when redistributing.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+If you're preparing this site for public or commercial release, double-check compatibility of packages like `@react-three/drei` with your React version and follow the libraries' license terms.
 
-## What technologies are used for this project?
+Contact
+-------
+If you want to get in touch, reach out via GitHub: https://github.com/lavansh1306
 
-This project is built with:
+--
+Portfolio maintained by Lavansh Choubey
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/a022914a-ba1c-4faa-8eda-504fea2d6b99) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
