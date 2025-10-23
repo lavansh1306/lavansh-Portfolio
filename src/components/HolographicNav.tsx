@@ -389,7 +389,7 @@ export const HolographicNav = () => {
             <span className="mt-2 text-xs text-gray-400 group-hover:text-gray-200 transition-colors">GitHub</span>
           </motion.a>
           <motion.a
-            href="https://linkedin.com/in/lavansh"
+            href="https://www.linkedin.com/in/lavansh-choubey-683355314/"
             target="_blank"
             rel="noopener noreferrer"
             className="group flex flex-col items-center"

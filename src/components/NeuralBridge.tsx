@@ -33,7 +33,7 @@ const contactMethods = [
     name: 'Professional Network',
     description: 'Corporate interface protocol',
     icon: Linkedin,
-    value: 'linkedin.com/in/lavansh-choubey-683355314',
+  value: 'https://www.linkedin.com/in/lavansh-choubey-683355314/',
     colorClass: 'text-neon-purple',
     bgClass: 'bg-neon-purple/20',
     borderClass: 'border-neon-purple/30',
@@ -171,7 +171,7 @@ export const NeuralBridge = () => {
                     </a>
                   ) : method.id === 'linkedin' ? (
                     <a
-                      href="https://linkedin.com/in/lavansh-choubey-683355314"
+                      href="https://www.linkedin.com/in/lavansh-choubey-683355314/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`w-full py-2 border ${method.borderClass} ${method.colorClass} font-matrix text-sm ${method.hoverClass} transition-colors inline-block text-center`}
