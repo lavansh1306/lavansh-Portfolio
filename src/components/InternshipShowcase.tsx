@@ -153,7 +153,6 @@ export const InternshipShowcase = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 5 }}
           >
-            Niramaya Health | 2025
           </motion.div>
         </div>
 
