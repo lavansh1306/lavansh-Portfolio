@@ -159,7 +159,19 @@ export const InternshipShowcase = () => {
 
         {/* Expandable internship summary + timeline (three identical cards) */}
         <div className="space-y-6">
-          <ExpandableInternshipCard />
+          <ExpandableInternshipCard
+            title="Technical Intern"
+            organization="Skill First Labs"
+            dateRange="09/10/2025 – Present"
+            contributions={[
+              'Researched and shortlisted certification programs aligned with company competency frameworks and client requirements.',
+              'Assisted the Product Implementation team in mapping certifications to technical roles for candidate evaluation.',
+              'Collaborated with internal teams to organize certification data and maintain clarity across departments.',
+              'Supported the creation of a certification matrix to help the company identify skill gaps and optimize hiring decisions.',
+              'Engaged in review meetings to present findings, gather feedback, and refine the certification-recommendation process.',
+              'Contributed to improving internal awareness of skill alignment between learning programs and workforce needs.'
+            ]}
+          />
           <ExpandableInternshipCard
             title="Business Development Intern"
             organization="Phoenix Global"
