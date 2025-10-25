@@ -2,17 +2,29 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { fadeInUp, hoverGrow } from '../lib/animations';
 
-export const ExpandableInternshipCard: React.FC = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
+interface ExpandableInternshipCardProps {
+  title?: string;
+  organization?: string;
+  dateRange?: string;
+  contributions?: string[];
+}
 
-  const contributions = [
-    'Assisting in building and experimenting with AI/ML models for applied use cases.',
-    'Developing frontend prototypes to test and validate user-facing concepts.',
-    'Performing data analysis in Excel and Python, generating actionable insights.',
-    'Gathering, cleaning, and preparing datasets for downstream analytics and ML tasks.',
-    'Supporting automation workflows and contributing to data-driven decision-making.',
-    'Collaborating with the team to integrate prototypes and data solutions into ongoing projects.',
-  ];
+const DEFAULT_CONTRIBUTIONS = [
+  'Assisting in building and experimenting with AI/ML models for applied use cases.',
+  'Developing frontend prototypes to test and validate user-facing concepts.',
+  'Performing data analysis in Excel and Python, generating actionable insights.',
+  'Gathering, cleaning, and preparing datasets for downstream analytics and ML tasks.',
+  'Supporting automation workflows and contributing to data-driven decision-making.',
+  'Collaborating with the team to integrate prototypes and data solutions into ongoing projects.',
+];
+
+export const ExpandableInternshipCard: React.FC<ExpandableInternshipCardProps> = ({
+  title = 'AI/Software Intern',
+  organization = 'Niramaya Health',
+  dateRange = '17/01/2025 – 14/09/2025',
+  contributions = DEFAULT_CONTRIBUTIONS,
+}) => {
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <motion.div className="max-w-3xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
@@ -41,10 +53,10 @@ export const ExpandableInternshipCard: React.FC = () => {
         <div className="relative p-6 sm:p-8 flex items-center justify-between gap-4">
           <div>
             <h3 className="text-lg sm:text-xl font-semibold text-cyan-400 drop-shadow-[0_0_12px_rgba(6,182,212,0.35)]">
-              AI/Software Intern <span className="text-gray-300">|</span>{' '}
-              <span className="text-gray-300">Niramaya Health</span>
+              {title} <span className="text-gray-300">|</span>{' '}
+              <span className="text-gray-300">{organization}</span>
             </h3>
-            <p className="mt-1 text-sm text-gray-400">17/01/2025 – 14/09/2025</p>
+            <p className="mt-1 text-sm text-gray-400">{dateRange}</p>
           </div>
 
           <div className="flex items-center gap-3">
