@@ -65,6 +65,23 @@ export const ExpandableInternshipCard: React.FC<ExpandableInternshipCardProps> =
               {title} <span className="text-gray-300">|</span>{' '}
               <span className="text-gray-300">{organization}</span>
             </h3>
+
+            {/* Verified badge and certificate link (appear above date) */}
+            {certificateLink && (
+              <div className="flex items-center space-x-2 mb-2">
+                <span className="text-emerald-400 text-sm">✅ Verified Internship</span>
+                <a
+                  href={certificateLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`View certificate for ${organization}`}
+                  className="text-sm text-gray-400 hover:text-emerald-300 hover:underline underline-offset-2 transition-colors"
+                >
+                  View Certificate →
+                </a>
+              </div>
+            )}
+
             <p className="mt-1 text-sm text-gray-400">{dateRange}</p>
           </div>
 
