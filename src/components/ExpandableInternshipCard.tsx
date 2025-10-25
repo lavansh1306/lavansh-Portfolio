@@ -26,6 +26,15 @@ export const ExpandableInternshipCard: React.FC<ExpandableInternshipCardProps> =
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
+  // Certificate links per organization
+  const certLinks: Record<string, string> = {
+    'Niramaya Health': 'https://drive.google.com/file/d/1XPd7dv-5HnnDJ-qxP92bBGHLL5ZcTnfL/view?usp=sharing',
+    'Phoenix Global': 'https://drive.google.com/file/d/1Hc6r0Sx1ZfWPgFOHipjNEI4bJrFCzVge/view?usp=sharing',
+    'Skill First Labs': 'https://drive.google.com/file/d/1rLhKtw6PiLhF5qNaTamE-Q3h8zlFpPHl/view?usp=sharing'
+  };
+
+  const certificateLink = certLinks[organization];
+
   return (
     <motion.div className="max-w-3xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
       <motion.div
@@ -99,32 +108,44 @@ export const ExpandableInternshipCard: React.FC<ExpandableInternshipCardProps> =
                 }}
               />
 
-              <ul className="space-y-6">
-                {contributions.map((c, i) => (
-                  <li key={i} className="relative flex items-start gap-4">
-                    <span className="absolute -left-1 top-1">
-                      <span
-                        className="inline-flex items-center justify-center w-4 h-4 rounded-full"
-                        style={{
-                          background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12), rgba(6,182,212,0.95))',
-                          boxShadow: '0 0 12px rgba(6,182,212,0.6)'
-                        }}
-                      />
-                    </span>
+                <ul className="space-y-6">
+                  {contributions.map((c, i) => (
+                    <li key={i} className="relative flex items-start gap-4">
+                      <span className="absolute -left-1 top-1">
+                        <span
+                          className="inline-flex items-center justify-center w-4 h-4 rounded-full"
+                          style={{
+                            background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12), rgba(6,182,212,0.95))',
+                            boxShadow: '0 0 12px rgba(6,182,212,0.6)'
+                          }}
+                        />
+                      </span>
 
-                    <div className="flex-1">
-                      <div className="rounded-md p-3 bg-black/60 border border-cyan-500/10">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-sm text-gray-100 font-medium">{`Contribution ${i + 1}`}</h4>
-                          <span className="text-xs text-cyan-300 font-mono">2025</span>
+                      <div className="flex-1">
+                        <div className="rounded-md p-3 bg-black/60 border border-cyan-500/10">
+                          <div className="flex items-center justify-between">
+                            <h4 className="text-sm text-gray-100 font-medium">{`Contribution ${i + 1}`}</h4>
+                            <span className="text-xs text-cyan-300 font-mono">2025</span>
+                          </div>
+
+                          <p className="mt-2 text-sm text-gray-300 leading-relaxed">{c}</p>
                         </div>
-
-                        <p className="mt-2 text-sm text-gray-300 leading-relaxed">{c}</p>
                       </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Verification link inserted at the very end of expanded content */}
+                {certificateLink && (
+                  <a
+                    href={certificateLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block mt-3 text-sm text-gray-400 hover:text-gray-200 transition-colors"
+                  >
+                    Verified internship – View Certificate →
+                  </a>
+                )}
             </div>
           </div>
         </div>
