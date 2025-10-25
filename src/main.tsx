@@ -3,9 +3,11 @@ import App from './App.tsx'
 import './index.css'
 import { Analytics } from '@vercel/analytics/react'
 
-createRoot(document.getElementById("root")!).render(
+const root = createRoot(document.getElementById('root')!);
+
+root.render(
 	<>
 		<App />
-		<Analytics />
+		{process.env.NODE_ENV === 'production' && typeof Analytics !== 'undefined' ? <Analytics /> : null}
 	</>
 );
