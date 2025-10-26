@@ -41,7 +41,7 @@ export const ProjectShowcase = () => {
   "link": "#"
 },
 {
-  "title": "RAKHA X – Safety & Support Platform",
+  "title": "RAKSHA X – Safety & Support Platform",
   "description": "Created an AI-driven safety ecosystem integrating real-time sound detection, SOS alerts, and mental-health chat support. Combines YAMNet, Vosk, and Flask backend with Twilio for verified emergency messaging.",
   "impact": "Merged safety and emotional well-being through live sound intelligence, instant SOS response, and empathetic AI assistance.",
   "techStack": ["Flask", "Python", "TensorFlow", "TensorFlow Hub", "YAMNet", "Vosk", "Librosa", "Twilio API", "Gemini API", "HTML", "CSS", "JavaScript"],
