@@ -119,7 +119,7 @@ export const MainHero = () => {
 
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
             <motion.a
-              href="https://drive.google.com/file/d/1Bq2aMXg6kc84LU1xtnYoe6n_7mNlNRpU/view?usp=sharing"
+              href="https://drive.google.com/file/d/1ruhizQz6NZX2rUsf9XtXCJZWyZr8kGUD/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               className="group px-8 py-3 bg-[#00ff88] text-black font-medium rounded-full flex items-center gap-2"
