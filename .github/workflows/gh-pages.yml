@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
   # allow manual dispatch from Actions UI for debugging or force runs
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 jobs:
   build-and-deploy:
