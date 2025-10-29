@@ -19,7 +19,6 @@ export const BootSequence = ({ onComplete }: BootSequenceProps) => {
     "ACCESSING CREDENTIALS [||||||||  ] 80%",
     "ACCESSING CREDENTIALS [||||||||||] 100%",
     "COMPILING ENTERPRISE.PROFILE",
-    "ANALYZING TECHNICAL EXPERTISE...",
     "SYSTEM READY. INITIATING PORTFOLIO SEQUENCE."
   ];
 
