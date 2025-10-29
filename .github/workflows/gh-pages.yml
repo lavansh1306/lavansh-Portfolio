@@ -3,6 +3,8 @@ name: Build and Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
+  # allow manual dispatch from Actions UI for debugging or force runs
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -34,3 +36,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
+          # allow creating an empty commit so the gh-pages branch/commit updates even
+          # when build output didn't change — useful during iterative debugging
+          allow_empty_commit: true
