@@ -191,3 +191,44 @@
 .boot-cursor { color: #9ef0b9; }
 .blink { display: inline-block; width: 8px; height: 14px; background: #9ef0b9; margin-left: 6px; animation: blink 800ms steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0 } }
+
+/* Terminal window styling */
+.terminal-window {
+  background: linear-gradient(180deg, rgba(1,6,10,0.6), rgba(0,0,0,0.6));
+  border: 1px solid rgba(0,255,136,0.12);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 60px rgba(0,255,136,0.03) inset;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.terminal-window .terminal-content {
+  padding: 20px;
+  min-height: 60vh;
+}
+
+/* Custom scrollbar */
+.terminal-window::-webkit-scrollbar, .terminal-window .terminal-content::-webkit-scrollbar {
+  height: 10px;
+  width: 12px;
+}
+.terminal-window::-webkit-scrollbar-track, .terminal-window .terminal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.terminal-window::-webkit-scrollbar-thumb, .terminal-window .terminal-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg,#00e6a8,#7a5cff);
+  border-radius: 999px;
+  border: 2px solid rgba(0,0,0,0.2);
+}
+
+.terminal-input-row {
+  display:flex; align-items:center; gap:10px; padding:12px 18px; border-top:1px solid rgba(255,255,255,0.02);
+}
+.terminal-prompt { color:#49f4a3; font-family: monospace; }
+.terminal-input { flex:1; background: transparent; border: none; outline: none; color: #cdeed7; font-family: monospace; font-size: 16px; }
+.terminal-input::placeholder { color: #6b8a78 }
+.terminal-run-btn { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.04); color: #cdeed7; padding:6px 10px; border-radius:6px }
+
+.terminal-line { color: #b7f0c8; margin-bottom:6px }
+.terminal-line:hover { filter:brightness(1.05) }
+
+.kbd { background: rgba(255,255,255,0.04); padding:2px 6px; border-radius:4px; font-family:monospace; font-size:11px }

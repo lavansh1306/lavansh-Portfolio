@@ -18,6 +18,10 @@ export default function Terminal() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
 
+  const availableCommands = [
+    'help','echo','date','clear','whoami','ls','build','about','skills','projects','contact','github','open'
+  ];
+
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
@@ -145,6 +149,7 @@ export default function Terminal() {
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    // history navigation
     if (e.key === "ArrowUp") {
       e.preventDefault();
       if (history.length === 0) return;
@@ -162,6 +167,17 @@ export default function Terminal() {
         setInput(history[next] || "");
         return next === history.length - 1 ? null : next;
       });
+    } else if (e.key === 'Tab') {
+      // simple autocomplete: complete to first available command
+      e.preventDefault();
+      const prefix = input.trim();
+      if (!prefix) return;
+      const match = availableCommands.find(c => c.startsWith(prefix));
+      if (match) setInput(match + ' ');
+    } else if (e.key.toLowerCase() === 'l' && (e.ctrlKey || e.metaKey)) {
+      // Ctrl+L: clear screen
+      e.preventDefault();
+      setLines([]);
     }
   }
 
@@ -186,7 +202,16 @@ export default function Terminal() {
             <div className="opacity-60">(empty)</div>
           )}
           {lines.map((l, i) => (
-            <div key={i} className="whitespace-pre-wrap">
+            <div
+              key={i}
+              className="whitespace-pre-wrap cursor-default"
+              onDoubleClick={() => {
+                // copy line to clipboard on double click
+                try { navigator.clipboard.writeText(l); push('(copied to clipboard)'); }
+                catch { push('(copy failed)'); }
+              }}
+              title="Double-click to copy"
+            >
               {l}
             </div>
           ))}

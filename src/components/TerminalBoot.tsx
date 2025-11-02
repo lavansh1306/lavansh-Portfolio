@@ -27,6 +27,17 @@ export const TerminalBoot: React.FC<Props> = ({ onComplete }) => {
     return () => clearTimeout(timer);
   }, [index, onComplete]);
 
+  // allow skipping the boot with Space or Escape
+  useEffect(() => {
+    function handler(e: KeyboardEvent) {
+      if (e.code === 'Space' || e.key === 'Escape') {
+        onComplete();
+      }
+    }
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onComplete]);
+
   return (
     <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
@@ -40,6 +51,7 @@ export const TerminalBoot: React.FC<Props> = ({ onComplete }) => {
           <div className="dot yellow" />
           <div className="dot green" />
           <div className="ml-3 font-mono text-sm text-green-300">TERMINAL BOOT</div>
+          <div className="ml-auto text-xs text-slate-400" style={{marginLeft:12}}>Press <kbd>Space</kbd> or <kbd>Esc</kbd> to skip</div>
         </div>
 
         <div className="terminal-boot-body font-mono text-green-200">
