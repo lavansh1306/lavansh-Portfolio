@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MainHero } from "../components/MainHero";
 import { ProjectShowcase } from "../components/ProjectShowcase";
@@ -65,6 +66,14 @@ const IndexPage = () => {
         >
           <NeuralBridge />
         </motion.section>
+      </div>
+      {/* Floating Terminal button */}
+      <div className="fixed bottom-6 right-6 z-50 pointer-events-auto">
+        <Link to="/terminal">
+          <button className="bg-green-400 hover:bg-green-500 text-black font-semibold py-2 px-4 rounded-md shadow-lg">
+            Open Terminal
+          </button>
+        </Link>
       </div>
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute inset-0 cyber-scan"></div>
