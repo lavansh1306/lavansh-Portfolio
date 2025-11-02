@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { Terminal } from 'xterm';
-import { FitAddon } from 'xterm-addon-fit';
 import 'xterm/css/xterm.css';
 import '../styles/cyberpunk.css';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +9,7 @@ const PROMPT = '$ ';
 export default function XTermWrapper() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const termRef = useRef<Terminal | null>(null);
-  const fitRef = useRef<FitAddon | null>(null);
+  const fitRef = useRef<any | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,14 +24,53 @@ export default function XTermWrapper() {
       fontSize: 14,
       scrollback: 1000,
     });
-    const fit = new FitAddon();
-    term.loadAddon(fit);
+    // dynamically load addons so the editor doesn't error before `npm install`
+    let fit: any = null;
+    (async () => {
+      try {
+        const fitModule = await import('xterm-addon-fit');
+        fit = new fitModule.FitAddon();
+        term.loadAddon(fit);
+        fitRef.current = fit;
+      } catch (e) {
+        console.warn('xterm-fit addon not available:', e);
+      }
+
+      try {
+        const webLinksModule = await import('xterm-addon-web-links');
+        const webLinks = new webLinksModule.WebLinksAddon();
+        term.loadAddon(webLinks);
+      } catch (e) {
+        console.warn('xterm-web-links addon not available:', e);
+      }
+
+      try {
+        const searchModule = await import('xterm-addon-search');
+        const search = new searchModule.SearchAddon();
+        term.loadAddon(search);
+      } catch (e) {
+        console.warn('xterm-search addon not available:', e);
+      }
+
+      // optional WebGL renderer for extra performance/visuals
+      try {
+        const webglModule = await import('xterm-addon-webgl');
+        // some versions export WebglAddon or WebGLAddon
+        const WebglCtor = webglModule.WebglAddon || webglModule.WebGLAddon || webglModule.default;
+        if (WebglCtor) {
+          const webgl = new WebglCtor();
+          term.loadAddon(webgl);
+        }
+      } catch (e) {
+        console.warn('xterm-webgl addon not available or failed to load:', e);
+      }
+    })();
     termRef.current = term;
-    fitRef.current = fit;
 
     if (containerRef.current) {
       term.open(containerRef.current);
-      fit.fit();
+      // give browser a moment to layout, then fit if addon loaded
+      setTimeout(() => { if (fitRef.current && typeof fitRef.current.fit === 'function') fitRef.current.fit(); }, 50);
     }
 
     // simple prompt buffer
@@ -164,7 +202,7 @@ export default function XTermWrapper() {
       }
     }
 
-    function onResize() { fit.fit(); }
+  function onResize() { if (fitRef.current && typeof fitRef.current.fit === 'function') fitRef.current.fit(); }
     window.addEventListener('resize', onResize);
 
     return () => {
