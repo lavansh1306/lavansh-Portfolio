@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MatrixCanvas from "../components/MatrixCanvas";
 
 const PROMPT = "$";
@@ -16,6 +16,7 @@ export default function Terminal() {
   const [hIndex, setHIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -48,10 +49,48 @@ export default function Terminal() {
             "echo <text> - print text",
             "date - current date/time",
             "clear - clear the screen",
-            "whoami - show placeholder user",
+            "whoami - show user identity",
             "ls - list top-level files/folders (demo)",
             "build - simulate a build log",
+            "about - short bio",
+            "skills - list main skills",
+            "projects - list notable projects",
+            "contact - show contact hint",
+            "github - open GitHub profile",
+            "open <path> - navigate to a site route (e.g. open /contact)",
           ]);
+          break;
+        case "about":
+          push([
+            "Lavansh Choubey - Frontend engineer & creative coder.",
+            "I build interactive web experiences with React, Three.js and Tailwind.",
+            "Type 'skills' to see technologies or 'projects' to list examples.",
+          ]);
+          break;
+        case "skills":
+          push([
+            "Frontend: React, TypeScript, Vite, TailwindCSS, Framer Motion",
+            "3D & Graphics: three.js, @react-three/fiber, gsap",
+            "Tools: Git, Vercel, Node.js, vite, eslint",
+          ]);
+          break;
+        case "projects":
+          push([
+            "Project Vault — interactive project gallery with 3D previews",
+            "Neural Bridge — contact/interaction UI with animated effects",
+            "Matrix Canvas — site-wide matrix/particle visuals",
+          ]);
+          break;
+        case "contact":
+          push([
+            "For contact options see the Contact page:",
+            "open /contact",
+          ]);
+          break;
+        case "github":
+          push(["Opening GitHub profile..."]);
+          // open GitHub in new tab
+          window.open("https://github.com/lavansh1306", "_blank");
           break;
         case "echo":
           push(args.join(" ") || "");
@@ -63,7 +102,25 @@ export default function Terminal() {
           setLines([]);
           break;
         case "whoami":
-          push("guest@local")
+          push("Lavansh Choubey")
+          break;
+        case "open":
+          if (args.length === 0) {
+            push("Usage: open <path>");
+            break;
+          }
+          const path = args[0];
+          if (path.startsWith("/")) {
+            push(`Navigating to ${path} ...`);
+            // small delay to show message then navigate
+            setTimeout(() => navigate(path), 250);
+          } else if (path.startsWith("http")) {
+            push(`Opening ${path} ...`);
+            window.open(path, "_blank");
+          } else {
+            push("open: unsupported path. Use /route or full http URL.");
+          }
+          break;
           break;
         case "ls":
           push(["public/  src/  package.json  README.md"]);
