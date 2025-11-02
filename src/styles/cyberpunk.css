@@ -157,3 +157,37 @@
   animation: matrix-rain 20s linear infinite;
   opacity: 0.1;
 }
+
+/* TerminalBoot specific styles */
+.terminal-boot-panel {
+  width: 480px;
+  max-width: calc(100% - 48px);
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(0,255,136,0.12);
+  box-shadow: 0 10px 40px rgba(0,255,136,0.06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.terminal-boot-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(0,255,136,0.03);
+}
+.terminal-boot-header .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  box-shadow: 0 0 8px rgba(0,255,136,0.12);
+}
+.terminal-boot-header .dot.red { background: #ff5f56; }
+.terminal-boot-header .dot.yellow { background: #ffbd2e; }
+.terminal-boot-header .dot.green { background: #27c93f; }
+.terminal-boot-body { padding: 14px; min-height: 110px; }
+.boot-line { margin-bottom: 8px; color: #9ef0b9; opacity: 0.9; }
+.boot-line.pulse { transform-origin: left; animation: pulse 800ms ease-in-out; }
+@keyframes pulse { 0% { transform: scaleX(0.98); opacity: 0.8 } 50% { transform: scaleX(1.0); opacity: 1 } 100% { transform: scaleX(0.98); opacity: 0.8 } }
+.boot-cursor { color: #9ef0b9; }
+.blink { display: inline-block; width: 8px; height: 14px; background: #9ef0b9; margin-left: 6px; animation: blink 800ms steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0 } }
