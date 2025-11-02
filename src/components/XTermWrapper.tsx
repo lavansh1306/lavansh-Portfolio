@@ -3,6 +3,7 @@ import { Terminal } from 'xterm';
 import 'xterm/css/xterm.css';
 import '../styles/cyberpunk.css';
 import { useNavigate } from 'react-router-dom';
+import { Linkedin } from 'lucide-react';
 
 const PROMPT = '$ ';
 
@@ -39,7 +40,6 @@ export default function XTermWrapper() {
       try {
         const webLinksModule = await import('xterm-addon-web-links');
         const webLinks = new webLinksModule.WebLinksAddon();
-        term.loadAddon(webLinks);
       } catch (e) {
         console.warn('xterm-web-links addon not available:', e);
       }
@@ -47,7 +47,6 @@ export default function XTermWrapper() {
       try {
         const searchModule = await import('xterm-addon-search');
         const search = new searchModule.SearchAddon();
-        term.loadAddon(search);
       } catch (e) {
         console.warn('xterm-search addon not available:', e);
       }
@@ -79,7 +78,7 @@ export default function XTermWrapper() {
     let hIndex: number | null = null;
 
     const availableCommands = [
-      'help','echo','date','clear','whoami','ls','build','about','skills','projects','contact','github','open'
+      'help','echo','Linkedin','date','clear','whoami','ls','build','about','skills','projects','contact','github','open'
     ];
 
     function showPrompt() {
@@ -140,11 +139,11 @@ export default function XTermWrapper() {
 
       switch (name) {
         case 'help':
-          writeLines(['Available commands:', 'help, about, skills, projects, contact, github, open <path>, echo, date, clear, whoami, ls, build']);
+          writeLines(['Available commands:', 'help, linkedin, about, skills, projects, contact, github, open <path>, echo, date, clear, whoami, ls, build']);
           showPrompt();
           break;
         case 'about':
-          writeLines(['Lavansh Choubey - Frontend engineer & creative coder.', 'I build interactive web experiences with React, Three.js and Tailwind.']);
+          writeLines(['Lavansh Choubey - Full stack Developer & Ideator.', 'I build interactive tools for real world impact']);
           showPrompt();
           break;
         case 'skills':
@@ -156,7 +155,7 @@ export default function XTermWrapper() {
           showPrompt();
           break;
         case 'contact':
-          writeLines(['Open /contact to view contact options']);
+          writeLines(['Connect on linkedin or Github']);
           showPrompt();
           break;
         case 'github':
@@ -164,8 +163,9 @@ export default function XTermWrapper() {
           window.open('https://github.com/lavansh1306', '_blank');
           showPrompt();
           break;
-        case 'echo':
-          writeLines(args.join(' '));
+           case 'linkedin':
+          writeLines(['Opening linkedin profile...']);
+          window.open('https://www.linkedin.com/in/lavansh-choubey-683355314/', '_blank');
           showPrompt();
           break;
         case 'date':
@@ -176,7 +176,7 @@ export default function XTermWrapper() {
           term.clear();
           showPrompt();
           break;
-        case 'whoami':
+        case 'who_am_i':
           writeLines('Lavansh Choubey');
           showPrompt();
           break;
