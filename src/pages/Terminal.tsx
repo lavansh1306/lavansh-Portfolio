@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MatrixCanvas from "../components/MatrixCanvas";
+import XTermWrapper from "../components/XTermWrapper";
 
 const PROMPT = "$";
 
@@ -194,50 +195,8 @@ export default function Terminal() {
         </div>
 
         <div className="relative z-10">
-          <div
-            ref={containerRef}
-            className="bg-black/70 backdrop-blur-sm rounded-md p-4 font-mono text-green-200 h-[60vh] overflow-auto border border-slate-700"
-          >
-          {lines.length === 0 && (
-            <div className="opacity-60">(empty)</div>
-          )}
-          {lines.map((l, i) => (
-            <div
-              key={i}
-              className="whitespace-pre-wrap cursor-default"
-              onDoubleClick={() => {
-                // copy line to clipboard on double click
-                try { navigator.clipboard.writeText(l); push('(copied to clipboard)'); }
-                catch { push('(copy failed)'); }
-              }}
-              title="Double-click to copy"
-            >
-              {l}
-            </div>
-          ))}
-          </div>
+          <XTermWrapper />
         </div>
-
-        <form onSubmit={handleSubmit} className="mt-3">
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-green-300">{PROMPT}</span>
-            <input
-              ref={inputRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className="flex-1 bg-transparent outline-none border-b border-slate-700 py-1 px-2 font-mono"
-              placeholder="type a command and press Enter"
-              autoFocus
-            />
-            <button
-              type="submit"
-              className="ml-2 rounded bg-slate-800 px-3 py-1 text-sm border border-slate-700"
-            >
-              Run
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   );
