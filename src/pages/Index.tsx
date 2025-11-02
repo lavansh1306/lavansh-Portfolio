@@ -69,7 +69,7 @@ const IndexPage = () => {
       </div>
       {/* Floating Terminal button */}
       <div className="fixed bottom-6 right-6 z-50 pointer-events-auto">
-        <Link to="/terminal">
+        <Link to="/terminal/launch">
           <button className="bg-green-400 hover:bg-green-500 text-black font-semibold py-2 px-4 rounded-md shadow-lg">
             Open Terminal
           </button>

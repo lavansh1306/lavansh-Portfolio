@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import MatrixCanvas from "../components/MatrixCanvas";
 
 const PROMPT = "$";
 
@@ -108,7 +109,9 @@ export default function Terminal() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 p-6">
+    <div className="min-h-screen bg-slate-900 text-slate-100 p-6 relative overflow-hidden">
+      {/* matrix canvas background */}
+      <MatrixCanvas />
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-xl font-mono">Inbuilt Terminal</h1>
@@ -117,10 +120,11 @@ export default function Terminal() {
           </div>
         </div>
 
-        <div
-          ref={containerRef}
-          className="bg-black rounded-md p-4 font-mono text-green-200 h-[60vh] overflow-auto border border-slate-700"
-        >
+        <div className="relative z-10">
+          <div
+            ref={containerRef}
+            className="bg-black/70 backdrop-blur-sm rounded-md p-4 font-mono text-green-200 h-[60vh] overflow-auto border border-slate-700"
+          >
           {lines.length === 0 && (
             <div className="opacity-60">(empty)</div>
           )}
@@ -129,6 +133,7 @@ export default function Terminal() {
               {l}
             </div>
           ))}
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="mt-3">
