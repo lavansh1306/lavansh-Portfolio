@@ -1,6 +1,8 @@
 
 # Lavansh Choubey — Portfolio
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Vercel](https://img.shields.io/badge/deploy-vercel-black?logo=vercel)](https://vercel.com)
+
 A modern, interactive personal portfolio website showcasing projects, achievements, and interactive experiences. Features a built-in terminal, 3D visuals, and smooth animations.
 
 ## Quick Links
@@ -8,6 +10,15 @@ A modern, interactive personal portfolio website showcasing projects, achievemen
 - **Resume**: https://drive.google.com/file/d/1Bq2aMXg6kc84LU1xtnYoe6n_7mNlNRpU/view?usp=sharing
 - **GitHub**: https://github.com/lavansh1306
 - **Email**: reach out via GitHub profile
+
+## Table of Contents
+- [About](#about)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Terminal Usage](#terminal-usage)
+- [Deployment](#deployment)
+- [Contributing & License](#contributing--license)
+- [Contact & Links](#contact--links)
 
 ## About
 
