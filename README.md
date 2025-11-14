@@ -11,7 +11,6 @@ A modern, interactive personal portfolio website showcasing projects, achievemen
 - **GitHub**: https://github.com/lavansh1306
 - **Email**: reach out via GitHub profile
 
-## Table of Contents
 - [About](#about)
 - [Features](#features)
 - [Getting Started](#getting-started)
