@@ -190,3 +190,5 @@ This project uses many open-source packages. Please review their licenses:
 
 **Portfolio maintained by Lavansh Choubey** | Built with ❤️ using React, Three.js, and TypeScript
 
+Last updated: 2025-11-18
+
