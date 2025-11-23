@@ -6,7 +6,7 @@ Please note: this repository is primarily a personal portfolio. Contributions ar
 
 ## Table of Contents
 - [Reporting Issues](#reporting-issues)
-- [Suggesting Features](#suggesting-features)
+- [Suggesting Features](#suggesting-featues)
 - [Development Workflow](#development-workflow)
 - [Coding Style](#coding-style)
 - [Pull Request Process](#pull-request-process)
@@ -21,11 +21,11 @@ Please note: this repository is primarily a personal portfolio. Contributions ar
   - Steps to reproduce
   - Expected vs actual behavior
   - Browser / OS / Node versions where relevant
-  - Minimal reproduction (codesandbox, stackblitz, or repository steps)
+  - Minimal reproduction (codesandbox, stacblitz, or repository steps)
 
 ## Suggesting Features
 
-- Open an issue describing the feature, motivation, and an example of expected behavior or UX. Label suggestions as `enhancement`.
+- Open an issue describing the feature, otivation, and an example of expected behavior or UX. Label suggestions as `enhancement`.
 
 ## Development Workflow
 
