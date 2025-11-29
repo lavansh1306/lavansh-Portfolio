@@ -10,6 +10,8 @@ import { CyberGrid } from "../components/CyberGrid";
 import { InternshipShowcase } from "../components/InternshipShowcase";
 import { HolographicNav } from "../components/HolographicNav";
 import { NeuralBridge } from "../components/NeuralBridge";
+import RevealOnScroll from "../components/animations/RevealOnScroll";
+// ScrollShowcase removed (unused placeholder)
 
 const IndexPage = () => {
   const [isBooted, setIsBooted] = useState(false);
@@ -26,46 +28,33 @@ const IndexPage = () => {
         <section id="intro" className="min-h-screen">
           <MainHero />
         </section>
-        <motion.section
-          id="skills"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <SkillMatrix />
-        </motion.section>
-        <motion.section
-          id="internship"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-        >
-          <InternshipShowcase />
-        </motion.section>
-        <motion.section
-          id="projects"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.9 }}
-        >
-          <ProjectShowcase />
-        </motion.section>
-        <motion.section
-          id="achievements"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.1 }}
-        >
-          <AchievementShowcase />
-        </motion.section>
-        <motion.section
-          id="contact"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.3 }}
-        >
-          <NeuralBridge />
-        </motion.section>
+        <RevealOnScroll>
+          <section id="skills">
+            <SkillMatrix />
+          </section>
+        </RevealOnScroll>
+        <RevealOnScroll>
+          <section id="internship">
+            <InternshipShowcase />
+          </section>
+        </RevealOnScroll>
+        <RevealOnScroll>
+          <section id="projects">
+            <ProjectShowcase />
+          </section>
+        </RevealOnScroll>
+        <RevealOnScroll>
+          <section id="achievements">
+            <AchievementShowcase />
+          </section>
+        </RevealOnScroll>
+        <RevealOnScroll>
+          <section id="contact">
+            <NeuralBridge />
+          </section>
+        </RevealOnScroll>
+
+        {/* ScrollTrigger demo section removed */}
       </div>
       {/* Floating Terminal button */}
       <div className="fixed bottom-6 right-6 z-50 pointer-events-auto">

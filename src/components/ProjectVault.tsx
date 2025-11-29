@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { HolographicCard } from './HolographicCard';
 import { ExternalLink, Github, Trophy } from 'lucide-react';
+import { useGsapReveal } from '../hooks/useGsapReveal';
+import { motion } from 'framer-motion';
+import { cardVariants } from '../lib/animations';
 
 interface Project {
   id: string;
@@ -56,9 +59,11 @@ const projects: Project[] = [
 
 export const ProjectVault = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  useGsapReveal({ root: sectionRef, targets: '[data-reveal]', once: true, stagger: 0.08 });
 
   return (
-    <section className="py-20">
+    <section ref={sectionRef} className="py-20">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -79,7 +84,7 @@ export const ProjectVault = () => {
               className="p-6 cursor-pointer transform hover:scale-105 transition-all duration-300"
               onClick={() => setSelectedProject(project)}
             >
-              <div className="space-y-4">
+              <motion.div data-reveal className="space-y-4" variants={cardVariants} initial="initial" whileInView="animate" viewport={{ once: true }}>
                 {/* Project Category Badge */}
                 <div className={`inline-block px-3 py-1 text-xs font-matrix rounded-full ${
                   project.category === 'hackathon' 
@@ -137,13 +142,13 @@ export const ProjectVault = () => {
                     </button>
                   )}
                 </div>
-              </div>
+              </motion.div>
             </HolographicCard>
           ))}
         </div>
 
         {/* Stats Bar */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-4 gap-6" data-reveal>
           <div className="text-center">
             <div className="text-3xl font-cyber text-neon-cyan animate-neon-pulse">7</div>
             <div className="text-sm font-matrix text-muted-foreground">TOTAL WINS</div>

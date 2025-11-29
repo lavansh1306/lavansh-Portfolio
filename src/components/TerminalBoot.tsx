@@ -15,22 +15,35 @@ const steps = [
 
 export const TerminalBoot: React.FC<Props> = ({ onComplete }) => {
   const [index, setIndex] = useState(0);
+  const [skipped, setSkipped] = useState(false);
+
+  // If session visited, skip immediately
+  useEffect(() => {
+    const visited = sessionStorage.getItem('visited');
+    if (visited === 'true') {
+      onComplete();
+      return;
+    }
+    sessionStorage.setItem('visited', 'true');
+  }, [onComplete]);
 
   useEffect(() => {
     if (index >= steps.length) {
-      const t = setTimeout(() => onComplete(), 450);
+      const t = setTimeout(() => onComplete(), 300);
       return () => clearTimeout(t);
     }
 
-    const delay = index === 0 ? 400 : 300;
+    // shorten total to ~3s
+    const delay = index === 0 ? 300 : 250;
     const timer = setTimeout(() => setIndex(i => i + 1), delay);
     return () => clearTimeout(timer);
   }, [index, onComplete]);
 
-  // allow skipping the boot with Space or Escape
+  // allow skipping the boot with Enter, Space or Escape
   useEffect(() => {
     function handler(e: KeyboardEvent) {
-      if (e.code === 'Space' || e.key === 'Escape') {
+      if (e.key === 'Enter' || e.code === 'Space' || e.key === 'Escape') {
+        if (!skipped) setSkipped(true);
         onComplete();
       }
     }
@@ -40,7 +53,7 @@ export const TerminalBoot: React.FC<Props> = ({ onComplete }) => {
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 animate-terminal-open"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -51,7 +64,7 @@ export const TerminalBoot: React.FC<Props> = ({ onComplete }) => {
           <div className="dot yellow" />
           <div className="dot green" />
           <div className="ml-3 font-mono text-sm text-green-300">TERMINAL BOOT</div>
-          <div className="ml-auto text-xs text-slate-400" style={{marginLeft:12}}>Press <kbd>Space</kbd> or <kbd>Esc</kbd> to skip</div>
+          <div className="ml-auto text-xs text-slate-400" style={{marginLeft:12}}>Press <kbd>Enter</kbd>, <kbd>Space</kbd> or <kbd>Esc</kbd> to skip</div>
         </div>
 
         <div className="terminal-boot-body font-mono text-green-200">

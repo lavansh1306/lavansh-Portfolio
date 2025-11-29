@@ -67,7 +67,7 @@ export const SkillMatrix = () => {
           {Object.entries(skills).map(([category, { icon, color, items }]) => (
             <HolographicCard 
               key={category}
-              className="p-6 hover:shadow-[0_0_30px_rgba(0,255,136,0.2)] transition-shadow duration-300"
+              className="p-8 hover:shadow-[0_0_30px_rgba(0,255,136,0.2)] transition-shadow duration-300 ease-out-expo"
               onClick={() => setActiveCategory(activeCategory === category ? null : category)}
             >
               <div className="space-y-6">
@@ -87,14 +87,14 @@ export const SkillMatrix = () => {
                     {Object.entries(items).map(([subCategory, skillList]) => (
                       <div key={subCategory} className="space-y-3">
                         <h4 className="text-lg font-matrix text-foreground">{subCategory}</h4>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-3">
                           {skillList.map((skill) => (
                             <motion.div
                               key={skill}
-                              className={`px-3 py-1.5 border rounded-md font-matrix text-sm transition-colors cursor-pointer
+                              className={`px-3.5 py-2 border rounded-md font-matrix text-sm transition-colors cursor-pointer shadow-[0_0_8px_rgba(120,160,255,0.15)] card-hover
                                 ${hoveredSkill === skill 
                                   ? `border-${color} text-${color} bg-${color}/10`
-                                  : 'border-primary/20 text-primary/80 hover:border-primary'
+                                  : 'border-primary/30 text-white/90 hover:border-primary'
                                 }`}
                               onMouseEnter={() => setHoveredSkill(skill)}
                               onMouseLeave={() => setHoveredSkill(null)}

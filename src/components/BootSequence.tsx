@@ -11,6 +11,16 @@ export const BootSequence = ({ onComplete }: BootSequenceProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
 
+  // session skip
+  useEffect(() => {
+    const visited = sessionStorage.getItem('visited');
+    if (visited === 'true') {
+      onComplete();
+      return;
+    }
+    sessionStorage.setItem('visited', 'true');
+  }, [onComplete]);
+
   const bootSteps = [
     "INITIALIZING NEURAL INTERFACE v2.1.0...",
     "LOADING SUBJECT: LAVANSH CHOUBEY",
@@ -24,20 +34,32 @@ export const BootSequence = ({ onComplete }: BootSequenceProps) => {
 
   useEffect(() => {
     if (currentStep < bootSteps.length) {
+      // shorten to ~3.2s total
       const timer = setTimeout(() => {
         setCurrentStep(prev => prev + 1);
-      }, currentStep === 0 ? 1000 : 800);
+      }, currentStep === 0 ? 300 : 250);
       return () => clearTimeout(timer);
     } else {
       const completeTimer = setTimeout(() => {
         setIsComplete(true);
         setTimeout(() => {
           onComplete();
-        }, 1000);
-      }, 1500);
+        }, 250);
+      }, 300);
       return () => clearTimeout(completeTimer);
     }
   }, [currentStep, bootSteps.length, onComplete]);
+
+  // allow Enter/Space/Escape to skip
+  useEffect(() => {
+    function handler(e: KeyboardEvent) {
+      if (e.key === 'Enter' || e.code === 'Space' || e.key === 'Escape') {
+        onComplete();
+      }
+    }
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onComplete]);
 
   if (isComplete) {
     return (

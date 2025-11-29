@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import ParticleFieldSmall from './ParticleFieldSmall';
+import HorizontalScroller from './animations/HorizontalScroller';
+import RevealOnScroll from './animations/RevealOnScroll';
 
 export const AchievementShowcase = () => {
   const achievements = [
@@ -11,7 +13,8 @@ export const AchievementShowcase = () => {
   prize: "₹12,000",
   description: "Developed HydroSense — an AI-based smart water management system using IoT to monitor consumption, detect leaks, and optimize water flow for sustainable living.",
   tech: ["Python", "IoT", "TensorFlow", "Flask"],
-  image: "/achievements/geonova.png"
+  image: "/achievements/geonova.png",
+  link: "https://devpost.com/software/hydrosense"
 },
 {
   type: "hackathon",
@@ -20,7 +23,8 @@ export const AchievementShowcase = () => {
   prize: "—",
   description: "Built Emulsify, a high-performance real-time data processing & visualization platform enabling fast analytics and decision-making.",
   tech: ["Rust", "ClickHouse", "Apache Flink", "React"],
-  image: "/achievements/hackpick.png"
+  image: "/achievements/hackpick.png",
+  link: "https://devpost.com/software/emulsify"
 },
 {
   type: "hackathon",
@@ -29,7 +33,8 @@ export const AchievementShowcase = () => {
   prize: "—",
   description: "Created Connectfy — an AI-powered networking app for events, matching attendees based on interests to enable smarter professional connections.",
   tech: ["Next.js", "Flask", "AI Matching"],
-  image: "/achievements/connectfy.png"
+  image: "/achievements/connectfy.png",
+  link: "https://devpost.com/software/connectfy"
 },
 {
   type: "hackathon",
@@ -38,7 +43,8 @@ export const AchievementShowcase = () => {
   prize: "—",
   description: "Built B-Break, an AI chatbot supporting individuals facing gender discrimination & mental health challenges with real-time resources and safe guidance.",
   tech: ["Flask", "TensorFlow", "Gemini API"],
-  image: "/achievements/bbreak.png"
+  image: "/achievements/bbreak.png",
+  link: "https://devpost.com/software/b-break"
 },
 {
   type: "ideathon",
@@ -47,7 +53,8 @@ export const AchievementShowcase = () => {
   prize: "—",
   description: "Developed BioSync, an AI-powered personalized health platform delivering tailored wellness insights for better lifestyle tracking.",
   tech: ["AI", "Health Tech", "Data Analytics"],
-  image: "/achievements/biosync.png"
+  image: "/achievements/biosync.png",
+  link: "#"
 },
 {
   type: "ideathon",
@@ -56,7 +63,8 @@ export const AchievementShowcase = () => {
   prize: "—",
   description: "Pitched Costwise, an AI-powered personal finance assistant that simplifies budgeting, tracks expenses, and promotes smart saving.",
   tech: ["AI", "Finance Tech", "Flask"],
-  image: "/achievements/costwise.png"
+  image: "/achievements/costwise.png",
+  link: "#"
 },
 {
   type: "ideathon",
@@ -65,17 +73,57 @@ export const AchievementShowcase = () => {
   prize: "—",
   description: "Built WasteWise, a gamified AI & AR solution that makes waste management rewarding through AI-powered waste analysis, AR upcycling, and eco-missions.",
   tech: ["AI", "AR", "Gamification"],
-  image: "/achievements/wastewise.png"
+  image: "/achievements/wastewise.png",
+  link: "#"
 }
 
   ];
 
+  const panels = useMemo(
+    () =>
+      achievements.map((achievement, index) => (
+        <a href={(achievement as any).link || '#'} target="_blank" rel="noopener noreferrer" className="group h-full relative block">
+          <div className="relative overflow-hidden rounded-lg bg-gray-900 p-4 md:p-5 hover:bg-gray-800 transition-all duration-300 border border-gray-800 hover:border-[#00ff88]/50 h-full">
+            {/* Subtle particle background (toned down for Victory Archives) */}
+            <div className="absolute inset-0 pointer-events-none z-0">
+              <ParticleFieldSmall density={0.00012} className="opacity-20" />
+            </div>
+
+            <div className="absolute inset-0 bg-gradient-to-br from-[#00ff88]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20" />
+
+            <div className="relative z-30">
+              <div className="flex justify-between items-start mb-3">
+                <div>
+                  <span className={`px-2 py-0.5 rounded-full text-xs ${achievement.type === 'hackathon' ? 'bg-[#00ff88]/20 text-[#00ff88]' : 'bg-[#00a2ff]/20 text-[#00a2ff]'}`}>
+                    {(achievement.type || '').toUpperCase()}
+                  </span>
+                </div>
+                <span className="text-[#00ff88] font-mono">{achievement.prize}</span>
+              </div>
+
+              <h3 className="text-lg md:text-xl font-bold mb-1.5 text-white">{achievement.name}</h3>
+              <p className="text-[#00ff88] font-semibold mb-2 text-sm md:text-base">{achievement.position}</p>
+              <p className="text-gray-400 mb-3 text-sm leading-relaxed">{achievement.description}</p>
+
+              <div className="flex flex-wrap gap-1.5">
+                {(achievement.tech || []).map((tech, techIndex) => (
+                  <span key={techIndex} className="px-1.5 py-0.5 bg-black/50 rounded text-xs text-gray-300 border border-gray-800">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </a>
+      )),
+    [achievements]
+  );
+
   return (
-    <section className="min-h-screen bg-black text-white py-20">
+    <section className="bg-black text-white py-24 md:py-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Achievement Cards */}
         <div className="text-center mb-16">
-          <motion.h2 
+          <motion.h2
             className="text-5xl font-bold mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -91,56 +139,18 @@ export const AchievementShowcase = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Horizontal pinned scroller for achievements */}
+        <HorizontalScroller items={panels} height={380} />
+
+        {/* Fallback static grid for very short pages (optional) */}
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:hidden">
           {achievements.map((achievement, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group"
-            >
-              <div className="relative overflow-hidden rounded-lg bg-gray-900 p-6 hover:bg-gray-800 transition-all duration-300 border border-gray-800 hover:border-[#00ff88]/50 h-full">
-                {/* Subtle particle background (toned down for Victory Archives) */}
-                <div className="absolute inset-0 pointer-events-none z-0">
-                  <ParticleFieldSmall density={0.00012} className="opacity-20" />
-                </div>
-
-                <div className="absolute inset-0 bg-gradient-to-br from-[#00ff88]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20" />
-
-                <div className="relative z-30">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <span className={`px-3 py-1 rounded-full text-sm ${
-                        achievement.type === 'hackathon' ? 'bg-[#00ff88]/20 text-[#00ff88]' : 'bg-[#00a2ff]/20 text-[#00a2ff]'
-                      }`}>
-                        {(achievement.type || '').toUpperCase()}
-                      </span>
-                    </div>
-                    <span className="text-[#00ff88] font-mono">{achievement.prize}</span>
-                  </div>
-
-                  <h3 className="text-xl font-bold mb-2 text-white">{achievement.name}</h3>
-                  <p className="text-[#00ff88] font-semibold mb-3">{achievement.position}</p>
-                  <p className="text-gray-400 mb-4">{achievement.description}</p>
-
-                  <div className="flex flex-wrap gap-2">
-                    {(achievement.tech || []).map((tech, techIndex) => (
-                      <span 
-                        key={techIndex}
-                        className="px-2 py-1 bg-black/50 rounded text-sm text-gray-300 border border-gray-800"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+            <div key={index} className="relative overflow-hidden rounded-lg bg-gray-900 p-6 border border-gray-800">
+              <h3 className="text-xl font-bold mb-2 text-white">{achievement.name}</h3>
+              <p className="text-[#00ff88] font-semibold mb-3">{achievement.position}</p>
+            </div>
           ))}
         </div>
-
-        {/* Contact Section removed from here. Contact/Connect UI is handled by NeuralBridge component to avoid duplication. */}
       </div>
     </section>
   );

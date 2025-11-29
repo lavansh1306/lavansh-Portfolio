@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { fadeInUp, staggerContainer } from '../lib/animations';
 import { Card } from './ui/card';
+import { Parallax } from 'react-scroll-parallax';
 
 interface Project {
   title: string;
@@ -57,30 +58,42 @@ export const ProjectShowcase = () => {
   ];
 
   return (
-    <section className="min-h-screen bg-black py-20 px-4">
+    <section className="min-h-screen bg-black py-24 px-6">
       <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#00ff88] to-[#00a6ff]">
-            My Projects
-          </h2>
-          <p className="text-gray-400 text-xl max-w-3xl mx-auto">
-            Blending AI, design, and code to solve impactful problems fast.
-          </p>
-        </motion.div>
+        <div className="text-center mb-16">
+          <Parallax speed={-10}>
+            <motion.h2
+              className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#00ff88] to-[#00a6ff]"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              My Projects
+            </motion.h2>
+          </Parallax>
+          <Parallax speed={5}>
+            <motion.p
+              className="text-gray-400 text-xl max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              Blending AI, design, and code to solve impactful problems fast.
+            </motion.p>
+          </Parallax>
+        </div>
 
-        <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
+        <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
           {projects.map((project, index) => (
-            <motion.div key={index} variants={fadeInUp} custom={index}>
-              <Card className="h-full bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-[#00ff88]/30 transition-all duration-300">
-                <div className="p-6 flex flex-col h-full">
+            <Parallax key={index} speed={index % 2 === 0 ? -5 : 8}>
+              <motion.div variants={fadeInUp} custom={index}>
+                <a href={project.link || '#'} target="_blank" rel="noopener noreferrer" className="block ease-out-expo">
+                <Card className="h-full bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-[#00ff88]/30 transition-all duration-300 will-change-transform">
+                  <div className="p-8 flex flex-col h-full card-hover">
                   <h3 className="text-2xl font-bold text-white mb-4">{project.title}</h3>
-                  <p className="text-gray-400 mb-4">{project.description}</p>
+                  <p className="text-gray-300 mb-4">{project.description}</p>
                   
                   <div className="mb-6">
                     <h4 className="text-[#00ff88] font-semibold mb-2">Impact</h4>
@@ -93,7 +106,7 @@ export const ProjectShowcase = () => {
                       {project.techStack.map((tech, i) => (
                         <span 
                           key={i}
-                          className="px-3 py-1 bg-gray-800 text-gray-300 rounded-full text-sm"
+                          className="px-3.5 py-1.5 bg-gray-800 text-gray-200 rounded-full text-sm text-glow-soft"
                         >
                           {tech}
                         </span>
@@ -112,9 +125,11 @@ export const ProjectShowcase = () => {
                       ))}
                     </ul>
                   </div>
-                </div>
-              </Card>
-            </motion.div>
+                  </div>
+                </Card>
+                </a>
+              </motion.div>
+            </Parallax>
           ))}
         </motion.div>
       </div>

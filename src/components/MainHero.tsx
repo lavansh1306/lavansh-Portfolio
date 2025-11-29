@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { fadeInUp, hoverGrow } from '../lib/animations';
+import { Parallax } from 'react-scroll-parallax';
 
 const GlitchText = ({ children }: { children: React.ReactNode }) => {
   const [isGlitching, setIsGlitching] = useState(false);
@@ -98,6 +99,7 @@ export const MainHero = () => {
       
       <div className="relative z-10 h-full flex items-center justify-center">
         <div className="text-center px-4">
+          <Parallax translateY={[-10, 10]}>
           <motion.h1
             initial="hidden"
             whileInView="visible"
@@ -110,12 +112,15 @@ export const MainHero = () => {
               Choubey
             </span>
           </motion.h1>
+          </Parallax>
 
+          <Parallax translateY={[10, -10]}> 
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
             <h2 className="text-2xl md:text-3xl text-gray-300 font-light mb-8 tracking-wide">
-              Software Architect • AI Engineer • Innovation Lead
+              Full-Stack Developer • AI Enthusiast • Hackathon Winner
             </h2>
           </motion.div>
+          </Parallax>
 
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
             <motion.a
@@ -139,6 +144,7 @@ export const MainHero = () => {
             </motion.a>
           </motion.div>
 
+          <Parallax translateY={[0, -20]}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -150,6 +156,7 @@ export const MainHero = () => {
               Specialized in enterprise architecture and AI systems.
             </p>
           </motion.div>
+          </Parallax>
         </div>
       </div>
     </div>

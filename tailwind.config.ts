@@ -18,6 +18,9 @@ export default {
 			}
 		},
 		extend: {
+			transitionTimingFunction: {
+				'out-expo': 'cubic-bezier(0.16, 1, 0.3, 1)'
+			},
 			fontFamily: {
 				'cyber': ['Orbitron', 'monospace'],
 				'matrix': ['JetBrains Mono', 'monospace'],
@@ -94,6 +97,10 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			keyframes: {
+				terminalOpen: {
+					'0%': { opacity: '0', transform: 'scale(0.98)' },
+					'100%': { opacity: '1', transform: 'scale(1)' }
+				},
 				// Existing animations
 				'accordion-down': {
 					from: { height: '0' },
@@ -146,6 +153,7 @@ export default {
 				}
 			},
 			animation: {
+				'terminal-open': 'terminalOpen 400ms out-expo both',
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'glitch': 'glitch 0.3s linear infinite',

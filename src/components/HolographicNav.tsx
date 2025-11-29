@@ -295,6 +295,7 @@ export const HolographicNav = () => {
 
       {/* Navigation Links */}
       <div className="flex-1 py-2 md:py-8 overflow-hidden">
+        {/* Mobile: bottom bar style */}
         <div className="flex md:flex-col px-2 md:px-4 md:space-y-2 justify-around md:justify-start h-full">
           {MENU_ITEMS.map((item) => {
             const isActive = activeSection === item.href.replace('#', '');
@@ -326,9 +327,9 @@ export const HolographicNav = () => {
                     animate={{ 
                       x: isActive ? (window.innerWidth >= 768 ? 4 : 0) : 0,
                       scale: isActive ? 1.02 : 1,
-                      y: isActive ? (window.innerWidth < 768 ? -4 : 0) : 0
+                      y: isActive ? (window.innerWidth < 768 ? -2 : 0) : 0
                     }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   >
                     <span className={`
                       ${isActive 
@@ -338,7 +339,7 @@ export const HolographicNav = () => {
                     `}>
                       {item.icon}
                     </span>
-                    <span className="font-mono text-[10px] md:text-sm tracking-wider">
+                    <span className="font-mono text-[11px] md:text-sm tracking-wider">
                       {item.label}
                     </span>
                   </motion.div>

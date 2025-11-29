@@ -17,6 +17,18 @@ const contactMethods = [
     action: 'ESTABLISH CONNECTION'
   },
   {
+    id: 'linkedin',
+    name: 'Professional Network',
+    description: 'Corporate interface protocol',
+    icon: Linkedin,
+    value: 'https://www.linkedin.com/in/lavansh-choubey-683355314/',
+    colorClass: 'text-neon-purple',
+    bgClass: 'bg-neon-purple/20',
+    borderClass: 'border-neon-purple/30',
+    hoverClass: 'hover:bg-neon-purple/10',
+    action: 'SYNC PROFILE'
+  },
+  {
     id: 'github',
     name: 'Code Repository Access',
     description: 'Witness the digital architecture',
@@ -30,18 +42,6 @@ const contactMethods = [
   },
   {
     id: 'linkedin',
-    name: 'Professional Network',
-    description: 'Corporate interface protocol',
-    icon: Linkedin,
-  value: 'https://www.linkedin.com/in/lavansh-choubey-683355314/',
-    colorClass: 'text-neon-purple',
-    bgClass: 'bg-neon-purple/20',
-    borderClass: 'border-neon-purple/30',
-    hoverClass: 'hover:bg-neon-purple/10',
-    action: 'SYNC PROFILE'
-  },
-  {
-    id: 'discord',
     name: 'Real-time Channel',
     description: 'Instant collaboration gateway',
     icon: MessageSquare,
@@ -51,7 +51,8 @@ const contactMethods = [
     borderClass: 'border-neon-gold/30',
     hoverClass: 'hover:bg-neon-gold/10',
     action: 'JOIN SERVER'
-  }
+  },
+  
 ];
 
 export const NeuralBridge = () => {
@@ -133,12 +134,12 @@ export const NeuralBridge = () => {
             {contactMethods.map((method) => (
               <HolographicCard
                 key={method.id}
-                className="p-6 cursor-pointer transform hover:scale-105 transition-all duration-300 group interactive"
+                className={`p-6 cursor-pointer transform hover:scale-105 transition-all duration-300 group interactive ${method.id === 'linkedin' ? 'md:col-span-1' : ''}`}
                 onClick={() => setSelectedMethod(method.id)}
               >
                 <div className="text-center space-y-4">
                   {/* Floating Icon */}
-                  <div className={`w-16 h-16 mx-auto rounded-full ${method.bgClass} border ${method.borderClass} flex items-center justify-center group-hover:animate-float`}>
+                  <div className={`mx-auto rounded-full ${method.bgClass} border ${method.borderClass} flex items-center justify-center group-hover:animate-float ${method.id === 'linkedin' ? 'w-20 h-20' : method.id === 'email' ? 'w-20 h-20' : method.id === 'github' ? 'w-16 h-16' : 'w-12 h-12'}`}>
                     <method.icon className={method.colorClass} size={24} />
                   </div>
                   
@@ -174,12 +175,12 @@ export const NeuralBridge = () => {
                       href="https://www.linkedin.com/in/lavansh-choubey-683355314/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`w-full py-2 border ${method.borderClass} ${method.colorClass} font-matrix text-sm ${method.hoverClass} transition-colors inline-block text-center`}
+                      className={`w-full py-3 text-base border ${method.borderClass} ${method.colorClass} font-matrix ${method.hoverClass} transition-colors inline-block text-center`}
                     >
                       {method.action}
                     </a>
                   ) : (
-                    <button className={`w-full py-2 border ${method.borderClass} ${method.colorClass} font-matrix text-sm ${method.hoverClass} transition-colors`}>
+                    <button className={`w-full ${method.id === 'email' ? 'py-3 text-base' : method.id === 'linkedin' ? 'py-3 text-base' : method.id === 'discord' ? 'py-1.5 text-sm opacity-90' : 'py-2 text-sm'} border ${method.borderClass} ${method.colorClass} font-matrix ${method.hoverClass} transition-colors`}>
                       {method.action}
                     </button>
                   )}
