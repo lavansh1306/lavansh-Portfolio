@@ -78,7 +78,7 @@ export default function XTermWrapper() {
     let hIndex: number | null = null;
 
     const availableCommands = [
-      'help','echo','Linkedin','date','clear','whoami','ls','build','about','skills','projects','contact','github','open'
+      'help','echo','Linkedin','date','clear','whoami','ls','build','about','skills','projects','contact','github','open','devtools','devtools-on','devtools-off'
     ];
 
     function showPrompt() {
@@ -189,6 +189,44 @@ export default function XTermWrapper() {
           } else if (path.startsWith('http')) {
             writeLines(`Opening ${path} ...`); window.open(path, '_blank');
           } else writeLines('open: unsupported path.');
+          showPrompt();
+          break;
+        case 'devtools':
+          writeLines(["DevTools instructions:",
+            " - Windows/Linux: Press Ctrl+Shift+I or F12",
+            " - macOS: Press Cmd+Option+I",
+            "If keyboard shortcuts are blocked, run 'devtools-off' to disable the page deterrent (if present)."]);
+          showPrompt();
+          break;
+        case 'devtools-on':
+          writeLines('Enabling lightweight devtools protections...');
+          try {
+            // dynamically import the protections module and install
+            import('../lib/devtools-protect').then(m => {
+              const cleanup = m.default();
+              // store cleanup on window so it can be removed later
+              (window as any).__devtoolsProtectionCleanup = cleanup;
+              writeLines('Devtools protections enabled.');
+              showPrompt();
+            }).catch(e => { writeLines('Failed to enable protections: ' + String(e)); showPrompt(); });
+          } catch (e) {
+            writeLines('Error enabling protections: ' + String(e)); showPrompt();
+          }
+          break;
+        case 'devtools-off':
+          writeLines('Disabling devtools protections (if active)...');
+          try {
+            const cleanup = (window as any).__devtoolsProtectionCleanup;
+            if (typeof cleanup === 'function') {
+              cleanup();
+              delete (window as any).__devtoolsProtectionCleanup;
+              writeLines('Devtools protections disabled. You can now use DevTools shortcuts.');
+            } else {
+              writeLines('No active devtools protections were found.');
+            }
+          } catch (e) {
+            writeLines('Error disabling protections: ' + String(e));
+          }
           showPrompt();
           break;
         case 'ls':
