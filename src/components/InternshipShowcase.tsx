@@ -169,29 +169,27 @@ export const InternshipShowcase = () => {
             title="Technical Intern"
             organization="Skill First Labs"
             dateRange="09/10/2025 – Present"
+            techStack={['Figma', 'Notion', 'Excel', 'CRM Tools', 'Project Management', 'Certification Frameworks']}
             contributions={[
-              'Researched and shortlisted certification programs aligned with company competency frameworks and client requirements.',
-              'Assisted the Product Implementation team in mapping certifications to technical roles for candidate evaluation.',
-              'Collaborated with internal teams to organize certification data and maintain clarity across departments.',
-              'Supported the creation of a certification matrix to help the company identify skill gaps and optimize hiring decisions.',
-              'Engaged in review meetings to present findings, gather feedback, and refine the certification-recommendation process.',
-              'Contributed to improving internal awareness of skill alignment between learning programs and workforce needs.'
+              'Researched certification programs aligned with company frameworks and client requirements.',
+              'Mapped certifications to technical roles for candidate evaluation with the Product team.',
+              'Created certification matrix to identify skill gaps and optimize hiring decisions.'
             ]}
           />
           <ExpandableInternshipCard
             title="Business Development Intern"
             organization="Phoenix Global"
             dateRange="10/06/2025 – 10/08/2025"
+            techStack={['LinkedIn', 'Excel', 'CRM', 'Cold Outreach', 'Lead Generation', 'Business Strategy']}
             contributions={[
-              'Conducted outreach to MBA colleges and universities to identify potential collaborations for Phoenix Global’s corporate training programs.',
-              'Scheduled and participated in meetings with academic decision-makers to present the company’s training and certification offerings.',
-              'Researched and shortlisted institutes with high partnership potential using LinkedIn, college directories, and CRM tools.',
-              'Coordinated with internal teams to align client requirements with available training solutions.',
-              'Supported the business development pipeline through lead tracking, follow-ups, and documentation of meeting outcomes.',
-              'Contributed to strengthening institutional partnerships and expanding the company’s academic outreach network.'
+              'Conducted outreach to MBA colleges for corporate training program partnerships.',
+              'Led meetings with academic decision-makers to present training offerings.',
+              'Managed business development pipeline through lead tracking and CRM documentation.'
             ]}
           />
-          <ExpandableInternshipCard />
+          <ExpandableInternshipCard
+            techStack={['Python', 'React', 'TensorFlow', 'Flask', 'PaddleOCR', 'TrOCR', 'AI/ML', 'Data Analysis']}
+          />
         </div>
       </motion.div>
 

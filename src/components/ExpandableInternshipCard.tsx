@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { fadeInUp, hoverGrow } from '../lib/animations';
+import { HiBadgeCheck } from 'react-icons/hi';
 
 interface ExpandableInternshipCardProps {
   title?: string;
   organization?: string;
   dateRange?: string;
   contributions?: string[];
+  techStack?: string[];
 }
 
 const DEFAULT_CONTRIBUTIONS = [
-  'Assisting in building and experimenting with AI/ML models for applied use cases.',
-  'Developing frontend prototypes to test and validate user-facing concepts.',
-  'Performing data analysis in Excel and Python, generating actionable insights.',
-  'Gathering, cleaning, and preparing datasets for downstream analytics and ML tasks.',
-  'Supporting automation workflows and contributing to data-driven decision-making.',
-  'Collaborating with the team to integrate prototypes and data solutions into ongoing projects.',
+  'Built and experimented with AI/ML models for healthcare applications.',
+  'Developed OCR pipeline using PaddleOCR and TrOCR for prescription digitization.',
+  'Implemented RAG with SentenceTransformers for medical query responses.',
+  'Created responsive frontend prototypes with React and Tailwind CSS.',
 ];
+
+const DEFAULT_TECH_STACK = ['Python', 'React', 'TensorFlow', 'Flask', 'AI/ML', 'Data Analysis'];
 
 export const ExpandableInternshipCard: React.FC<ExpandableInternshipCardProps> = ({
   title = 'AI/Software Intern',
   organization = 'Niramaya Health',
   dateRange = '17/01/2025 – 14/09/2025',
   contributions = DEFAULT_CONTRIBUTIONS,
+  techStack = DEFAULT_TECH_STACK,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -59,39 +62,39 @@ export const ExpandableInternshipCard: React.FC<ExpandableInternshipCardProps> =
         />
 
         {/* Header / Summary */}
-        <div className="relative p-6 sm:p-8 flex items-center justify-between gap-4">
-          <div>
+        <div className="relative p-6 sm:p-8 flex items-start justify-between gap-4">
+          <div className="flex-1">
             <h3 className="text-lg sm:text-xl font-semibold text-cyan-400 drop-shadow-[0_0_12px_rgba(6,182,212,0.35)]">
               {title} <span className="text-gray-300">|</span>{' '}
               <span className="text-gray-300">{organization}</span>
             </h3>
 
-            {/* Verified badge and certificate link (appear above date) */}
-            {certificateLink && (
-              <div className="flex items-center gap-2 mb-2 flex-wrap">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/30 text-emerald-400 text-xs font-medium">
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Verified
-                </span>
-                <a
-                  href={certificateLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`View certificate for ${organization}`}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 text-xs font-medium hover:bg-cyan-500/20 hover:border-cyan-400/50 transition-all"
-                >
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  Certificate
-                </a>
-              </div>
-            )}
+            {/* Verified badge */}
+            <div className="flex items-center gap-2 mt-2 mb-2">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/30 text-emerald-400 text-xs font-medium">
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                Verified
+              </span>
+            </div>
 
             <p className="mt-1 text-sm text-gray-400">{dateRange}</p>
           </div>
+
+          {/* Certificate button - top right */}
+          {certificateLink && (
+            <a
+              href={certificateLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="group flex-shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-400/30 text-cyan-400 text-sm font-medium hover:from-cyan-500/20 hover:to-blue-500/20 hover:border-cyan-400/60 transition-all hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]"
+            >
+              <HiBadgeCheck className="w-5 h-5" />
+              <span className="hidden sm:inline">View Certificate</span>
+            </a>
+          )}
 
           <div className="flex items-center gap-3">
             <span className="text-sm text-gray-400 hidden sm:inline">{isExpanded ? 'Collapse' : 'Expand'}</span>
@@ -154,6 +157,22 @@ export const ExpandableInternshipCard: React.FC<ExpandableInternshipCardProps> =
                   ))}
                 </ul>
 
+                {/* Tech Stack Badges */}
+                {techStack && techStack.length > 0 && (
+                  <div className="mt-6 pt-4 border-t border-cyan-500/20">
+                    <h4 className="text-xs font-medium text-cyan-400 mb-3 uppercase tracking-wider">Tech Stack</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {techStack.map((tech, i) => (
+                        <span 
+                          key={i}
+                          className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-800/50 border border-gray-700/50 text-gray-300 hover:border-cyan-400/30 hover:text-cyan-300 transition-colors"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
             </div>
           </div>
