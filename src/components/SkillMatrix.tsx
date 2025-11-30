@@ -1,18 +1,56 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { HolographicCard } from './HolographicCard';
-import { Brain, Code, Cloud, Database, Terminal, Cpu, Radio } from 'lucide-react';
+import { Brain, Code, Terminal } from 'lucide-react';
+import { 
+  SiPython, SiTypescript, SiJavascript, SiCplusplus, SiHtml5, SiCss3,
+  SiReact, SiNextdotjs, SiTailwindcss,
+  SiFlask, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql,
+  SiDocker, SiKubernetes,
+  SiGit, SiGithub
+} from 'react-icons/si';
+import { FaJava } from 'react-icons/fa';
+
+// Type for skill with icon
+interface SkillWithIcon {
+  name: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
 
 const skills = {
   "Core": {
     icon: <Code className="text-neon-cyan" size={24} />,
     color: "neon-cyan",
     items: {
-      "Languages": ["Python", "TypeScript", "Java", "C++", "JavaScript", "HTML", "CSS"],
-      "Frontend": ["React", "Next.js", "Tailwind CSS"],
-      "Backend": ["Flask", "Node.js", "Express", "MongoDB", "PostgreSQL"],
-      "Cloud & DevOps": ["Docker", "Kubernetes"],
-      "Version Control": ["Git", "GitHub"]
+      "Languages": [
+        { name: "Python", icon: SiPython },
+        { name: "TypeScript", icon: SiTypescript },
+        { name: "Java", icon: FaJava },
+        { name: "C++", icon: SiCplusplus },
+        { name: "JavaScript", icon: SiJavascript },
+        { name: "HTML", icon: SiHtml5 },
+        { name: "CSS", icon: SiCss3 }
+      ] as SkillWithIcon[],
+      "Frontend": [
+        { name: "React", icon: SiReact },
+        { name: "Next.js", icon: SiNextdotjs },
+        { name: "Tailwind CSS", icon: SiTailwindcss }
+      ] as SkillWithIcon[],
+      "Backend": [
+        { name: "Flask", icon: SiFlask },
+        { name: "Node.js", icon: SiNodedotjs },
+        { name: "Express", icon: SiExpress },
+        { name: "MongoDB", icon: SiMongodb },
+        { name: "PostgreSQL", icon: SiPostgresql }
+      ] as SkillWithIcon[],
+      "Cloud & DevOps": [
+        { name: "Docker", icon: SiDocker },
+        { name: "Kubernetes", icon: SiKubernetes }
+      ] as SkillWithIcon[],
+      "Version Control": [
+        { name: "Git", icon: SiGit },
+        { name: "GitHub", icon: SiGithub }
+      ] as SkillWithIcon[]
     }
   },
   "Machine Learning & AI": {
@@ -88,22 +126,28 @@ export const SkillMatrix = () => {
                       <div key={subCategory} className="space-y-3">
                         <h4 className="text-lg font-matrix text-foreground">{subCategory}</h4>
                         <div className="flex flex-wrap gap-3">
-                          {skillList.map((skill) => (
-                            <motion.div
-                              key={skill}
-                              className={`px-3.5 py-2 border rounded-md font-matrix text-sm transition-colors cursor-pointer shadow-[0_0_8px_rgba(120,160,255,0.15)] card-hover
-                                ${hoveredSkill === skill 
-                                  ? `border-${color} text-${color} bg-${color}/10`
-                                  : 'border-primary/30 text-white/90 hover:border-primary'
-                                }`}
-                              onMouseEnter={() => setHoveredSkill(skill)}
-                              onMouseLeave={() => setHoveredSkill(null)}
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                            >
-                              {skill}
-                            </motion.div>
-                          ))}
+                          {skillList.map((skill) => {
+                            const skillName = typeof skill === 'string' ? skill : skill.name;
+                            const SkillIcon = typeof skill === 'string' ? null : skill.icon;
+                            
+                            return (
+                              <motion.div
+                                key={skillName}
+                                className={`px-3.5 py-2 border rounded-md font-matrix text-sm transition-colors cursor-pointer shadow-[0_0_8px_rgba(120,160,255,0.15)] card-hover flex items-center gap-2
+                                  ${hoveredSkill === skillName 
+                                    ? `border-${color} text-${color} bg-${color}/10`
+                                    : 'border-primary/30 text-white/90 hover:border-primary'
+                                  }`}
+                                onMouseEnter={() => setHoveredSkill(skillName)}
+                                onMouseLeave={() => setHoveredSkill(null)}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                              >
+                                {SkillIcon && <SkillIcon className="w-4 h-4" style={{ color: 'currentColor' }} />}
+                                {skillName}
+                              </motion.div>
+                            );
+                          })}
                         </div>
                       </div>
                     ))}
@@ -113,7 +157,7 @@ export const SkillMatrix = () => {
                 {/* Interactive Elements */}
                 <div className="flex justify-between items-center pt-4 border-t border-primary/10">
                   <div className="text-sm font-matrix text-primary/60">
-                    {Object.values(items).flat().length} capabilities
+                    {Object.values(items).flat().filter(item => typeof item === 'object' ? item.name : item).length} capabilities
                   </div>
                   <motion.div 
                     animate={{ rotate: activeCategory === category ? 180 : 0 }}
