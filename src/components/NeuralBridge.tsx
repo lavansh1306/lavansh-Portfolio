@@ -59,17 +59,49 @@ export const NeuralBridge = () => {
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
   const [message, setMessage] = useState('');
   const [isTransmitting, setIsTransmitting] = useState(false);
+  const [senderEmail, setSenderEmail] = useState('');
+  const [senderContact, setSenderContact] = useState('');
+  const [subject, setSubject] = useState('');
 
   const handleTransmit = () => {
-    setIsTransmitting(true);
-    // Simulate transmission
-    setTimeout(() => {
-      setIsTransmitting(false);
-      setMessage('');
-      // Reset selection after transmission
-      setTimeout(() => setSelectedMethod(null), 1000);
-    }, 2000);
+    (async () => {
+      if (!selectedMethod) return;
+      const target = contactMethods.find((m) => m.id === selectedMethod);
+      if (!target) return;
+
+      setIsTransmitting(true);
+
+      try {
+        const backend = (import.meta.env as any).VITE_EMAIL_BACKEND_URL || 'http://localhost:8000/send';
+        const html = `<p><strong>From:</strong> ${senderEmail || 'N/A'} ${senderContact ? `(${senderContact})` : ''}</p><p><strong>Subject:</strong> ${subject || 'Portfolio message'}</p><hr/>${message}`;
+        const res = await fetch(backend, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ to: target.value, message: html })
+        });
+
+        if (!res.ok) {
+          const text = await res.text();
+          console.error('Email send failed:', text);
+        } else {
+          // success
+          setMessage('');
+          // keep sender info for convenience, but clear subject
+          setSubject('');
+          // Reset selection after a short delay to show success
+          setTimeout(() => setSelectedMethod(null), 1000);
+        }
+      } catch (err) {
+        console.error('Transmission error:', err);
+      } finally {
+        setIsTransmitting(false);
+      }
+    })();
   };
+
+
+  // (direct send removed) use the main message UI to transmit
+
 
   return (
     <section className="py-20 relative">
@@ -180,9 +212,18 @@ export const NeuralBridge = () => {
                       {method.action}
                     </a>
                   ) : (
-                    <button className={`w-full ${method.id === 'email' ? 'py-3 text-base' : method.id === 'linkedin' ? 'py-3 text-base' : method.id === 'discord' ? 'py-1.5 text-sm opacity-90' : 'py-2 text-sm'} border ${method.borderClass} ${method.colorClass} font-matrix ${method.hoverClass} transition-colors`}>
-                      {method.action}
-                    </button>
+                    method.id === 'email' ? (
+                      <button
+                        onClick={() => setSelectedMethod(method.id)}
+                        className={`w-full py-3 text-base border ${method.borderClass} ${method.colorClass} font-matrix ${method.hoverClass} transition-colors`}
+                      >
+                        {method.action}
+                      </button>
+                    ) : (
+                      <button className={`w-full ${method.id === 'linkedin' ? 'py-3 text-base' : method.id === 'discord' ? 'py-1.5 text-sm opacity-90' : 'py-2 text-sm'} border ${method.borderClass} ${method.colorClass} font-matrix ${method.hoverClass} transition-colors`}>
+                        {method.action}
+                      </button>
+                    )
                   )}
                 </div>
               </HolographicCard>
@@ -205,6 +246,43 @@ export const NeuralBridge = () => {
 
                 {/* Message Input */}
                 <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-matrix text-foreground">YOUR EMAIL</label>
+                      <input
+                        type="email"
+                        value={senderEmail}
+                        onChange={(e) => setSenderEmail(e.target.value)}
+                        placeholder="you@example.com"
+                        className="w-full bg-void-light border border-primary/30 text-foreground p-2 font-matrix focus:border-primary focus:outline-none"
+                        disabled={isTransmitting}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-matrix text-foreground">CONTACT NO.</label>
+                      <input
+                        type="text"
+                        value={senderContact}
+                        onChange={(e) => setSenderContact(e.target.value)}
+                        placeholder="+1 555 555 5555"
+                        className="w-full bg-void-light border border-primary/30 text-foreground p-2 font-matrix focus:border-primary focus:outline-none"
+                        disabled={isTransmitting}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-matrix text-foreground">SUBJECT</label>
+                    <input
+                      type="text"
+                      value={subject}
+                      onChange={(e) => setSubject(e.target.value)}
+                      placeholder="Brief subject"
+                      className="w-full bg-void-light border border-primary/30 text-foreground p-2 font-matrix focus:border-primary focus:outline-none"
+                      disabled={isTransmitting}
+                    />
+                  </div>
                   <label className="block text-sm font-matrix text-foreground">
                     MESSAGE PAYLOAD
                   </label>
@@ -221,7 +299,7 @@ export const NeuralBridge = () => {
                 <div className="flex gap-4">
                   <button
                     onClick={handleTransmit}
-                    disabled={!message.trim() || isTransmitting}
+                    disabled={!message.trim() || isTransmitting || !senderEmail.trim()}
                     className="flex-1 flex items-center justify-center gap-2 py-3 bg-gradient-neon text-void-dark font-cyber disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-glow-intense transition-all interactive"
                   >
                     {isTransmitting ? (
