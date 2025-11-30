@@ -85,7 +85,7 @@ export const ProjectShowcase = () => {
           </Parallax>
         </div>
 
-        <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
+        <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-12 px-4 md:px-0" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
           {projects.map((project, index) => (
             <Parallax key={index} speed={index % 2 === 0 ? -5 : 8}>
               <motion.div variants={fadeInUp} custom={index}>

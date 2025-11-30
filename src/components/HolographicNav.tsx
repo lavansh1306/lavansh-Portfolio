@@ -210,6 +210,7 @@ const MENU_ITEMS = [
 export const HolographicNav = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("intro");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const navOpacity = useTransform(scrollY, [0, 100], [0.5, 1]);
   const navBlur = useTransform(scrollY, [0, 100], [0, 8]);
@@ -278,14 +279,136 @@ export const HolographicNav = () => {
   }, []);
 
   return (
-    <motion.nav
-      className="fixed md:right-0 bottom-0 md:top-0 w-full md:w-64 bg-[#0a0a0a]/30 backdrop-blur-sm md:border-l border-t md:border-t-0 border-[#1a1a1a]/30 z-50 flex flex-col overflow-hidden"
-      initial={false}
-      style={{
-        backgroundColor: `rgba(10, 10, 10, ${navOpacity})`,
-        backdropFilter: `blur(${navBlur}px)`,
-      }}
-    >
+    <>
+      {/* Mobile Top Navbar with Hamburger */}
+      <motion.nav
+        className="fixed top-0 left-0 right-0 md:hidden bg-[#0a0a0a]/95 backdrop-blur-sm border-b border-[#1a1a1a]/30 z-50"
+        initial={false}
+        style={{
+          backgroundColor: `rgba(10, 10, 10, ${navOpacity})`,
+          backdropFilter: `blur(${navBlur}px)`,
+        }}
+      >
+        <div className="flex items-center justify-between px-4 py-3">
+          <div className="text-xl font-bold bg-gradient-to-r from-emerald-400 via-blue-500 to-violet-600 bg-clip-text text-transparent">
+            Neural Path
+          </div>
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 text-[#00ff41] hover:text-cyan-400 transition-colors"
+            aria-label="Toggle menu"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
+      </motion.nav>
+
+      {/* Mobile Menu Drawer */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-40 md:hidden bg-black"
+          >
+            {/* Scanlines overlay */}
+            <div
+              className="absolute inset-0 opacity-20"
+              style={{
+                backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 65, 0.1) 2px, rgba(0, 255, 65, 0.1) 4px)',
+                pointerEvents: 'none'
+              }}
+            />
+            
+            <div className="relative z-10 h-full overflow-y-auto px-6 py-20">
+              <div className="space-y-4">
+                {MENU_ITEMS.map((item) => {
+                  const isActive = activeSection === item.href.replace('#', '');
+                  return (
+                    <motion.a
+                      key={item.href}
+                      href={item.href}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        scrollToSection(item.href);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className={`block p-4 rounded-lg border transition-all ${
+                        isActive
+                          ? 'bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-violet-500/10 border-[#00ff41]/50 text-white'
+                          : 'border-gray-800 text-gray-400 hover:border-[#00ff41]/30 hover:text-[#00ff41]'
+                      }`}
+                      whileHover={{ x: 4 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className={`${isActive ? 'text-[#00ff41]' : 'text-gray-500'}`}>
+                          {item.icon}
+                        </span>
+                        <span className="font-mono text-lg tracking-wider">{item.label}</span>
+                      </div>
+                    </motion.a>
+                  );
+                })}
+              </div>
+              
+              {/* Social Links in Mobile Menu */}
+              <div className="mt-12 pt-8 border-t border-gray-800">
+                <h3 className="text-gray-400 font-mono text-sm mb-4">NETWORK</h3>
+                <div className="flex items-center justify-center space-x-6">
+                  <motion.a
+                    href="https://github.com/lavansh1306"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-colors"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <svg className="w-6 h-6 text-gray-400 hover:text-emerald-400 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                      <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+                    </svg>
+                  </motion.a>
+                  <motion.a
+                    href="https://www.linkedin.com/in/lavansh-choubey-683355314/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-colors"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <svg className="w-6 h-6 text-gray-400 hover:text-blue-400 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                  </motion.a>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop Sidebar */}
+      <motion.nav
+        className="hidden md:flex fixed right-0 top-0 bottom-0 w-64 bg-[#0a0a0a]/30 backdrop-blur-sm border-l border-[#1a1a1a]/30 z-50 flex-col overflow-hidden"
+        initial={false}
+        style={{
+          backgroundColor: `rgba(10, 10, 10, ${navOpacity})`,
+          backdropFilter: `blur(${navBlur}px)`,
+        }}
+      >
       {/* Logo Section - Hide on mobile */}
       <div className="hidden md:block p-6 border-b border-[#1a1a1a]">
         <motion.div className="text-2xl font-bold bg-gradient-to-r from-emerald-400 via-blue-500 to-violet-600 bg-clip-text text-transparent" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
@@ -294,9 +417,8 @@ export const HolographicNav = () => {
       </div>
 
       {/* Navigation Links */}
-      <div className="flex-1 py-2 md:py-8 overflow-hidden">
-        {/* Mobile: bottom bar style */}
-        <div className="flex md:flex-col px-2 md:px-4 md:space-y-2 justify-around md:justify-start h-full">
+      <div className="flex-1 py-8 overflow-hidden">
+        <div className="flex flex-col px-4 space-y-2 h-full">
           {MENU_ITEMS.map((item) => {
             const isActive = activeSection === item.href.replace('#', '');
             return (
@@ -315,19 +437,17 @@ export const HolographicNav = () => {
                 >
                   <motion.div
                     className={`
-                      flex items-center gap-2 md:gap-3 p-2 md:p-3 rounded-lg
+                      flex items-center gap-3 p-3 rounded-lg
                       ${isActive 
                         ? 'bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-violet-500/10 text-white/90 shadow-lg shadow-emerald-500/5' 
                         : 'text-gray-400/90 hover:text-gray-200/90 hover:bg-white/5'
                       }
                       transition-all duration-300 backdrop-blur-sm border border-white/5
-                      flex-col md:flex-row items-center md:items-start
                     `}
                     initial={{ x: 0 }}
                     animate={{ 
-                      x: isActive ? (window.innerWidth >= 768 ? 4 : 0) : 0,
+                      x: isActive ? 4 : 0,
                       scale: isActive ? 1.02 : 1,
-                      y: isActive ? (window.innerWidth < 768 ? -2 : 0) : 0
                     }}
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   >
@@ -335,11 +455,11 @@ export const HolographicNav = () => {
                       ${isActive 
                         ? 'text-emerald-400 drop-shadow-[0_0_3px_rgba(16,185,129,0.5)]' 
                         : 'text-gray-500/80'
-                      } transition-all duration-300 w-6 h-6 md:w-5 md:h-5
+                      } transition-all duration-300 w-5 h-5
                     `}>
                       {item.icon}
                     </span>
-                    <span className="font-mono text-[11px] md:text-sm tracking-wider">
+                    <span className="font-mono text-sm tracking-wider">
                       {item.label}
                     </span>
                   </motion.div>
@@ -364,8 +484,8 @@ export const HolographicNav = () => {
         </div>
       </div>
 
-      {/* Footer Section - Hide on mobile */}
-      <div id="social-links" className="hidden md:block p-6 border-t border-[#1a1a1a]/30">
+      {/* Footer Section */}
+      <div id="social-links" className="p-6 border-t border-[#1a1a1a]/30">
         <div className="text-center mb-4">
           <h3 className="text-gray-200/90 font-mono text-sm mb-2">NETWORK</h3>
           <div className="h-px w-12 mx-auto bg-gradient-to-r from-emerald-400/50 via-blue-500/50 to-violet-600/50"></div>
@@ -405,5 +525,6 @@ export const HolographicNav = () => {
       </div>
 
     </motion.nav>
+    </>
   );
 };

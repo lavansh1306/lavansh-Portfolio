@@ -131,7 +131,7 @@ export const InternshipShowcase = () => {
   return (
     <motion.section
       ref={containerRef}
-      className="relative min-h-screen py-20 px-4 overflow-hidden bg-black/90"
+      className="relative min-h-screen py-20 px-4 md:px-6 overflow-hidden bg-black/90"
       style={{ y, opacity }}
     >
       <ParticleField />

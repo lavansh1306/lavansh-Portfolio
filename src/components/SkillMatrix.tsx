@@ -124,7 +124,7 @@ export const SkillMatrix = () => {
         </div>
 
         {/* Skills Grid */}
-        <div className="grid grid-cols-1 gap-8">
+        <div className="grid grid-cols-1 gap-8 px-4 md:px-0">
           {Object.entries(skills).map(([category, { icon, color, items }]) => (
             <HolographicCard 
               key={category}

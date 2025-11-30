@@ -189,9 +189,12 @@ export default function Terminal() {
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-xl font-mono">Inbuilt Terminal</h1>
-          <div className="text-sm">
-            <Link to="/" className="underline">Back</Link>
-          </div>
+          <Link 
+            to="/" 
+            className="font-mono text-[#00ff41] cursor-pointer hover:text-white hover:drop-shadow-[0_0_8px_rgba(0,255,65,0.8)] transition-all duration-300 text-sm"
+          >
+            [ &lt; Back_to_System ]
+          </Link>
         </div>
 
         <div className="relative z-10">
