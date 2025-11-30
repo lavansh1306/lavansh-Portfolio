@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: lavansh-portfolio-backend
+    env: python
+    region: oregon
+    branch: main
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: RESEND_API_KEY
+        # DO NOT COMMIT YOUR SECRET. Set this secret in the Render dashboard instead.
+        # This placeholder shows the required key name only.
+      - key: FRONTEND_ORIGINS
+        # Set to your Vercel frontend URL, e.g. https://your-site.vercel.app
