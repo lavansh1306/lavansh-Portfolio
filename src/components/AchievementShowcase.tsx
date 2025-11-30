@@ -141,16 +141,6 @@ export const AchievementShowcase = () => {
 
         {/* Horizontal pinned scroller for achievements */}
         <HorizontalScroller items={panels} height={380} />
-
-        {/* Fallback static grid for very short pages (optional) */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:hidden">
-          {achievements.map((achievement, index) => (
-            <div key={index} className="relative overflow-hidden rounded-lg bg-gray-900 p-6 border border-gray-800">
-              <h3 className="text-xl font-bold mb-2 text-white">{achievement.name}</h3>
-              <p className="text-[#00ff88] font-semibold mb-3">{achievement.position}</p>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );
