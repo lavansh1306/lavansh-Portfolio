@@ -68,16 +68,24 @@ export const ExpandableInternshipCard: React.FC<ExpandableInternshipCardProps> =
 
             {/* Verified badge and certificate link (appear above date) */}
             {certificateLink && (
-              <div className="flex items-center space-x-2 mb-2">
-                <span className="text-emerald-400 text-sm">✅ Verified Internship</span>
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/30 text-emerald-400 text-xs font-medium">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Verified
+                </span>
                 <a
                   href={certificateLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`View certificate for ${organization}`}
-                  className="text-sm text-gray-400 hover:text-emerald-300 hover:underline underline-offset-2 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 text-xs font-medium hover:bg-cyan-500/20 hover:border-cyan-400/50 transition-all"
                 >
-                  View Certificate →
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Certificate
                 </a>
               </div>
             )}
@@ -125,44 +133,28 @@ export const ExpandableInternshipCard: React.FC<ExpandableInternshipCardProps> =
                 }}
               />
 
-                <ul className="space-y-6">
+                <ul className="space-y-4">
                   {contributions.map((c, i) => (
-                    <li key={i} className="relative flex items-start gap-4">
-                      <span className="absolute -left-1 top-1">
-                        <span
-                          className="inline-flex items-center justify-center w-4 h-4 rounded-full"
-                          style={{
-                            background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12), rgba(6,182,212,0.95))',
-                            boxShadow: '0 0 12px rgba(6,182,212,0.6)'
-                          }}
-                        />
+                    <li key={i} className="relative flex items-start gap-3">
+                      {/* Terminal-style bullet point */}
+                      <span 
+                        className="text-cyan-400 font-mono text-lg font-bold select-none flex-shrink-0 mt-0.5"
+                        style={{
+                          textShadow: '0 0 8px rgba(6, 182, 212, 0.5)'
+                        }}
+                      >
+                        &gt;
                       </span>
 
-                      <div className="flex-1">
-                        <div className="rounded-md p-3 bg-black/60 border border-cyan-500/10">
-                          <div className="flex items-center justify-between">
-                            <h4 className="text-sm text-gray-100 font-medium">{`Contribution ${i + 1}`}</h4>
-                            <span className="text-xs text-cyan-300 font-mono">2025</span>
-                          </div>
-
-                          <p className="mt-2 text-sm text-gray-300 leading-relaxed">{c}</p>
-                        </div>
-                      </div>
+                      {/* Clean description text */}
+                      <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
+                        {c}
+                      </p>
                     </li>
                   ))}
                 </ul>
 
-                {/* Verification link inserted at the very end of expanded content */}
-                {certificateLink && (
-                  <a
-                    href={certificateLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block mt-3 text-sm text-gray-400 hover:text-gray-200 transition-colors"
-                  >
-                    Verified internship – View Certificate →
-                  </a>
-                )}
+
             </div>
           </div>
         </div>

@@ -144,16 +144,23 @@ export const InternshipShowcase = () => {
         transition={{ duration: 1 }}
       >
         <div className="text-center mb-12 md:mb-16 px-4">
-          <HolographicText>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4">InternShip Experience</h2>
-          </HolographicText>
-          <motion.div
-            className="text-base sm:text-lg md:text-xl lg:text-2xl text-cyan-400"
+          <motion.h2 
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-cyan-400"
+            style={{
+              textShadow: '0 0 10px rgba(6, 182, 212, 0.6), 0 0 20px rgba(6, 182, 212, 0.3)'
+            }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 5 }}
+            transition={{ duration: 0.6 }}
           >
-          </motion.div>
+            Internship Experience
+          </motion.h2>
+          <motion.div
+            className="w-24 sm:w-32 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          />
         </div>
 
         {/* Expandable internship summary + timeline (three identical cards) */}
