@@ -143,12 +143,12 @@ export const InternshipShowcase = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 md:mb-16 px-4">
           <HolographicText>
-            <h2 className="text-5xl font-bold mb-4">InternShip Experience</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4">InternShip Experience</h2>
           </HolographicText>
           <motion.div
-            className="text-2xl text-cyan-400"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-cyan-400"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 5 }}

@@ -66,18 +66,18 @@ export const ProjectVault = () => {
     <section ref={sectionRef} className="py-20">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-cyber text-primary animate-neon-pulse mb-4">
+        <div className="text-center mb-12 md:mb-16 px-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-cyber text-primary animate-neon-pulse mb-4">
             THE ARSENAL VAULT
           </h2>
-          <div className="w-32 h-1 bg-gradient-neon mx-auto"></div>
-          <p className="text-xl text-muted-foreground mt-6 font-matrix">
+          <div className="w-24 sm:w-32 h-1 bg-gradient-neon mx-auto"></div>
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground mt-4 md:mt-6 font-matrix">
             Each project is a weapon. Each victory is proof.
           </p>
         </div>
 
         {/* Project Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {projects.map((project) => (
             <HolographicCard 
               key={project.id}

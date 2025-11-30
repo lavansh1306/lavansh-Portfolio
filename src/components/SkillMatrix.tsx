@@ -52,12 +52,12 @@ export const SkillMatrix = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-cyber text-primary animate-neon-pulse mb-4">
+        <div className="text-center mb-12 md:mb-16 px-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-cyber text-primary animate-neon-pulse mb-4">
             NEURAL SKILLSET
           </h2>
-          <div className="w-32 h-1 bg-gradient-neon mx-auto"></div>
-          <p className="text-xl text-muted-foreground mt-6 font-matrix">
+          <div className="w-24 sm:w-32 h-1 bg-gradient-neon mx-auto"></div>
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground mt-4 md:mt-6 font-matrix">
             Combat-ready tech arsenal. Maximum efficiency.
           </p>
         </div>

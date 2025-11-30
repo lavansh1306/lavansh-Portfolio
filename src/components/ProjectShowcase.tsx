@@ -63,7 +63,7 @@ export const ProjectShowcase = () => {
         <div className="text-center mb-16">
           <Parallax speed={-10}>
             <motion.h2
-              className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#00ff88] to-[#00a6ff]"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#00ff88] to-[#00a6ff]"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}

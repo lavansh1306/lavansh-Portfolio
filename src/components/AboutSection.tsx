@@ -19,10 +19,10 @@ export const AboutSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600 mb-8">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600 mb-8">
             Full Stack Innovator & AI Engineer
           </h2>
-          <p className="text-gray-300 text-xl mb-12 max-w-3xl">
+          <p className="text-gray-300 text-base sm:text-lg md:text-xl mb-12 max-w-3xl">
             Transforming complex challenges into elegant solutions. Specialized in building scalable applications
             that leverage cutting-edge AI/ML capabilities. Past experience includes projects at scale serving
             millions of users.

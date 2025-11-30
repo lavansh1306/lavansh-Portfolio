@@ -148,8 +148,8 @@ export const NeuralBridge = () => {
         {/* Top decorative card grid removed to avoid duplication. The interactive card grid below handles contact selection. */}
 
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-cyber text-primary animate-neon-pulse mb-4">
+        <div className="text-center mb-12 md:mb-16 px-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-cyber text-primary animate-neon-pulse mb-4">
             Connect With Me
           </h2>
           <div className="w-32 h-1 bg-gradient-neon mx-auto"></div>

@@ -91,7 +91,7 @@ export const BootSequence = ({ onComplete }: BootSequenceProps) => {
           </motion.div>
           
           <motion.div 
-            className="text-6xl font-mono text-[#00ff88] mb-8 tracking-widest neon-glow"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-mono text-[#00ff88] mb-8 tracking-widest neon-glow"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
@@ -100,7 +100,7 @@ export const BootSequence = ({ onComplete }: BootSequenceProps) => {
           </motion.div>
           
           <motion.div 
-            className="w-96 h-1 bg-gradient-to-r from-[#00ff88] to-[#00a2ff]"
+            className="w-64 sm:w-80 md:w-96 h-1 bg-gradient-to-r from-[#00ff88] to-[#00a2ff]"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 0.8, delay: 0.7 }}

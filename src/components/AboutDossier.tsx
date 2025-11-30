@@ -56,17 +56,17 @@ export const AboutDossier = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-cyber text-primary animate-neon-pulse mb-4">
+        <div className="text-center mb-12 md:mb-16 px-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-cyber text-primary animate-neon-pulse mb-4">
             SUBJECT DOSSIER: LAVANSH
           </h2>
-          <div className="w-32 h-1 bg-gradient-neon mx-auto"></div>
-          <p className="text-xl text-muted-foreground mt-6 font-matrix">
+          <div className="w-24 sm:w-32 h-1 bg-gradient-neon mx-auto"></div>
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground mt-4 md:mt-6 font-matrix">
             Analyzing the entity reshaping tomorrow
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
           {/* Main Profile */}
           <HolographicCard variant="dossier" className="p-8">
             <div className="space-y-6">
@@ -135,12 +135,12 @@ export const AboutDossier = () => {
         </div>
 
         {/* Timeline */}
-        <div className="mt-16">
-          <h3 className="text-3xl font-cyber text-center text-primary mb-12">
+        <div className="mt-12 md:mt-16 px-4">
+          <h3 className="text-2xl sm:text-3xl font-cyber text-center text-primary mb-8 md:mb-12">
             NEURAL PATHWAY TIMELINE
           </h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {timeline.map((item, index) => (
               <HolographicCard 
                 key={item.year}

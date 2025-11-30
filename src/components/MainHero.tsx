@@ -105,7 +105,7 @@ export const MainHero = () => {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
-            className="text-7xl md:text-8xl font-bold mb-6 tracking-tighter"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 md:mb-6 tracking-tighter px-4"
           >
             <span className="text-white">Lavansh</span>{' '}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00ff88] to-[#00a6ff]">
