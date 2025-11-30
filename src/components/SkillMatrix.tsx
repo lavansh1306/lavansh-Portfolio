@@ -7,9 +7,14 @@ import {
   SiReact, SiNextdotjs, SiTailwindcss,
   SiFlask, SiNodedotjs, SiExpress, SiMongodb, SiPostgresql,
   SiDocker, SiKubernetes,
-  SiGit, SiGithub
+  SiGit, SiGithub,
+  SiTensorflow, SiPytorch, SiScikitlearn,
+  SiHuggingface, SiOpenai, SiGoogle,
+  SiFigma, SiNotion, SiVercel
 } from 'react-icons/si';
-import { FaJava } from 'react-icons/fa';
+import { FaJava, FaRobot } from 'react-icons/fa';
+import { RiDiscussLine, RiEyeLine, RiFileTextLine, RiSparklingFill, RiDatabase2Line } from 'react-icons/ri';
+import { TbScan } from 'react-icons/tb';
 
 // Type for skill with icon
 interface SkillWithIcon {
@@ -57,24 +62,42 @@ const skills = {
     icon: <Brain className="text-neon-purple" size={24} />,
     color: "neon-purple",
     items: {
-      "Frameworks": ["TensorFlow", "PyTorch", "Scikit-learn"],
-      "Libraries": ["Transformers (Hugging Face)", "SentenceTransformers"],
+      "Frameworks": [
+        { name: "TensorFlow", icon: SiTensorflow },
+        { name: "PyTorch", icon: SiPytorch },
+        { name: "Scikit-learn", icon: SiScikitlearn }
+      ] as SkillWithIcon[],
+      "Libraries": [
+        { name: "Transformers (Hugging Face)", icon: SiHuggingface },
+        { name: "SentenceTransformers", icon: FaRobot }
+      ] as SkillWithIcon[],
       "Areas": [
-        "Natural Language Processing (NLP)",
-        "Computer Vision",
-        "OCR (PaddleOCR, TrOCR)",
-        "Retrieval Augmented Generation (RAG)"
-      ],
-      "APIs & Models": ["OpenAI API", "Gemini API"]
+        { name: "Natural Language Processing (NLP)", icon: RiDiscussLine },
+        { name: "Computer Vision", icon: RiEyeLine },
+        { name: "OCR (PaddleOCR, TrOCR)", icon: TbScan },
+        { name: "Retrieval Augmented Generation (RAG)", icon: RiDatabase2Line }
+      ] as SkillWithIcon[],
+      "APIs & Models": [
+        { name: "OpenAI API", icon: SiOpenai },
+        { name: "Gemini API", icon: RiSparklingFill }
+      ] as SkillWithIcon[]
     }
   },
   "Tools & Platforms": {
     icon: <Terminal className="text-neon-green" size={24} />,
     color: "neon-green",
     items: {
-      "Collaboration": ["Figma", "Notion"],
-      "Databases": ["MongoDB", "PostgreSQL"],
-      "Deployment": ["Vercel"]
+      "Collaboration": [
+        { name: "Figma", icon: SiFigma },
+        { name: "Notion", icon: SiNotion }
+      ] as SkillWithIcon[],
+      "Databases": [
+        { name: "MongoDB", icon: SiMongodb },
+        { name: "PostgreSQL", icon: SiPostgresql }
+      ] as SkillWithIcon[],
+      "Deployment": [
+        { name: "Vercel", icon: SiVercel }
+      ] as SkillWithIcon[]
     }
   }
 };
