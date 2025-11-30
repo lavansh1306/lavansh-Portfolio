@@ -364,6 +364,10 @@ Keyboard: Tab for autocomplete, ArrowUp/ArrowDown for history, Ctrl+L to clear, 
 2. Use `npm run build` as the build command. Set Node version to 18+.
 3. Deploy: Vercel will automatically deploy on pushes to `main` if linked.
 
+### Backend (Render)
+
+- The backend (`/backend`) is deployable to Render. It exposes a small health endpoint at `GET /health` and the email send endpoint at `POST /send`.
+- When deploying to Render, set the environment variables `RESEND_API_KEY` (secret) and `FRONTEND_ORIGINS` (your Vercel URL) in the Render dashboard.
 ### GitHub Pages (optional)
 
 This repository includes a GitHub Actions workflow that can publish to `gh-pages`. Steps:
