@@ -83,7 +83,7 @@ export const AchievementShowcase = () => {
     () =>
       achievements.map((achievement, index) => (
         <a href={(achievement as any).link || '#'} target="_blank" rel="noopener noreferrer" className="group h-full relative block">
-          <div className="relative overflow-hidden rounded-lg bg-gray-900 p-4 md:p-5 hover:bg-gray-800 transition-all duration-300 border border-gray-800 hover:border-[#00ff88]/50 h-full">
+          <div className="relative overflow-hidden rounded-lg bg-gray-900 p-3 sm:p-4 md:p-5 hover:bg-gray-800 transition-all duration-300 border border-gray-800 hover:border-[#00ff88]/50 h-full min-w-[280px] sm:min-w-[320px]">
             {/* Subtle particle background (toned down for Victory Archives) */}
             <div className="absolute inset-0 pointer-events-none z-0">
               <ParticleFieldSmall density={0.00012} className="opacity-20" />
@@ -92,18 +92,18 @@ export const AchievementShowcase = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-[#00ff88]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20" />
 
             <div className="relative z-30">
-              <div className="flex justify-between items-start mb-3">
-                <div>
-                  <span className={`px-2 py-0.5 rounded-full text-xs ${achievement.type === 'hackathon' ? 'bg-[#00ff88]/20 text-[#00ff88]' : 'bg-[#00a2ff]/20 text-[#00a2ff]'}`}>
+              <div className="flex justify-between items-start mb-3 gap-2">
+                <div className="flex-shrink-0">
+                  <span className={`px-2 py-0.5 rounded-full text-xs whitespace-nowrap ${achievement.type === 'hackathon' ? 'bg-[#00ff88]/20 text-[#00ff88]' : 'bg-[#00a2ff]/20 text-[#00a2ff]'}`}>
                     {(achievement.type || '').toUpperCase()}
                   </span>
                 </div>
-                <span className="text-[#00ff88] font-mono">{achievement.prize}</span>
+                <span className="text-[#00ff88] font-mono text-xs sm:text-sm flex-shrink-0">{achievement.prize}</span>
               </div>
 
-              <h3 className="text-lg md:text-xl font-bold mb-1.5 text-white">{achievement.name}</h3>
-              <p className="text-[#00ff88] font-semibold mb-2 text-sm md:text-base">{achievement.position}</p>
-              <p className="text-gray-400 mb-3 text-sm leading-relaxed">{achievement.description}</p>
+              <h3 className="text-base md:text-lg lg:text-xl font-bold mb-1.5 text-white break-words leading-tight">{achievement.name}</h3>
+              <p className="text-[#00ff88] font-semibold mb-2 text-sm md:text-base break-words">{achievement.position}</p>
+              <p className="text-gray-400 mb-3 text-xs sm:text-sm leading-relaxed break-words">{achievement.description}</p>
 
               <div className="flex flex-wrap gap-1.5">
                 {(achievement.tech || []).map((tech, techIndex) => (
