@@ -72,7 +72,13 @@ export const NeuralBridge = () => {
       setIsTransmitting(true);
 
       try {
-        const backend = (import.meta.env as any).VITE_EMAIL_BACKEND_URL || 'http://localhost:8000/send';
+        // Read the configured frontend env var. Vite embeds `VITE_` vars at build time.
+        // Accept either a full endpoint (https://host/send) or a base URL
+        // (https://host). Normalize to always post to /send.
+        const raw = (import.meta.env as any).VITE_EMAIL_BACKEND_URL;
+        const backend = raw
+          ? (raw.replace(/\/+$/, '').endsWith('/send') ? raw.replace(/\/+$/, '') : raw.replace(/\/+$/, '') + '/send')
+          : 'http://localhost:8000/send';
         const html = `<p><strong>From:</strong> ${senderEmail || 'N/A'} ${senderContact ? `(${senderContact})` : ''}</p><p><strong>Subject:</strong> ${subject || 'Portfolio message'}</p><hr/>${message}`;
         const res = await fetch(backend, {
           method: 'POST',
