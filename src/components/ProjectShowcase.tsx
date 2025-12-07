@@ -37,8 +37,7 @@ export const ProjectShowcase = () => {
     "Multi-engine OCR pipeline (PaddleOCR + Tesseract)",
     "Semantic chunking + Weaviate search",
     "Gemini-based single-answer generator",
-    "Full-stack Dockerized deployment"
-  ],
+    ],
   "link": "#"
 },
 {
