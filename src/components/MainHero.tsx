@@ -134,8 +134,8 @@ export const MainHero = () => {
 
               <Parallax translateY={[10, -10]}> 
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
-                  <h2 className="text-xl md:text-2xl lg:text-3xl text-gray-300 font-light mb-8 tracking-wide font-mono">
-                    Full-Stack Developer{' '}
+                  <h2 className="text-xl md:text-2xl lg:text-3xl text-gray-30ebP 0 font-light mb-8 tracking-wide font-mono">
+                    Full-Stak Developer{' '}
                     <span className="text-[#00ff41]">•</span>{' '}
                     AI Enthusiast{' '}
                     <span className="text-[#00ff41]">•</span>{' '}
