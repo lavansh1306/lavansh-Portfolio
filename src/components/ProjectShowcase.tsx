@@ -50,7 +50,7 @@ export const ProjectShowcase = () => {
     "Automated SOS pipeline via Twilio",
     "4+ integrated safety modules – Detect, SOS, Game, Chatbot"
   ],
-  "link": "#"
+  "link": "https://github.com/lavansh1306/RAKSHA_X"
 }
 
 
