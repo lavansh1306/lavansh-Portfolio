@@ -303,24 +303,148 @@ Top-level layout (key files only):
 
 ```
 .
-├── public/                # static assets
+├── public/                           # static assets
+│   └── robots.txt
 ├── src/
-│   ├── components/        # UI components
-│   │   ├── MatrixCanvas.tsx
-│   │   ├── TerminalBoot.tsx
-│   │   ├── XTermWrapper.tsx
-│   │   └── ...
-│   ├── pages/             # route pages
-│   │   ├── Index.tsx
-│   │   ├── Terminal.tsx
-│   │   └── ...
-│   ├── styles/            # css modules & global styles
-│   ├── hooks/             # custom hooks
-│   └── lib/               # utils
-├── package.json
-├── vite.config.ts
-└── README.md
+│   ├── components/                   # UI & Interactive Components
+│   │   ├── AboutDossier.tsx         # About section with dossier-style layout
+│   │   ├── AchievementShowcase.tsx  # Hackathon wins with horizontal scroller
+│   │   ├── BootSequence.tsx         # Loading animation sequence
+│   │   ├── ContactForm.tsx          # Email form (Formspree + Resend API)
+│   │   ├── CyberCursor.tsx          # Custom cyberpunk cursor effect
+│   │   ├── CyberGrid.tsx            # Background grid pattern
+│   │   ├── ExpandableInternshipCard.tsx  # Internship experience cards with tech stack
+│   │   ├── Footer.tsx               # Site footer with contact links
+│   │   ├── HologramAvatar.tsx       # Cyberpunk holographic avatar (octagon shape)
+│   │   ├── HolomorphicCard.tsx      # Holographic card component (3D effect)
+│   │   ├── HolographicNav.tsx       # Navigation with holographic styling
+│   │   ├── InternshipShowcase.tsx   # Container for internship cards
+│   │   ├── MainHero.tsx             # Hero section with name, tagline, resume button
+│   │   ├── MainNav.tsx              # Primary navigation
+│   │   ├── MatrixCanvas.tsx         # Matrix-style falling characters background
+│   │   ├── NeuralBridge.tsx         # Email contact bridge/connector
+│   │   ├── ParticleFieldSmall.tsx   # Small particle effect component
+│   │   ├── ProjectShowcase.tsx      # Featured projects grid with tech stack
+│   │   ├── ProjectVault.tsx         # Hackathon project showcase (ProjectVault page)
+│   │   ├── SkillMatrix.tsx          # Technical skills with accordion & icons
+│   │   ├── TerminalBoot.tsx         # Terminal boot sequence loader
+│   │   ├── XTermWrapper.tsx         # xterm.js terminal wrapper
+│   │   ├── animations/              # Animation/reveal components
+│   │   │   ├── HorizontalScroller.tsx   # Scrollable container (achievements)
+│   │   │   ├── ParallaxBackground.tsx   # Parallax scrolling effect
+│   │   │   ├── RevealOnScroll.tsx       # Scroll-triggered animations
+│   │   │   └── ScrollShowcase.tsx       # Scroll showcase wrapper
+│   │   └── ui/                      # shadcn/ui Components (kept minimal)
+│   │       ├── card.tsx             # Card wrapper component
+│   │       ├── sonner.tsx           # Toast notifications
+│   │       ├── motion.tsx           # Framer motion utilities
+│   │       ├── button.tsx           # Button component
+│   │       ├── input.tsx            # Input field
+│   │       ├── checkbox.tsx         # Checkbox
+│   │       ├── radio-group.tsx      # Radio group
+│   │       ├── alert.tsx            # Alert component
+│   │       ├── toaster.tsx          # Toast provider
+│   │       └── toast.tsx            # Toast definitions
+│   ├── pages/                       # Route Pages
+│   │   ├── Index.tsx                # Home page (main portfolio)
+│   │   ├── Contact.tsx              # Contact page with form
+│   │   ├── Portfolio.tsx            # Project Vault page
+│   │   ├── Terminal.tsx             # Terminal page
+│   │   ├── TerminalLoader.tsx       # Terminal boot sequence
+│   │   └── NotFound.tsx             # 404 page
+│   ├── hooks/                       # Custom React Hooks
+│   │   ├── use-mobile.tsx           # Mobile detection hook
+│   │   ├── use-toast.ts             # Toast notification hook
+│   │   ├── useGsapReveal.ts         # GSAP reveal animation hook
+│   │   └── useHorizontalPinScroll.ts # Horizontal scroll pinning hook
+│   ├── lib/                         # Utilities & Helpers
+│   │   ├── animations.tsx           # Framer Motion animation presets
+│   │   ├── devtools-protect.ts      # DevTools blocker/unlocker
+│   │   ├── gsap-setup.ts            # GSAP configuration
+│   │   └── utils.ts                 # Helper utilities
+│   ├── styles/                      # Global & Component Styles
+│   │   ├── cyberpunk.css            # Cyberpunk theme styles
+│   │   ├── glitch.css               # Glitch effect animation
+│   │   ├── holographic-nav.css      # Navigation styling
+│   │   └── nav.module.css           # Navigation module styles
+│   ├── plugins/                     # Browser Plugins/Scripts
+│   │   └── block-injected-content.ts # Content injection blocker
+│   ├── types/                       # TypeScript Type Definitions
+│   │   ├── vercel-analytics.d.ts    # Vercel Analytics types
+│   │   └── xterm-addons.d.ts        # xterm.js addon types
+│   ├── App.tsx                      # Root app component
+│   ├── App.css                      # Global app styles
+│   ├── main.tsx                     # React entry point
+│   ├── index.css                    # Global index styles
+│   └── vite-env.d.ts                # Vite environment types
+├── backend/                         # Backend Service (FastAPI)
+│   ├── app.py                       # FastAPI app with /health, /send endpoints
+│   ├── send_email.py                # Resend API email integration
+│   ├── requirements.txt              # Python dependencies
+│   └── README.md                    # Backend documentation
+├── .github/
+│   └── workflows/
+│       └── gh-pages.yml             # GitHub Actions workflow (build & deploy)
+├── public/                          # Static public assets
+│   └── robots.txt
+├── package.json                     # Node.js dependencies & scripts
+├── bun.lockb                        # Bun lock file (if using bun)
+├── tsconfig.json                    # TypeScript configuration
+├── tsconfig.app.json                # App-specific TypeScript config
+├── tsconfig.node.json               # Node-specific TypeScript config
+├── vite.config.ts                   # Vite build configuration
+├── tailwind.config.ts               # Tailwind CSS configuration
+├── postcss.config.js                # PostCSS configuration
+├── eslint.config.js                 # ESLint configuration
+├── components.json                  # shadcn/ui configuration
+├── CONTRIBUTING.md                  # Contribution guidelines
+├── LICENSE                          # MIT License
+└── README.md                        # This file
+
 ```
+
+### Key Directories Explained
+
+**`src/components/`** — All reusable UI components, organized by feature:
+- Main layout: `MainHero`, `HolographicNav`, `CyberGrid`, `Footer`
+- Content sections: `AboutDossier`, `SkillMatrix`, `InternshipShowcase`, `ProjectShowcase`, `AchievementShowcase`
+- Interactive: `ContactForm`, `NeuralBridge`, `TerminalBoot`, `XTermWrapper`
+- 3D/Visuals: `HologramAvatar`, `HolomorphicCard`, `MatrixCanvas`, `ParticleFieldSmall`
+- Animations: `animations/` subfolder with scroll and parallax effects
+- UI Library: `ui/` subfolder with shadcn/ui primitives (kept lean — only essential components)
+
+**`src/pages/`** — Route-based pages:
+- `/` → `Index.tsx` (main portfolio home)
+- `/portfolio` → `Portfolio.tsx` (project vault)
+- `/contact` → `Contact.tsx` (contact form page)
+- `/terminal` → `Terminal.tsx` (full terminal)
+- `/terminal/launch` → `TerminalLoader.tsx` (terminal loader)
+- `/*` → `NotFound.tsx` (404 catch-all)
+
+**`src/lib/`** — Reusable logic:
+- `animations.tsx` — Framer Motion animation presets (`fadeInUp`, `staggerContainer`, etc.)
+- `utils.ts` — Helper functions (classname merging, string utilities, etc.)
+- `devtools-protect.ts` — DevTools enable/disable (for production control)
+- `gsap-setup.ts` — GSAP animation library setup
+
+**`src/hooks/`** — Custom React hooks:
+- `useGsapReveal` — GSAP-based scroll reveal animations
+- `useHorizontalPinScroll` — Horizontal pinned scroll (achievement section)
+- `use-mobile` — Detect mobile viewport
+- `use-toast` — Toast notification management
+
+**`src/styles/`** — CSS modules and global styles:
+- `cyberpunk.css` — Neon glow effects, theme colors
+- `glitch.css` — Glitch text animation
+- `holographic-nav.css` — Navigation holographic effect
+- `nav.module.css` — Navigation layout styles
+
+**`backend/`** — FastAPI Python backend:
+- Deployed to Render
+- Endpoints:
+  - `GET /health` — Health check
+  - `POST /send` — Send email via Resend API
+- Environment: `RESEND_API_KEY`, `FRONTEND_ORIGINS` (CORS)
 
 ## Detailed Component Notes
 
