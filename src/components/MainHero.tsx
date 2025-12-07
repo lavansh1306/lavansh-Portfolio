@@ -139,7 +139,7 @@ export const MainHero = () => {
                     <span className="text-[#00ff41]">•</span>{' '}
                     AI Enthusiast{' '}
                     <span className="text-[#00ff41]">•</span>{' '}
-                    Hackathon Winner
+                    7x Hackathon Winner
                     <span 
                       className="inline-block w-0.5 h-5 ml-1 bg-[#00ff41] align-middle"
                       style={{
