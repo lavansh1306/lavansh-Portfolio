@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap for search engines
-Sitemap: https://lavansh-portfolio-7i5p.vercel.app/sitemap.xml
+Sitemap: https://lavansh-choubey-portfolio.vercel.app/sitemap.xml
 
 # Crawl delay (optional - adjust as needed)
 Crawl-delay: 1
