@@ -1,14 +1,8 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
 User-agent: *
 Allow: /
+
+# Sitemap for search engines
+Sitemap: https://lavansh-portfolio-7i5p.vercel.app/sitemap.xml
+
+# Crawl delay (optional - adjust as needed)
+Crawl-delay: 1
