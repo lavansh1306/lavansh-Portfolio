@@ -41,20 +41,12 @@ export default function XTermWrapper() {
       }
 
       try {
-        // Only load the web-links addon if the terminal exposes a link API
-        // (older/newer xterm versions differ in which method exists).
-        const hasRegisterLinkMatcher = typeof (term as any).registerLinkMatcher === 'function';
-        const hasRegisterLinkProvider = typeof (term as any).registerLinkProvider === 'function';
-        if (!hasRegisterLinkMatcher && !hasRegisterLinkProvider) {
-          console.info('xterm web-links not loaded: terminal lacks link API');
-        } else {
-          const webLinksModule = await import('xterm-addon-web-links');
-          const webLinks = new webLinksModule.WebLinksAddon();
-          term.loadAddon(webLinks);
-          loadedAddons.push(webLinks);
-        }
+        // Skipping xterm web-links addon due to compatibility issues across xterm versions.
+        // Loading it has caused runtime errors in some environments (registerLinkMatcher mismatch),
+        // so prefer not to load the addon automatically.
+        console.info('xterm web-links addon intentionally skipped');
       } catch (e) {
-        console.warn('xterm-web-links addon not available or failed to initialize:', e);
+        // noop
       }
 
       try {
@@ -70,6 +62,8 @@ export default function XTermWrapper() {
 
     if (containerRef.current) {
       term.open(containerRef.current);
+      // ensure container can be focused for accessibility
+      try { containerRef.current.setAttribute('tabindex','0'); } catch(e) {}
       // give browser a moment to layout, then fit if addon loaded
       setTimeout(() => { if (fitRef.current && typeof fitRef.current.fit === 'function') fitRef.current.fit(); }, 50);
     }
@@ -92,8 +86,23 @@ export default function XTermWrapper() {
       else term.writeln(arr);
     }
 
-    writeLines(['Welcome to the inbuilt terminal.', "Type 'help' to see available commands."]);
-    showPrompt();
+    // show prewritten colorful hints line-by-line on start
+    const hints = [
+      { text: "Welcome to the inbuilt terminal.", color: '\x1b[36m' },
+      { text: "Try these quick commands to explore:", color: '\x1b[33m' },
+      { text: " - help       : show structured commands", color: '\x1b[32m' },
+      { text: " - about      : who I am", color: '\x1b[32m' },
+      { text: " - skills     : tech stack", color: '\x1b[32m' },
+      { text: " - projects   : project list", color: '\x1b[32m' },
+      { text: " - contact    : how to reach me", color: '\x1b[32m' },
+    ];
+
+    (function showHints(i = 0) {
+      if (i >= hints.length) { showPrompt(); return; }
+      const h = hints[i];
+      term.writeln(h.color + h.text + '\x1b[0m');
+      setTimeout(() => showHints(i + 1), 180);
+    })();
 
     term.onData((data) => {
       for (let i = 0; i < data.length; i++) {
@@ -141,7 +150,9 @@ export default function XTermWrapper() {
 
       switch (name) {
         case 'help':
-          writeLines(['Available commands:', 'help, linkedin, about, skills, projects, contact, github, open <path>, echo, date, clear, whoami, ls, build']);
+          term.writeln('\x1b[1m\x1b[36mAvailable commands:\x1b[0m');
+          const cmds = ['help','linkedin','about','skills','projects','contact','github','open <path>','echo','date','clear','whoami','ls','build'];
+          cmds.forEach((c) => term.writeln('\x1b[32m - ' + c + '\x1b[0m'));
           showPrompt();
           break;
         case 'about':
@@ -265,8 +276,10 @@ export default function XTermWrapper() {
     };
   }, [navigate]);
 
+  const handleClear = () => { termRef.current?.clear(); };
+
   return (
-    <div className="terminal-window" style={{ minHeight: '60vh' }}>
+    <div className="terminal-window" style={{ minHeight: '60vh' }} aria-label="In-site terminal">
       <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
     </div>
   );

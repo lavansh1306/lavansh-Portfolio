@@ -12,7 +12,7 @@ export function RevealOnScroll({ selector = '[data-reveal]', className, once = t
   const ref = useRef<HTMLDivElement>(null);
   useGsapReveal({ root: ref, targets: selector, once, stagger });
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} className={`${className ? className + ' ' : ''}relative`}>
       {children}
     </div>
   );
