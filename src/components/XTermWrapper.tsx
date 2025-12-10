@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Terminal } from 'xterm';
+import type { ITerminalAddon } from 'xterm';
 import 'xterm/css/xterm.css';
 import '../styles/cyberpunk.css';
 import { useNavigate } from 'react-router-dom';
@@ -28,10 +29,12 @@ export default function XTermWrapper() {
     (async () => {
       try {
         const fitModule = await import('xterm-addon-fit');
-        const fit = new fitModule.FitAddon();
+        const fit = new fitModule.FitAddon() as unknown as ITerminalAddon;
         term.loadAddon(fit);
         fitRef.current = fit;
-      } catch {}
+      } catch (e) {
+        // ignore if addon can't be loaded or types mismatch
+      }
     })();
 
     termRef.current = term;
@@ -71,6 +74,8 @@ export default function XTermWrapper() {
         [{ text: ' • contact ', color: '\x1b[32m' }, { text: ' — reach out', color: '\x1b[90m' } ],
     ];
 
+    const timeouts: number[] = [];
+
     function typeLine(parts: any[], idx: number, done: () => void) {
       if (idx >= parts.length) return done();
       const { text, color } = parts[idx];
@@ -80,7 +85,7 @@ export default function XTermWrapper() {
       function nextChar() {
         if (i < text.length) {
           term.write(text[i++]);
-          setTimeout(nextChar, 18);
+          timeouts.push(window.setTimeout(nextChar, 18));
         } else {
           if (color) term.write('\x1b[0m');
           term.writeln('');
@@ -94,7 +99,7 @@ export default function XTermWrapper() {
       let line = 0;
       function next() {
         if (line >= hints.length) return showPrompt();
-        typeLine(hints[line], 0, () => setTimeout(next, 100));
+        typeLine(hints[line], 0, () => timeouts.push(window.setTimeout(next, 100)));
         line++;
       }
       next();
@@ -103,22 +108,36 @@ export default function XTermWrapper() {
     showHints();
 
     term.onData((data) => {
-      const ch = data;
-
-      if (ch === '\r') {
-        const cmd = buffer.trim();
-        term.writeln('');
-        term.writeln(PROMPT + cmd);
-        handleCommand(cmd);
-        buffer = '';
-      } else if (ch === '\u007F') {
-        if (buffer.length > 0) {
-          buffer = buffer.slice(0, -1);
-          term.write('\b \b');
+      for (let j = 0; j < data.length; j++) {
+        const ch = data[j];
+        if (ch === '\r') {
+          const cmd = buffer.trim();
+          term.writeln('');
+          term.writeln(PROMPT + cmd);
+          handleCommand(cmd);
+          buffer = '';
+        } else if (ch === '\u007F') {
+          if (buffer.length > 0) {
+            buffer = buffer.slice(0, -1);
+            term.write('\b \b');
+          }
+        } else if (ch === '\x03') {
+          // ctrl+c
+          term.write('^C');
+          buffer = '';
+          showPrompt();
+        } else if (ch === '\t') {
+          // tab autocomplete
+          const match = commands.find(c => c.startsWith(buffer));
+          if (match) {
+            const rest = match.slice(buffer.length);
+            buffer = match + ' ';
+            term.write(rest + ' ');
+          }
+        } else {
+          buffer += ch;
+          term.write(ch);
         }
-      } else {
-        buffer += ch;
-        term.write(ch);
       }
     });
 
@@ -224,7 +243,11 @@ export default function XTermWrapper() {
       if (fitRef.current?.fit) fitRef.current.fit();
     });
 
-    return () => term.dispose();
+    return () => {
+      try { for (const t of timeouts) clearTimeout(t); } catch (e) { /* ignore */ }
+      try { fitRef.current?.dispose?.(); } catch (e) { /* ignore */ }
+      term.dispose();
+    };
   }, [navigate]);
 
   return (
