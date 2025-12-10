@@ -3,7 +3,6 @@ import { Terminal } from 'xterm';
 import 'xterm/css/xterm.css';
 import '../styles/cyberpunk.css';
 import { useNavigate } from 'react-router-dom';
-import { Linkedin } from 'lucide-react';
 
 const PROMPT = '$ ';
 
@@ -25,261 +24,211 @@ export default function XTermWrapper() {
       fontSize: 14,
       scrollback: 1000,
     });
-    // dynamically load addons so the editor doesn't error before `npm install`
-    // store loaded addons so we can dispose them cleanly on unmount
-    const loadedAddons: any[] = [];
+
     (async () => {
-      let fit: any = null;
       try {
         const fitModule = await import('xterm-addon-fit');
-        fit = new fitModule.FitAddon();
+        const fit = new fitModule.FitAddon();
         term.loadAddon(fit);
         fitRef.current = fit;
-        loadedAddons.push(fit);
-      } catch (e) {
-        console.warn('xterm-fit addon not available:', e);
-      }
-
-      try {
-        // Skipping xterm web-links addon due to compatibility issues across xterm versions.
-        // Loading it has caused runtime errors in some environments (registerLinkMatcher mismatch),
-        // so prefer not to load the addon automatically.
-        console.info('xterm web-links addon intentionally skipped');
-      } catch (e) {
-        // noop
-      }
-
-      try {
-        const searchModule = await import('xterm-addon-search');
-        const search = new searchModule.SearchAddon();
-        term.loadAddon(search);
-        loadedAddons.push(search);
-      } catch (e) {
-        console.warn('xterm-search addon not available:', e);
-      }
+      } catch {}
     })();
+
     termRef.current = term;
 
     if (containerRef.current) {
       term.open(containerRef.current);
-      // ensure container can be focused for accessibility
-      try { containerRef.current.setAttribute('tabindex','0'); } catch(e) {}
-      // give browser a moment to layout, then fit if addon loaded
-      setTimeout(() => { if (fitRef.current && typeof fitRef.current.fit === 'function') fitRef.current.fit(); }, 50);
+      setTimeout(() => fitRef.current?.fit?.(), 50);
     }
 
-    // simple prompt buffer
     let buffer = '';
-    let history: string[] = [];
-    let hIndex: number | null = null;
 
-    const availableCommands = [
-      'help','echo','Linkedin','date','clear','whoami','ls','build','about','skills','projects','contact','github','open','devtools','devtools-on','devtools-off'
+    // RECRUITER-READY COMMAND SET
+    const commands = [
+      'help',
+      'about',
+      'skills',
+      'projects',
+      'contact',
+      'linkedin',
+      'github',
+      'open <path>',
+      'clear',
+      'date',
+      'ls'
     ];
 
     function showPrompt() {
       term.write('\r\n' + PROMPT);
     }
 
-    function writeLines(arr: string | string[]) {
-      if (Array.isArray(arr)) arr.forEach(a => term.writeln(a));
-      else term.writeln(arr);
-    }
-
-    // show prewritten colorful hints line-by-line on start
+    // Minimal recruiter-friendly intro
     const hints = [
-      { text: "Welcome to the inbuilt terminal.", color: '\x1b[36m' },
-      { text: "Try these quick commands to explore:", color: '\x1b[33m' },
-      { text: " - help       : show structured commands", color: '\x1b[32m' },
-      { text: " - about      : who I am", color: '\x1b[32m' },
-      { text: " - skills     : tech stack", color: '\x1b[32m' },
-      { text: " - projects   : project list", color: '\x1b[32m' },
-      { text: " - contact    : how to reach me", color: '\x1b[32m' },
+      [{ text: 'Welcome — navigate my portfolio using simple terminal commands.', color: '\x1b[35m' }],
+      [{ text: 'Try:' }],
+        [{ text: ' • about ', color: '\x1b[32m' }, { text: ' -- who am i', color: '\x1b[90m' } ],
+        [{ text: ' • skills ', color: '\x1b[32m' }, { text: ' — my tech stack', color: '\x1b[90m' } ],
+        [{ text: ' • contact ', color: '\x1b[32m' }, { text: ' — reach out', color: '\x1b[90m' } ],
     ];
 
-    (function showHints(i = 0) {
-      if (i >= hints.length) { showPrompt(); return; }
-      const h = hints[i];
-      term.writeln(h.color + h.text + '\x1b[0m');
-      setTimeout(() => showHints(i + 1), 180);
-    })();
+    function typeLine(parts: any[], idx: number, done: () => void) {
+      if (idx >= parts.length) return done();
+      const { text, color } = parts[idx];
+      if (color) term.write(color);
+      let i = 0;
+
+      function nextChar() {
+        if (i < text.length) {
+          term.write(text[i++]);
+          setTimeout(nextChar, 18);
+        } else {
+          if (color) term.write('\x1b[0m');
+          term.writeln('');
+          typeLine(parts, idx + 1, done);
+        }
+      }
+      nextChar();
+    }
+
+    function showHints() {
+      let line = 0;
+      function next() {
+        if (line >= hints.length) return showPrompt();
+        typeLine(hints[line], 0, () => setTimeout(next, 100));
+        line++;
+      }
+      next();
+    }
+
+    showHints();
 
     term.onData((data) => {
-      for (let i = 0; i < data.length; i++) {
-        const ch = data[i];
-        if (ch === '\r') {
-          // enter
-          const cmd = buffer.trim();
-          if (cmd.length === 0) { showPrompt(); buffer = ''; return; }
-          term.writeln('');
-          term.writeln(PROMPT + cmd);
-          history.push(cmd);
-          hIndex = null;
-          handleCommand(cmd);
-          buffer = '';
-        } else if (ch === '\u007F') {
-          // backspace
-          if (buffer.length > 0) {
-            buffer = buffer.slice(0, -1);
-            term.write('\b \b');
-          }
-        } else if (ch === '\t') {
-          // tab autocomplete
-          const match = availableCommands.find(c => c.startsWith(buffer));
-          if (match) {
-            const rest = match.slice(buffer.length);
-            buffer = match + ' ';
-            term.write(rest + ' ');
-          }
-        } else if (ch === '\x03') {
-          // ctrl+c
-          term.write('^C');
-          buffer = '';
-          showPrompt();
-        } else {
-          buffer += ch;
-          term.write(ch);
+      const ch = data;
+
+      if (ch === '\r') {
+        const cmd = buffer.trim();
+        term.writeln('');
+        term.writeln(PROMPT + cmd);
+        handleCommand(cmd);
+        buffer = '';
+      } else if (ch === '\u007F') {
+        if (buffer.length > 0) {
+          buffer = buffer.slice(0, -1);
+          term.write('\b \b');
         }
+      } else {
+        buffer += ch;
+        term.write(ch);
       }
     });
 
     function handleCommand(raw: string) {
       const parts = raw.split(/\s+/);
-      const name = parts[0];
+      const cmd = parts[0];
       const args = parts.slice(1);
 
-      switch (name) {
+      switch (cmd) {
+
+        // ---------------- HELP -----------------
         case 'help':
-          term.writeln('\x1b[1m\x1b[36mAvailable commands:\x1b[0m');
-          const cmds = ['help','linkedin','about','skills','projects','contact','github','open <path>','echo','date','clear','whoami','ls','build'];
-          cmds.forEach((c) => term.writeln('\x1b[32m - ' + c + '\x1b[0m'));
+          term.writeln('\x1b[36mAvailable commands:\x1b[0m');
+          commands.forEach(c => term.writeln(' • ' + c));
           showPrompt();
           break;
+
+        // ---------------- ABOUT ----------------
         case 'about':
-          writeLines(['Lavansh Choubey - Full stack Developer & Ideator.', 'I build interactive tools for real world impact']);
+          term.writeln('\x1b[36mAbout Me:\x1b[0m');
+          term.writeln('I’m Lavansh Choubey — a full-stack developer focused on UI engineering and AI tooling.');
+          term.writeln('I build fast interfaces, practical AI assistants, and real-world product systems.');
           showPrompt();
           break;
+
+        // ---------------- SKILLS ----------------
         case 'skills':
-          writeLines(['React, TypeScript, Vite, TailwindCSS, Framer Motion, three.js, @react-three/fiber, gsap']);
+          term.writeln('\x1b[36mSkills:\x1b[0m');
+          term.writeln('Frontend: React, Next.js, TypeScript, TailwindCSS, Framer Motion, R3F');
+          term.writeln('Backend: Python, Flask, FastAPI, MongoDB, Supabase');
+          term.writeln('AI/Automation: OCR (PaddleOCR, TrOCR), RAG, Gemini/OpenAI APIs');
           showPrompt();
           break;
+
+        // ---------------- PROJECTS ----------------
         case 'projects':
-          writeLines(['Project Vault — interactive project gallery with 3D previews', 'Neural Bridge — contact/interaction UI with animated effects']);
+          term.writeln('\x1b[36mHighlighted Projects:\x1b[0m');
+          term.writeln(' • Project Vault — 3D interactive showcase built with R3F');
+          term.writeln(' • OCR Assistant — AI-powered prescription & text extraction tool');
           showPrompt();
           break;
+
+        // ---------------- CONTACT ----------------
         case 'contact':
-          writeLines(['Connect on linkedin or Github']);
+          term.writeln('\x1b[36mContact:\x1b[0m');
+          term.writeln('Email: lavansh1306@gmail.com');
+          term.writeln('LinkedIn: use `linkedin`');
+          term.writeln('GitHub: use `github`');
           showPrompt();
           break;
-        case 'github':
-          writeLines(['Opening GitHub profile...']);
-          window.open('https://github.com/lavansh1306', '_blank');
-          showPrompt();
-          break;
-           case 'linkedin':
-          writeLines(['Opening linkedin profile...']);
+
+        // ---------------- SOCIAL LINKS ----------------
+        case 'linkedin':
+          term.writeln('Opening LinkedIn...');
           window.open('https://www.linkedin.com/in/lavansh-choubey-683355314/', '_blank');
           showPrompt();
           break;
-        case 'date':
-          writeLines(new Date().toString());
+
+        case 'github':
+          term.writeln('Opening GitHub...');
+          window.open('https://github.com/lavansh1306', '_blank');
           showPrompt();
           break;
+
+        // ---------------- UTILITIES ----------------
+        case 'date':
+          term.writeln(new Date().toString());
+          showPrompt();
+          break;
+
+        case 'ls':
+          term.writeln('src/   public/   assets/   README.md');
+          showPrompt();
+          break;
+
+        case 'open':
+          if (!args[0]) { term.writeln('Usage: open <path>'); showPrompt(); break; }
+          if (args[0].startsWith('/')) navigate(args[0]);
+          else if (args[0].startsWith('http')) window.open(args[0], '_blank');
+          else term.writeln('open: unsupported path.');
+          showPrompt();
+          break;
+
         case 'clear':
           term.clear();
           showPrompt();
           break;
-        case 'who_am_i':
-          writeLines('Lavansh Choubey');
-          showPrompt();
-          break;
-        case 'open':
-          if (args.length === 0) { writeLines('Usage: open <path>'); showPrompt(); break; }
-          const path = args[0];
-          if (path.startsWith('/')) {
-            writeLines(`Navigating to ${path} ...`);
-            setTimeout(() => navigate(path), 200);
-          } else if (path.startsWith('http')) {
-            writeLines(`Opening ${path} ...`); window.open(path, '_blank');
-          } else writeLines('open: unsupported path.');
-          showPrompt();
-          break;
-        case 'devtools':
-          writeLines(["DevTools instructions:",
-            " - Windows/Linux: Press Ctrl+Shift+I or F12",
-            " - macOS: Press Cmd+Option+I",
-            "If keyboard shortcuts are blocked, run 'devtools-off' to disable the page deterrent (if present)."]);
-          showPrompt();
-          break;
-        case 'devtools-on':
-          writeLines('Enabling lightweight devtools protections...');
-          try {
-            // dynamically import the protections module and install
-            import('../lib/devtools-protect').then(m => {
-              const cleanup = m.default();
-              // store cleanup on window so it can be removed later
-              (window as any).__devtoolsProtectionCleanup = cleanup;
-              writeLines('Devtools protections enabled.');
-              showPrompt();
-            }).catch(e => { writeLines('Failed to enable protections: ' + String(e)); showPrompt(); });
-          } catch (e) {
-            writeLines('Error enabling protections: ' + String(e)); showPrompt();
-          }
-          break;
-        case 'devtools-off':
-          writeLines('Disabling devtools protections (if active)...');
-          try {
-            const cleanup = (window as any).__devtoolsProtectionCleanup;
-            if (typeof cleanup === 'function') {
-              cleanup();
-              delete (window as any).__devtoolsProtectionCleanup;
-              writeLines('Devtools protections disabled. You can now use DevTools shortcuts.');
-            } else {
-              writeLines('No active devtools protections were found.');
-            }
-          } catch (e) {
-            writeLines('Error disabling protections: ' + String(e));
-          }
-          showPrompt();
-          break;
-        case 'ls':
-          writeLines('public/  src/  package.json  README.md'); showPrompt(); break;
+
         case 'build':
-          writeLines('Starting simulated build...');
-          setTimeout(() => { writeLines(['vite building...', '✓ build completed in 1.2s']); showPrompt(); }, 800);
+          term.writeln('vite building...');
+          setTimeout(() => term.writeln('✓ build completed'), 500);
+          showPrompt();
           break;
+
+        // ---------------- UNKNOWN ----------------
         default:
-          writeLines(`Command not found: ${name}. Type 'help'.`); showPrompt();
+          term.writeln(`Command not found: ${cmd}. Try 'help'.`);
+          showPrompt();
       }
     }
 
-  function onResize() { if (fitRef.current && typeof fitRef.current.fit === 'function') fitRef.current.fit(); }
-    window.addEventListener('resize', onResize);
+    window.addEventListener('resize', () => {
+      if (fitRef.current?.fit) fitRef.current.fit();
+    });
 
-    return () => {
-      window.removeEventListener('resize', onResize);
-      // dispose loaded addons if they expose dispose
-      try {
-        // attempt graceful addon disposal
-        // fitRef.current may be present and included in loadedAddons
-        for (const a of (loadedAddons as any[])) {
-          try {
-            if (a && typeof a.dispose === 'function') a.dispose();
-          } catch (ae) {
-            // ignore per-addon disposal errors
-          }
-        }
-      } catch (e) {
-        // swallow
-      }
-      term.dispose();
-    };
+    return () => term.dispose();
   }, [navigate]);
 
-  const handleClear = () => { termRef.current?.clear(); };
-
   return (
-    <div className="terminal-window" style={{ minHeight: '60vh' }} aria-label="In-site terminal">
+    <div className="terminal-window" style={{ minHeight: '60vh' }}>
       <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
     </div>
   );
