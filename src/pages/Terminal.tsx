@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MatrixCanvas from "../components/MatrixCanvas";
 import XTermWrapper from "../components/XTermWrapper";
 
@@ -189,12 +189,23 @@ export default function Terminal() {
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-xl font-mono">Inbuilt Terminal</h1>
-          <Link 
-            to="/" 
+          <button
+            onClick={() => {
+              // Always go to the home page. Set 'visited' so the boot sequence will skip.
+              try {
+                sessionStorage.setItem('visited', 'true');
+              } catch (e) {
+                // ignore storage errors
+              }
+              navigate('/', { replace: true });
+              // ensure top of page
+              try { window.scrollTo(0, 0); } catch (e) {}
+            }}
             className="font-mono text-[#00ff41] cursor-pointer hover:text-white hover:drop-shadow-[0_0_8px_rgba(0,255,65,0.8)] transition-all duration-300 text-sm"
+            aria-label="Back to system"
           >
             [ &lt; Back_to_System ]
-          </Link>
+          </button>
         </div>
 
         <div className="relative z-10">

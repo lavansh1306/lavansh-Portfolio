@@ -26,42 +26,44 @@ export default function XTermWrapper() {
       scrollback: 1000,
     });
     // dynamically load addons so the editor doesn't error before `npm install`
-    let fit: any = null;
+    // store loaded addons so we can dispose them cleanly on unmount
+    const loadedAddons: any[] = [];
     (async () => {
+      let fit: any = null;
       try {
         const fitModule = await import('xterm-addon-fit');
         fit = new fitModule.FitAddon();
         term.loadAddon(fit);
         fitRef.current = fit;
+        loadedAddons.push(fit);
       } catch (e) {
         console.warn('xterm-fit addon not available:', e);
       }
 
       try {
-        const webLinksModule = await import('xterm-addon-web-links');
-        const webLinks = new webLinksModule.WebLinksAddon();
+        // Only load the web-links addon if the terminal exposes a link API
+        // (older/newer xterm versions differ in which method exists).
+        const hasRegisterLinkMatcher = typeof (term as any).registerLinkMatcher === 'function';
+        const hasRegisterLinkProvider = typeof (term as any).registerLinkProvider === 'function';
+        if (!hasRegisterLinkMatcher && !hasRegisterLinkProvider) {
+          console.info('xterm web-links not loaded: terminal lacks link API');
+        } else {
+          const webLinksModule = await import('xterm-addon-web-links');
+          const webLinks = new webLinksModule.WebLinksAddon();
+          term.loadAddon(webLinks);
+          loadedAddons.push(webLinks);
+        }
       } catch (e) {
-        console.warn('xterm-web-links addon not available:', e);
+        console.warn('xterm-web-links addon not available or failed to initialize:', e);
       }
 
       try {
         const searchModule = await import('xterm-addon-search');
         const search = new searchModule.SearchAddon();
+        term.loadAddon(search);
+        loadedAddons.push(search);
       } catch (e) {
         console.warn('xterm-search addon not available:', e);
-      }
-
-      // optional WebGL renderer for extra performance/visuals
-      try {
-        const webglModule = await import('xterm-addon-webgl');
-        // some versions export WebglAddon or WebGLAddon
-        const WebglCtor = webglModule.WebglAddon || webglModule.WebGLAddon || webglModule.default;
-        if (WebglCtor) {
-          const webgl = new WebglCtor();
-          term.loadAddon(webgl);
-        }
-      } catch (e) {
-        console.warn('xterm-webgl addon not available or failed to load:', e);
       }
     })();
     termRef.current = term;
@@ -245,6 +247,20 @@ export default function XTermWrapper() {
 
     return () => {
       window.removeEventListener('resize', onResize);
+      // dispose loaded addons if they expose dispose
+      try {
+        // attempt graceful addon disposal
+        // fitRef.current may be present and included in loadedAddons
+        for (const a of (loadedAddons as any[])) {
+          try {
+            if (a && typeof a.dispose === 'function') a.dispose();
+          } catch (ae) {
+            // ignore per-addon disposal errors
+          }
+        }
+      } catch (e) {
+        // swallow
+      }
       term.dispose();
     };
   }, [navigate]);

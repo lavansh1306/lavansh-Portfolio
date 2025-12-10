@@ -41,7 +41,7 @@ const contactMethods = [
     action: 'ACCESS VAULT'
   },
   {
-    id: 'linkedin',
+    id: 'discord',
     name: 'Real-time Channel',
     description: 'Instant collaboration gateway',
     icon: MessageSquare,
