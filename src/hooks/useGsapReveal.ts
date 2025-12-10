@@ -23,13 +23,22 @@ export function useGsapReveal(options: RevealOptions) {
     if (!rootEl) return;
 
     const ctx = gsap.context(() => {
-      const items = options.targets ? rootEl.querySelectorAll(options.targets) : [rootEl];
+      // normalize targets to an array and guard if empty
+      const items = options.targets
+        ? gsap.utils.toArray(rootEl.querySelectorAll(options.targets))
+        : [rootEl];
+
+      if (!items || items.length === 0) {
+        // nothing to animate
+        return;
+      }
+
       const from = options.from ?? { opacity: 0, y: 40 };
       const to = options.to ?? { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' };
 
       gsap.set(items, from);
 
-      gsap.timeline({
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: rootEl,
           start: options.start ?? 'top 80%',
@@ -37,7 +46,9 @@ export function useGsapReveal(options: RevealOptions) {
           toggleActions: options.once ? 'play none none none' : 'play reverse play reverse',
           scrub: options.scrub ?? false,
         },
-      }).to(items, { ...to, stagger: options.stagger ?? 0.08 });
+      });
+
+      tl.to(items, { ...to, stagger: options.stagger ?? 0.08 });
     }, rootEl);
 
     return () => ctx.revert();
