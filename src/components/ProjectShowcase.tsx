@@ -1,174 +1,183 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Plus, Minus, Terminal, Cpu, ShieldCheck } from 'lucide-react';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion';
+import { Github, ExternalLink, ArrowRight, Database, Cloud, Lock, Cpu } from 'lucide-react';
 
 // --- Data ---
 const projects = [
   {
     id: "01",
-    title: "STOCK_VERSE",
-    category: "FINTECH / GAMIFICATION",
-    description: "Full-stack platform gamifying stock-market education via real-time data proxies and AI mentorship.",
-    tech: ["React", "FastAPI", "Gemini API", "Python", "Redis"],
-    stats: [
-      { label: "LATENCY", value: "120ms" },
-      { label: "USERS", value: "1K+" },
-      { label: "RETENTION", value: "+300%" }
-    ],
-    link: "https://stockver.vercel.app"
+    title: "Stock_Verse",
+    cat: "Fintech",
+    desc: "Real-time stock trading simulation using FastAPI proxies & Gemini AI.",
+    tech: ["React", "Python", "Redis", "Gemini"],
+    img: "from-emerald-900 to-slate-900",
+    link: "#"
   },
   {
     id: "02",
-    title: "PDF_QUERY_SYS",
-    category: "RAG / DOCUMENT_AI",
-    description: "Automated pipeline converting dense policy PDFs into conversational insights using vector search.",
-    tech: ["LangChain", "Weaviate", "Docker", "PaddleOCR", "Next.js"],
-    stats: [
-      { label: "ACCURACY", value: "98.5%" },
-      { label: "PIPELINE", value: "OCR+VEC" },
-      { label: "MODEL", value: "GEMINI 2.0" }
-    ],
+    title: "PDF Query",
+    cat: "RAG Pipeline",
+    desc: "Converts dense legal PDFs into conversational insights via Vector Search.",
+    tech: ["LangChain", "Weaviate", "Docker"],
+    img: "from-blue-900 to-slate-900",
     link: "#"
   },
   {
     id: "03",
-    title: "RAKSHA_X",
-    category: "IOT / SAFETY_OPS",
-    description: "Real-time acoustic forensics system detecting gunshots/screams coupled with automated SOS pipelines.",
-    tech: ["TensorFlow", "YAMNet", "Twilio", "Flask", "Edge AI"],
-    stats: [
-      { label: "DETECTION", value: "< 2s" },
-      { label: "MODULES", value: "4" },
-      { label: "STATUS", value: "LIVE" }
-    ],
-    link: "https://github.com/lavansh1306/RAKSHA_X"
-  }
+    title: "Raksha X",
+    cat: "IoT Safety",
+    desc: "Acoustic forensics system detecting gunshots & screams for SOS alerts.",
+    tech: ["TensorFlow", "YAMNet", "Twilio"],
+    img: "from-red-900 to-slate-900",
+    link: "#"
+  },
+  {
+    id: "04",
+    title: "Neural_Net",
+    cat: "WebGL Exp",
+    desc: "Visualizing neural pathways using React Three Fiber and shaders.",
+    tech: ["Three.js", "GLSL", "React"],
+    img: "from-purple-900 to-slate-900",
+    link: "#"
+  },
 ];
 
-export const ProjectShowcase = () => {
-  const [activeId, setActiveId] = useState<string | null>(projects[0].id);
+// --- 3D Card Component ---
+const Card = ({ project }: { project: typeof projects[0] }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], ["15deg", "-15deg"]));
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], ["-15deg", "15deg"]));
+
+  function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    x.set(mouseX / width - 0.5);
+    y.set(mouseY / height - 0.5);
+  }
+
+  function onMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
 
   return (
-    <section className="min-h-screen bg-[#050505] text-[#e1e1e1] font-mono py-24 px-4 sm:px-6 relative border-t border-white/10">
+    <motion.div
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      className="group relative h-[450px] w-[350px] md:h-[550px] md:w-[450px] flex-shrink-0 rounded-3xl bg-gray-900/50 border border-white/10 cursor-pointer"
+    >
+      {/* Gradient Background */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${project.img} opacity-50 rounded-3xl group-hover:opacity-100 transition-opacity duration-500`} />
       
-      {/* Background Grid - The "Blueprint" Look */}
-      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none" 
-           style={{ backgroundImage: 'radial-gradient(#333 1px, transparent 1px)', backgroundSize: '24px 24px' }}>
-      </div>
+      {/* Holographic Overlay */}
+      <motion.div
+        style={{
+          transform: "translateZ(50px)",
+          background: useMotionTemplate`radial-gradient(circle at ${x.get() * 100 + 50}% ${y.get() * 100 + 50}%, rgba(255,255,255,0.1), transparent 80%)`
+        }}
+        className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+      />
 
-      <div className="max-w-6xl mx-auto relative z-10">
-        
-        {/* Header - Industrial Style */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b-2 border-white/20 pb-6">
-          <div>
-            <span className="text-xs text-[#00ff88] tracking-widest mb-2 block">/// SYSTEM_LOG: PROJECTS</span>
-            <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter leading-none">
-              Build<span className="text-white/20">_</span>Manifest
-            </h2>
-          </div>
-          <div className="text-right mt-6 md:mt-0">
-            <p className="text-xs text-gray-500 mb-1">DEPLOYMENT_REGION: IND</p>
-            <p className="text-xs text-gray-500">LAST_UPDATE: 2025-Q1</p>
+      {/* Content Layer (Floating) */}
+      <div style={{ transform: "translateZ(60px)" }} className="absolute inset-0 p-8 flex flex-col justify-between">
+        <div className="flex justify-between items-center">
+          <span className="text-4xl font-mono font-bold text-white/10">{project.id}</span>
+          <div className="flex gap-2">
+            <div className="p-2 bg-black/40 rounded-full backdrop-blur-md border border-white/10"><Github size={18} /></div>
+            <div className="p-2 bg-black/40 rounded-full backdrop-blur-md border border-white/10"><ExternalLink size={18} /></div>
           </div>
         </div>
 
-        {/* The List */}
-        <div className="flex flex-col">
+        <div>
+           <div className="mb-4 inline-block px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs font-medium text-emerald-400">
+             {project.cat}
+           </div>
+           <h3 className="text-3xl font-bold text-white mb-2">{project.title}</h3>
+           <p className="text-gray-400 text-sm leading-relaxed mb-6">{project.desc}</p>
+           <div className="flex flex-wrap gap-2">
+             {project.tech.map((t, i) => (
+               <span key={i} className="text-[10px] uppercase tracking-wider text-gray-400 border border-white/10 px-2 py-1 rounded bg-black/40">
+                 {t}
+               </span>
+             ))}
+           </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// --- Main Scroll Section ---
+export const ProjectShowcase = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+  });
+
+  // Map vertical scroll (0 to 1) to horizontal transform (-1% to -95%)
+  // Adjust "-95%" based on how many cards you have.
+  const x = useTransform(scrollYProgress, [0, 1], ["1%", "-95%"]);
+
+  return (
+    // 1. THE HEIGHT TRICK: This div is 300vh tall (300% of screen).
+    // The user has to scroll through all this height to finish the section.
+    <section ref={targetRef} className="relative h-[300vh] bg-black">
+      
+      {/* 2. THE STICKY CONTAINER: This stays locked at the top of the screen */}
+      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+        
+        {/* Background Grids/Decor */}
+        <div className="absolute inset-0 z-0 opacity-30">
+           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+        </div>
+
+        {/* 3. THE HORIZONTAL MOVER: Moves Left as you Scroll Down */}
+        <motion.div style={{ x }} className="flex gap-12 pl-12 md:pl-24 pr-12">
+          
+          {/* Title Card (First item seen) */}
+          <div className="flex flex-col justify-center min-w-[300px] md:min-w-[400px]">
+             <h2 className="text-5xl md:text-7xl font-bold text-white leading-tight">
+               Selected <br />
+               <span className="text-emerald-400">Works</span>
+             </h2>
+             <p className="mt-6 text-gray-400 max-w-sm text-lg">
+               Scroll down to explore the gallery. <br/>
+               <span className="text-xs uppercase tracking-widest opacity-50">/// Drag or Scroll</span>
+             </p>
+          </div>
+
+          {/* Project Cards */}
           {projects.map((project) => (
-            <ProjectItem 
-              key={project.id} 
-              project={project} 
-              isOpen={activeId === project.id} 
-              onClick={() => setActiveId(activeId === project.id ? null : project.id)} 
-            />
+            <Card key={project.id} project={project} />
           ))}
+
+          {/* "See More" Card at the end */}
+          <div className="h-[450px] w-[200px] md:h-[550px] md:w-[300px] flex items-center justify-center flex-shrink-0 border-l border-white/10 ml-8">
+            <a href="#" className="group flex flex-col items-center gap-4 text-white">
+              <div className="p-4 rounded-full border border-white/20 group-hover:bg-white group-hover:text-black transition-all">
+                <ArrowRight size={32} />
+              </div>
+              <span className="font-mono text-sm tracking-widest uppercase">View All</span>
+            </a>
+          </div>
+
+        </motion.div>
+
+        {/* Progress Bar (Bottom) */}
+        <div className="absolute bottom-10 left-12 right-12 h-1 bg-white/10 rounded-full overflow-hidden z-20">
+          <motion.div 
+            style={{ scaleX: scrollYProgress, transformOrigin: "0%" }} 
+            className="h-full bg-emerald-400" 
+          />
         </div>
 
       </div>
     </section>
-  );
-};
-
-const ProjectItem = ({ project, isOpen, onClick }: { project: any, isOpen: boolean, onClick: () => void }) => {
-  return (
-    <div 
-      onClick={onClick}
-      className={`group border-b border-white/10 cursor-pointer transition-colors duration-300 ${isOpen ? 'bg-white/5' : 'hover:bg-white/5'}`}
-    >
-      {/* Top Bar (Always Visible) */}
-      <div className="py-6 sm:py-8 flex items-center justify-between px-2 sm:px-4">
-        <div className="flex items-center gap-4 sm:gap-8">
-          <span className={`text-xl font-bold font-mono transition-colors ${isOpen ? 'text-[#00ff88]' : 'text-gray-600'}`}>
-            {project.id}
-          </span>
-          <h3 className="text-xl sm:text-3xl md:text-4xl font-bold uppercase tracking-tight">
-            {project.title}
-          </h3>
-        </div>
-
-        <div className="flex items-center gap-4 sm:gap-8">
-          <span className="hidden sm:block text-xs text-gray-500 tracking-widest uppercase">
-            {project.category}
-          </span>
-          <div className={`p-2 border border-white/20 transition-all duration-300 ${isOpen ? 'bg-[#00ff88] text-black rotate-180' : ''}`}>
-            {isOpen ? <Minus size={16} /> : <Plus size={16} />}
-          </div>
-        </div>
-      </div>
-
-      {/* Expanded Content (The "Tech Sheet") */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} // Bezier for robotic slide
-            className="overflow-hidden"
-          >
-            <div className="px-4 pb-10 pt-2 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
-              
-              {/* Description Column */}
-              <div className="md:col-span-6 lg:col-span-5 text-gray-400 text-sm sm:text-base leading-relaxed border-l border-[#00ff88] pl-6">
-                <p className="mb-6">{project.description}</p>
-                <a 
-                  href={project.link}
-                  target="_blank" 
-                  className="inline-flex items-center gap-2 text-[#00ff88] font-bold uppercase text-xs tracking-widest hover:underline"
-                >
-                  [ Initialize_Demo ] <ArrowUpRight size={14} />
-                </a>
-              </div>
-
-              {/* Tech Stack Matrix */}
-              <div className="md:col-span-3 lg:col-span-4">
-                <span className="block text-xs text-gray-600 mb-4">/// DEPENDENCIES</span>
-                <div className="flex flex-wrap gap-2">
-                  {project.tech.map((t: string, i: number) => (
-                    <span key={i} className="px-2 py-1 bg-white/10 text-xs border border-white/5 text-gray-300">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Metrics Grid */}
-              <div className="md:col-span-3">
-                <span className="block text-xs text-gray-600 mb-4">/// TELEMETRY</span>
-                <div className="space-y-3">
-                  {project.stats.map((stat: any, i: number) => (
-                    <div key={i} className="flex justify-between items-center border-b border-gray-800 pb-1">
-                      <span className="text-[10px] text-gray-500">{stat.label}</span>
-                      <span className="text-sm font-mono text-white">{stat.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
   );
 };

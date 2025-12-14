@@ -417,8 +417,8 @@ export const HolographicNav = () => {
       </div>
 
       {/* Navigation Links */}
-      <div className="flex-1 py-8 overflow-hidden">
-        <div className="flex flex-col px-4 space-y-2 h-full">
+      <div className="flex-1 py-8 overflow-auto">
+        <div className="flex flex-col px-4 space-y-2">
           {MENU_ITEMS.map((item) => {
             const isActive = activeSection === item.href.replace('#', '');
             return (
