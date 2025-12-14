@@ -120,7 +120,7 @@ export const AchievementShowcase = () => {
   );
 
   return (
-    <section className="bg-black text-white py-24 md:py-28 relative z-20">
+    <section className="bg-black text-white py-24 md:py-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 md:mb-16 px-4">
           <motion.h2
