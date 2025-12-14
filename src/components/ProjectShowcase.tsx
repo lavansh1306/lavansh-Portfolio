@@ -1,221 +1,174 @@
-import React, { useRef, useState } from 'react';
-import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
-import { Parallax } from 'react-scroll-parallax';
-import { 
-  ExternalLink, 
-  Github, 
-  Code2, 
-  Terminal, 
-  Cpu, 
-  Database, 
-  Activity, 
-  ArrowRight,
-  Zap
-} from 'lucide-react';
-import { Card } from './ui/card'; // Assuming you have this, or use a div
-import { cn } from '../lib/utils'; // Standard shadcn utility or simply define it
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowUpRight, Plus, Minus, Terminal, Cpu, ShieldCheck } from 'lucide-react';
 
-// --- Types ---
-interface Project {
-  title: string;
-  description: string;
-  impact: string;
-  techStack: string[];
-  metrics: string[];
-  link?: string;
-  github?: string;
-}
-
-// --- Helper: Icon Mapper ---
-const getTechIcon = (tech: string) => {
-  const t = tech.toLowerCase();
-  if (t.includes('react') || t.includes('next')) return <Code2 className="w-3 h-3" />;
-  if (t.includes('python') || t.includes('flask')) return <Terminal className="w-3 h-3" />;
-  if (t.includes('data') || t.includes('sql') || t.includes('pandas')) return <Database className="w-3 h-3" />;
-  if (t.includes('ai') || t.includes('gemini') || t.includes('tensor')) return <Cpu className="w-3 h-3" />;
-  return <Zap className="w-3 h-3" />;
-};
-
-// --- Component: Spotlight Card ---
-const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
+// --- Data ---
+const projects = [
+  {
+    id: "01",
+    title: "STOCK_VERSE",
+    category: "FINTECH / GAMIFICATION",
+    description: "Full-stack platform gamifying stock-market education via real-time data proxies and AI mentorship.",
+    tech: ["React", "FastAPI", "Gemini API", "Python", "Redis"],
+    stats: [
+      { label: "LATENCY", value: "120ms" },
+      { label: "USERS", value: "1K+" },
+      { label: "RETENTION", value: "+300%" }
+    ],
+    link: "https://stockver.vercel.app"
+  },
+  {
+    id: "02",
+    title: "PDF_QUERY_SYS",
+    category: "RAG / DOCUMENT_AI",
+    description: "Automated pipeline converting dense policy PDFs into conversational insights using vector search.",
+    tech: ["LangChain", "Weaviate", "Docker", "PaddleOCR", "Next.js"],
+    stats: [
+      { label: "ACCURACY", value: "98.5%" },
+      { label: "PIPELINE", value: "OCR+VEC" },
+      { label: "MODEL", value: "GEMINI 2.0" }
+    ],
+    link: "#"
+  },
+  {
+    id: "03",
+    title: "RAKSHA_X",
+    category: "IOT / SAFETY_OPS",
+    description: "Real-time acoustic forensics system detecting gunshots/screams coupled with automated SOS pipelines.",
+    tech: ["TensorFlow", "YAMNet", "Twilio", "Flask", "Edge AI"],
+    stats: [
+      { label: "DETECTION", value: "< 2s" },
+      { label: "MODULES", value: "4" },
+      { label: "STATUS", value: "LIVE" }
+    ],
+    link: "https://github.com/lavansh1306/RAKSHA_X"
   }
+];
+
+export const ProjectShowcase = () => {
+  const [activeId, setActiveId] = useState<string | null>(projects[0].id);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      viewport={{ once: true }}
-      className="group relative border border-white/10 bg-gray-900/50 overflow-hidden rounded-xl"
-      onMouseMove={handleMouseMove}
-    >
-      {/* Spotlight Effect Gradient */}
-      <motion.div
-        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
-        style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              650px circle at ${mouseX}px ${mouseY}px,
-              rgba(0, 255, 136, 0.15),
-              transparent 80%
-            )
-          `,
-        }}
-      />
+    <section className="min-h-screen bg-[#050505] text-[#e1e1e1] font-mono py-24 px-4 sm:px-6 relative border-t border-white/10">
       
-      <div className="relative flex flex-col h-full p-6 sm:p-8">
-        {/* Header */}
-        <div className="flex justify-between items-start mb-4">
-          <div className="p-3 bg-white/5 rounded-lg border border-white/10 group-hover:border-[#00ff88]/50 transition-colors">
-            {index === 0 ? <Activity className="text-[#00ff88]" /> : 
-             index === 1 ? <Database className="text-[#00a6ff]" /> : 
-             <Cpu className="text-purple-400" />}
+      {/* Background Grid - The "Blueprint" Look */}
+      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none" 
+           style={{ backgroundImage: 'radial-gradient(#333 1px, transparent 1px)', backgroundSize: '24px 24px' }}>
+      </div>
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        
+        {/* Header - Industrial Style */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b-2 border-white/20 pb-6">
+          <div>
+            <span className="text-xs text-[#00ff88] tracking-widest mb-2 block">/// SYSTEM_LOG: PROJECTS</span>
+            <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter leading-none">
+              Build<span className="text-white/20">_</span>Manifest
+            </h2>
           </div>
-          <div className="flex gap-2">
-            {project.link && project.link !== '#' && (
-              <a href={project.link} target="_blank" rel="noopener noreferrer" className="p-2 text-gray-400 hover:text-white transition-colors" aria-label="Live Demo">
-                <ExternalLink size={20} />
-              </a>
-            )}
-            {/* Assuming you might add Github links later, keeping logic ready */}
-            <a href={project.github || '#'} className="p-2 text-gray-400 hover:text-white transition-colors" aria-label="Github Repo">
-              <Github size={20} />
-            </a>
+          <div className="text-right mt-6 md:mt-0">
+            <p className="text-xs text-gray-500 mb-1">DEPLOYMENT_REGION: IND</p>
+            <p className="text-xs text-gray-500">LAST_UPDATE: 2025-Q1</p>
           </div>
         </div>
 
-        {/* Title & Desc */}
-        <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-[#00ff88] transition-colors">
-          {project.title}
-        </h3>
-        <p className="text-gray-400 text-sm leading-relaxed mb-6">
-          {project.description}
-        </p>
-
-        {/* Impact Section (Highlighted) */}
-        <div className="mb-6 bg-white/5 rounded-lg p-4 border-l-2 border-[#00ff88]">
-          <h4 className="text-[#00ff88] text-xs font-bold uppercase tracking-wider mb-1">Impact</h4>
-          <p className="text-gray-200 text-sm">{project.impact}</p>
-        </div>
-
-        {/* Metrics Grid */}
-        <div className="grid grid-cols-1 gap-2 mb-6">
-          {project.metrics.map((metric, i) => (
-            <div key={i} className="flex items-center text-xs sm:text-sm text-gray-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00a6ff] mr-2 flex-shrink-0" />
-              {metric}
-            </div>
+        {/* The List */}
+        <div className="flex flex-col">
+          {projects.map((project) => (
+            <ProjectItem 
+              key={project.id} 
+              project={project} 
+              isOpen={activeId === project.id} 
+              onClick={() => setActiveId(activeId === project.id ? null : project.id)} 
+            />
           ))}
         </div>
 
-        {/* Footer: Tech Stack & Action */}
-        <div className="mt-auto pt-6 border-t border-white/10 flex flex-col gap-4">
-          <div className="flex flex-wrap gap-2">
-            {project.techStack.slice(0, 6).map((tech, i) => (
-              <span 
-                key={i} 
-                className="inline-flex items-center px-2 py-1 rounded-md text-[10px] sm:text-xs font-medium bg-[#00ff88]/10 text-[#00ff88] border border-[#00ff88]/20"
-              >
-                <span className="mr-1 opacity-70">{getTechIcon(tech)}</span>
-                {tech}
-              </span>
-            ))}
-            {project.techStack.length > 6 && (
-              <span className="inline-flex items-center px-2 py-1 rounded-md text-[10px] text-gray-500 border border-white/10">
-                +{project.techStack.length - 6} more
-              </span>
-            )}
-          </div>
-          
-          {project.link && project.link !== '#' && (
-            <a 
-              href={project.link} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 w-full py-2 bg-white/5 hover:bg-[#00ff88]/20 text-white text-sm font-medium rounded-lg border border-white/10 hover:border-[#00ff88]/50 transition-all group-hover:translate-x-1"
-            >
-              View Project <ArrowRight size={16} />
-            </a>
-          )}
-        </div>
       </div>
-    </motion.div>
+    </section>
   );
 };
 
-// --- Main Section Component ---
-export const ProjectShowcase = () => {
-  const projects: Project[] = [
-    {
-      title: "Stock_Verse",
-      description: "A gamified platform teaching stock-market fundamentals via real-time data & AI. Features a FastAPI proxy for Yahoo Finance and a Gemini-powered trading mentor.",
-      impact: "Achieved 3× higher user retention through gamification and boosted financial literacy with personalized AI guidance.",
-      techStack: ["React", "TypeScript", "FastAPI", "Python", "Gemini API", "Tailwind", "Vite", "Chart.js"],
-      metrics: ["1,000+ simulated sessions", "Real-time Yahoo Finance proxy", "Production-ready CORS setup"],
-      link: "https://stockver.vercel.app",
-      github: "https://github.com/yourusername/stockverse" 
-    },
-    {
-      title: "PDF Policy Query System",
-      description: "AI tool converting complex policy PDFs into conversational answers. Uses OCR (PaddleOCR) and Vector Search (Weaviate) to handle dense documentation.",
-      impact: "Reduces policy review time by turning dense legal documents into instant, actionable insights.",
-      techStack: ["LangChain", "Weaviate", "Gemini 2.0", "PaddleOCR", "Docker", "Redis", "React"],
-      metrics: ["Multi-engine OCR pipeline", "Semantic Chunking", "Sub-second retrieval latency"],
-      link: "#",
-      github: "#"
-    },
-    {
-      title: "RAKSHA X",
-      description: "Safety ecosystem integrating real-time sound detection (gunshots, screams) with SOS alerts. Merges physical safety monitoring with mental health chat support.",
-      impact: "Bridged the gap between physical emergency response and emotional well-being using edge-AI sound analysis.",
-      techStack: ["TensorFlow", "YAMNet", "Flask", "Twilio", "Vosk", "Librosa", "Gemini API"],
-      metrics: ["Real-time audio classification", "Automated SMS/Call via Twilio", "Integrated Chatbot"],
-      link: "https://github.com/lavansh1306/RAKSHA_X",
-      github: "https://github.com/lavansh1306/RAKSHA_X"
-    }
-  ];
-
+const ProjectItem = ({ project, isOpen, onClick }: { project: any, isOpen: boolean, onClick: () => void }) => {
   return (
-    <section className="relative min-h-screen bg-black py-20 px-4 sm:px-6 overflow-hidden">
-      {/* Background Decor - Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
-
-      <div className="relative max-w-7xl mx-auto z-10">
-        {/* Section Header */}
-        <div className="text-center mb-16 sm:mb-24">
-          <Parallax speed={-5}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 tracking-tight">
-                Selected <span className="text-[#00ff88]">Work</span>
-              </h2>
-              <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto font-light">
-                Blending <span className="text-white font-medium">AI intelligence</span> with 
-                <span className="text-white font-medium"> modern design</span> to solve complex problems.
-              </p>
-            </motion.div>
-          </Parallax>
+    <div 
+      onClick={onClick}
+      className={`group border-b border-white/10 cursor-pointer transition-colors duration-300 ${isOpen ? 'bg-white/5' : 'hover:bg-white/5'}`}
+    >
+      {/* Top Bar (Always Visible) */}
+      <div className="py-6 sm:py-8 flex items-center justify-between px-2 sm:px-4">
+        <div className="flex items-center gap-4 sm:gap-8">
+          <span className={`text-xl font-bold font-mono transition-colors ${isOpen ? 'text-[#00ff88]' : 'text-gray-600'}`}>
+            {project.id}
+          </span>
+          <h3 className="text-xl sm:text-3xl md:text-4xl font-bold uppercase tracking-tight">
+            {project.title}
+          </h3>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {projects.map((project, index) => (
-            <Parallax key={index} speed={index % 2 === 0 ? 0 : 5} className="h-full">
-              <ProjectCard project={project} index={index} />
-            </Parallax>
-          ))}
+        <div className="flex items-center gap-4 sm:gap-8">
+          <span className="hidden sm:block text-xs text-gray-500 tracking-widest uppercase">
+            {project.category}
+          </span>
+          <div className={`p-2 border border-white/20 transition-all duration-300 ${isOpen ? 'bg-[#00ff88] text-black rotate-180' : ''}`}>
+            {isOpen ? <Minus size={16} /> : <Plus size={16} />}
+          </div>
         </div>
       </div>
-    </section>
+
+      {/* Expanded Content (The "Tech Sheet") */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} // Bezier for robotic slide
+            className="overflow-hidden"
+          >
+            <div className="px-4 pb-10 pt-2 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
+              
+              {/* Description Column */}
+              <div className="md:col-span-6 lg:col-span-5 text-gray-400 text-sm sm:text-base leading-relaxed border-l border-[#00ff88] pl-6">
+                <p className="mb-6">{project.description}</p>
+                <a 
+                  href={project.link}
+                  target="_blank" 
+                  className="inline-flex items-center gap-2 text-[#00ff88] font-bold uppercase text-xs tracking-widest hover:underline"
+                >
+                  [ Initialize_Demo ] <ArrowUpRight size={14} />
+                </a>
+              </div>
+
+              {/* Tech Stack Matrix */}
+              <div className="md:col-span-3 lg:col-span-4">
+                <span className="block text-xs text-gray-600 mb-4">/// DEPENDENCIES</span>
+                <div className="flex flex-wrap gap-2">
+                  {project.tech.map((t: string, i: number) => (
+                    <span key={i} className="px-2 py-1 bg-white/10 text-xs border border-white/5 text-gray-300">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Metrics Grid */}
+              <div className="md:col-span-3">
+                <span className="block text-xs text-gray-600 mb-4">/// TELEMETRY</span>
+                <div className="space-y-3">
+                  {project.stats.map((stat: any, i: number) => (
+                    <div key={i} className="flex justify-between items-center border-b border-gray-800 pb-1">
+                      <span className="text-[10px] text-gray-500">{stat.label}</span>
+                      <span className="text-sm font-mono text-white">{stat.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
