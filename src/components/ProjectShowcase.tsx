@@ -1,183 +1,175 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion';
-import { Github, ExternalLink, ArrowRight, Database, Cloud, Lock, Cpu } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { 
+  Github, 
+  ExternalLink, 
+  ArrowUpRight, 
+  Zap,
+  Box,
+  Shield,
+  Code
+} from 'lucide-react';
 
 // --- Data ---
 const projects = [
   {
-    id: "01",
+    id: 1,
     title: "Stock_Verse",
-    cat: "Fintech",
-    desc: "Real-time stock trading simulation using FastAPI proxies & Gemini AI.",
-    tech: ["React", "Python", "Redis", "Gemini"],
-    img: "from-emerald-900 to-slate-900",
-    link: "#"
+    subtitle: "Fintech Simulation Engine",
+    description: "Real-time trading ecosystem handling 1000+ concurrent users. Features a Gemini-powered AI analyst that creates personalized trading strategies based on market volatility.",
+    tags: ["FastAPI", "React", "Gemini AI", "Redis"],
+    stats: "300% Engagement Boost",
+    links: { demo: "https://stockver.vercel.app", repo: "#" },
+    gradient: "from-emerald-500/20 via-emerald-500/5 to-transparent",
+    icon: <Zap className="text-emerald-400" />,
+    colSpan: "md:col-span-2", // This card takes 2 columns
   },
   {
-    id: "02",
-    title: "PDF Query",
-    cat: "RAG Pipeline",
-    desc: "Converts dense legal PDFs into conversational insights via Vector Search.",
-    tech: ["LangChain", "Weaviate", "Docker"],
-    img: "from-blue-900 to-slate-900",
-    link: "#"
+    id: 2,
+    title: "PDF Policy Query",
+    subtitle: "RAG Pipeline",
+    description: "Semantic search engine for legal docs. Reduced compliance review time by 90% using Weaviate vector retrieval.",
+    tags: ["LangChain", "Weaviate", "Next.js"],
+    stats: "90% Time Saved",
+    links: { demo: "#", repo: "#" },
+    gradient: "from-blue-500/20 via-blue-500/5 to-transparent",
+    icon: <Box className="text-blue-400" />,
+    colSpan: "md:col-span-1", // This card takes 1 column
   },
   {
-    id: "03",
-    title: "Raksha X",
-    cat: "IoT Safety",
-    desc: "Acoustic forensics system detecting gunshots & screams for SOS alerts.",
-    tech: ["TensorFlow", "YAMNet", "Twilio"],
-    img: "from-red-900 to-slate-900",
-    link: "#"
+    id: 3,
+    title: "RAKSHA X",
+    subtitle: "IoT Acoustic Forensics",
+    description: "Edge-AI safety system detecting distress signals (gunshots, screams) with <2s latency and 94% accuracy.",
+    tags: ["TensorFlow", "Edge AI", "Twilio"],
+    stats: "<2s Latency",
+    links: { demo: "#", repo: "https://github.com/lavansh1306/RAKSHA_X" },
+    gradient: "from-red-500/20 via-red-500/5 to-transparent",
+    icon: <Shield className="text-red-400" />,
+    colSpan: "md:col-span-1", // This card takes 1 column
   },
   {
-    id: "04",
-    title: "Neural_Net",
-    cat: "WebGL Exp",
-    desc: "Visualizing neural pathways using React Three Fiber and shaders.",
-    tech: ["Three.js", "GLSL", "React"],
-    img: "from-purple-900 to-slate-900",
-    link: "#"
-  },
+    // Added a 4th "Placeholder" or "Coming Soon" card to balance the grid visually
+    id: 4,
+    title: "System_Architecture",
+    subtitle: "DevOps & Cloud",
+    description: "Ongoing research into scalable microservices patterns and kubernetes orchestration.",
+    tags: ["AWS", "Docker", "K8s"],
+    stats: "In Progress",
+    links: { demo: "#", repo: "#" },
+    gradient: "from-purple-500/20 via-purple-500/5 to-transparent",
+    icon: <Code className="text-purple-400" />,
+    colSpan: "md:col-span-2", 
+  }
 ];
 
-// --- 3D Card Component ---
-const Card = ({ project }: { project: typeof projects[0] }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], ["15deg", "-15deg"]));
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], ["-15deg", "15deg"]));
+// --- Components ---
 
-  function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    x.set(mouseX / width - 0.5);
-    y.set(mouseY / height - 0.5);
-  }
+const CardButton = ({ href, icon: Icon }: { href: string; icon: any }) => (
+  <a 
+    href={href}
+    target="_blank"
+    className="p-2 rounded-full bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all border border-white/5 hover:border-white/20"
+  >
+    <Icon size={16} />
+  </a>
+);
 
-  function onMouseLeave() {
-    x.set(0);
-    y.set(0);
-  }
-
-  return (
-    <motion.div
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className="group relative h-[450px] w-[350px] md:h-[550px] md:w-[450px] flex-shrink-0 rounded-3xl bg-gray-900/50 border border-white/10 cursor-pointer"
-    >
-      {/* Gradient Background */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${project.img} opacity-50 rounded-3xl group-hover:opacity-100 transition-opacity duration-500`} />
-      
-      {/* Holographic Overlay */}
-      <motion.div
-        style={{
-          transform: "translateZ(50px)",
-          background: useMotionTemplate`radial-gradient(circle at ${x.get() * 100 + 50}% ${y.get() * 100 + 50}%, rgba(255,255,255,0.1), transparent 80%)`
-        }}
-        className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-      />
-
-      {/* Content Layer (Floating) */}
-      <div style={{ transform: "translateZ(60px)" }} className="absolute inset-0 p-8 flex flex-col justify-between">
-        <div className="flex justify-between items-center">
-          <span className="text-4xl font-mono font-bold text-white/10">{project.id}</span>
-          <div className="flex gap-2">
-            <div className="p-2 bg-black/40 rounded-full backdrop-blur-md border border-white/10"><Github size={18} /></div>
-            <div className="p-2 bg-black/40 rounded-full backdrop-blur-md border border-white/10"><ExternalLink size={18} /></div>
-          </div>
-        </div>
-
-        <div>
-           <div className="mb-4 inline-block px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs font-medium text-emerald-400">
-             {project.cat}
-           </div>
-           <h3 className="text-3xl font-bold text-white mb-2">{project.title}</h3>
-           <p className="text-gray-400 text-sm leading-relaxed mb-6">{project.desc}</p>
-           <div className="flex flex-wrap gap-2">
-             {project.tech.map((t, i) => (
-               <span key={i} className="text-[10px] uppercase tracking-wider text-gray-400 border border-white/10 px-2 py-1 rounded bg-black/40">
-                 {t}
-               </span>
-             ))}
-           </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
-// --- Main Scroll Section ---
 export const ProjectShowcase = () => {
-  const targetRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-  });
-
-  // Map vertical scroll (0 to 1) to horizontal transform (-1% to -95%)
-  // Adjust "-95%" based on how many cards you have.
-  const x = useTransform(scrollYProgress, [0, 1], ["1%", "-95%"]);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    // 1. THE HEIGHT TRICK: This div is 300vh tall (300% of screen).
-    // The user has to scroll through all this height to finish the section.
-    <section ref={targetRef} className="relative h-[300vh] bg-black">
+    <section className="bg-[#050505] py-24 px-4 sm:px-6 relative overflow-hidden">
       
-      {/* 2. THE STICKY CONTAINER: This stays locked at the top of the screen */}
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+      {/* 1. Ambient Background Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-indigo-500/10 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto relative z-10">
         
-        {/* Background Grids/Decor */}
-        <div className="absolute inset-0 z-0 opacity-30">
-           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
-        </div>
-
-        {/* 3. THE HORIZONTAL MOVER: Moves Left as you Scroll Down */}
-        <motion.div style={{ x }} className="flex gap-12 pl-12 md:pl-24 pr-12">
-          
-          {/* Title Card (First item seen) */}
-          <div className="flex flex-col justify-center min-w-[300px] md:min-w-[400px]">
-             <h2 className="text-5xl md:text-7xl font-bold text-white leading-tight">
-               Selected <br />
-               <span className="text-emerald-400">Works</span>
-             </h2>
-             <p className="mt-6 text-gray-400 max-w-sm text-lg">
-               Scroll down to explore the gallery. <br/>
-               <span className="text-xs uppercase tracking-widest opacity-50">/// Drag or Scroll</span>
-             </p>
+        {/* 2. Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
+              Selected <span className="text-white/40">Work</span>
+            </h2>
+            <p className="text-gray-400 max-w-md text-sm md:text-base leading-relaxed">
+              A collection of engineering problems I've solved, ranging from fintech simulations to edge-AI safety systems.
+            </p>
           </div>
-
-          {/* Project Cards */}
-          {projects.map((project) => (
-            <Card key={project.id} project={project} />
-          ))}
-
-          {/* "See More" Card at the end */}
-          <div className="h-[450px] w-[200px] md:h-[550px] md:w-[300px] flex items-center justify-center flex-shrink-0 border-l border-white/10 ml-8">
-            <a href="#" className="group flex flex-col items-center gap-4 text-white">
-              <div className="p-4 rounded-full border border-white/20 group-hover:bg-white group-hover:text-black transition-all">
-                <ArrowRight size={32} />
-              </div>
-              <span className="font-mono text-sm tracking-widest uppercase">View All</span>
+          <div className="hidden md:block">
+            <a href="#" className="text-sm font-mono text-white/50 hover:text-white transition-colors flex items-center gap-2">
+              VIEW GITHUB <ArrowUpRight size={14} />
             </a>
           </div>
+        </div>
 
-        </motion.div>
+        {/* 3. The Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {projects.map((project, idx) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              onMouseEnter={() => setHoveredIndex(idx)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              className={`group relative rounded-3xl bg-[#0a0a0a] border border-white/10 overflow-hidden flex flex-col ${project.colSpan}`}
+            >
+              
+              {/* Hover Gradient Glow */}
+              <div 
+                className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} 
+              />
+              
+              {/* Inner Content Wrapper */}
+              <div className="relative h-full p-8 flex flex-col justify-between z-10">
+                
+                {/* Top Section */}
+                <div>
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="p-3 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm">
+                      {project.icon}
+                    </div>
+                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+                      <CardButton href={project.links.repo} icon={Github} />
+                      <CardButton href={project.links.demo} icon={ExternalLink} />
+                    </div>
+                  </div>
 
-        {/* Progress Bar (Bottom) */}
-        <div className="absolute bottom-10 left-12 right-12 h-1 bg-white/10 rounded-full overflow-hidden z-20">
-          <motion.div 
-            style={{ scaleX: scrollYProgress, transformOrigin: "0%" }} 
-            className="h-full bg-emerald-400" 
-          />
+                  <h3 className="text-2xl font-bold text-white mb-2">{project.title}</h3>
+                  <p className="text-xs font-mono text-white/40 uppercase tracking-widest mb-4">{project.subtitle}</p>
+                  <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                    {project.description}
+                  </p>
+                </div>
+
+                {/* Bottom Section */}
+                <div className="mt-auto">
+                  {/* Stats Badge */}
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5 text-xs text-emerald-400 font-medium mb-4">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    {project.stats}
+                  </div>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
+                    {project.tags.map((tag) => (
+                      <span key={tag} className="text-xs text-gray-500 font-mono">#{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+            </motion.div>
+          ))}
         </div>
 
       </div>
     </section>
   );
 };
+
+export default ProjectShowcase;

@@ -21,7 +21,8 @@ export function useHorizontalPinScroll(
         ease: 'none',
         scrollTrigger: {
           trigger: container,
-          start: 'top top',
+          // start pinning when the container's top reaches the center of the viewport
+          start: 'top center',
           end: () => `+=${totalWidth}`,
           scrub: true,
           pin: true,
