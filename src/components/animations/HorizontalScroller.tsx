@@ -1,27 +1,53 @@
-import React, { useRef } from 'react';
-import { useHorizontalPinScroll } from '../../hooks/useHorizontalPinScroll';
+import React from 'react';
+import { motion } from 'framer-motion';
 
 type Props = {
   items: React.ReactNode[];
-  height?: number;
+  // kept for backward compatibility, but reveal-on-scroll uses Framer Motion's
+  // `whileInView` / `viewport` by default so you don't need to toggle this.
+  startAnimations?: boolean;
+  gap?: number;
 };
 
-export function HorizontalScroller({ items, height = 360 }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
-  useHorizontalPinScroll(ref);
+export function HorizontalScroller({ items, startAnimations = true, gap = 24 }: Props) {
+  // Restore horizontal sticky scroller layout, but add two motion layers:
+  // 1) outer motion for reveal-on-scroll (y / opacity)
+  // 2) inner motion for continuous horizontal movement (x keyframes loop)
+
+  const itemWidthClass = 'shrink-0 snap-start w-[80vw] md:w-[45vw] lg:w-[35vw] h-full flex flex-col';
+
   return (
-    // Solid background on the scroller section prevents transparency bleed
-    <section ref={ref} className="relative w-full bg-black" style={{ height }}>
-      <div data-h-track className="absolute inset-0 flex gap-4 px-4 md:px-6 will-change-transform">
-        {items.map((node, i) => (
-          <div
-            key={i}
-            className="shrink-0 w-[68vw] md:w-[48vw] lg:w-[40vw] h-full rounded-xl border border-white/10 bg-black p-4 md:p-5"
-          >
-            {node}
+    <section className="relative w-full">
+      {/* reveal the whole scroller when it enters viewport */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <div className="sticky top-0 w-full" style={{ height: 360 }}>
+          <div className="h-full flex items-center overflow-hidden">
+            {/* track: duplicated items for seamless looping */}
+            <motion.div
+              className="flex gap-6 items-stretch"
+              animate={{ x: ['0%', '-50%'] }}
+              transition={{ repeat: Infinity, duration: 20, ease: 'linear' }}
+            >
+              {/** render two copies of items back-to-back for a smooth loop */}
+              {[...items, ...items].map((node, i) => {
+                // make keys unique across the duplicated list
+                const key = `loop-${i}-${i < items.length ? 'a' : 'b'}`;
+                return (
+                  <div key={key} className={itemWidthClass}>
+                    <div className="w-full h-full">
+                      {node}
+                    </div>
+                  </div>
+                );
+              })}
+            </motion.div>
           </div>
-        ))}
-      </div>
+        </div>
+      </motion.div>
     </section>
   );
 }
