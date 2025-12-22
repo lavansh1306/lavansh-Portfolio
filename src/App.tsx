@@ -7,11 +7,13 @@ import NotFound from "./pages/NotFound";
 import Contact from "./pages/Contact";
 import Terminal from "./pages/Terminal";
 import TerminalLoader from "./pages/TerminalLoader";
+import MouseTrail from "./components/MouseTrail";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
+    <MouseTrail />
     <Toaster />
     <Sonner />
     <BrowserRouter>

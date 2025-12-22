@@ -83,7 +83,7 @@ export const AchievementShowcase = () => {
   const panels = useMemo(
     () =>
       achievements.map((achievement, index) => (
-        <a key={`achv-${index}-${(achievement.name || '').replace(/\s+/g, '-').toLowerCase()}`} href={(achievement as any).link || '#'} target="_blank" rel="noopener noreferrer" className="group h-full relative block">
+        <a key={`achv-${index}-${(achievement.name || '').replace(/\s+/g, '-').toLowerCase()}`} href={(achievement as any).link || '#'} target="_blank" rel="noopener noreferrer" className="victory-card group h-full relative block">
           <div className="relative overflow-hidden rounded-lg bg-gray-900 p-3 sm:p-4 md:p-5 hover:bg-gray-800 transition-all duration-300 border border-gray-800 hover:border-[#00ff88]/50 h-full min-w-[280px] sm:min-w-[320px]">
             {/* Subtle particle background (toned down for Victory Archives) */}
             <div className="absolute inset-0 pointer-events-none z-0">
@@ -121,7 +121,7 @@ export const AchievementShowcase = () => {
   );
 
   return (
-    <section className="bg-black text-white py-24 md:py-28">
+    <section id="victory-archives" className="bg-black text-white py-24 md:py-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={headerRef} className="text-center mb-12 md:mb-16 px-4">
           <motion.h2
