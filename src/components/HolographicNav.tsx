@@ -214,6 +214,7 @@ export const HolographicNav = () => {
   const { scrollY } = useScroll();
   const navOpacity = useTransform(scrollY, [0, 100], [0.5, 1]);
   const navBlur = useTransform(scrollY, [0, 100], [0, 8]);
+  const navListRef = useRef<HTMLDivElement | null>(null);
 
   // Handle smooth scrolling and section highlighting
   const scrollToSection = (sectionId: string) => {
@@ -278,7 +279,19 @@ export const HolographicNav = () => {
     return () => observer.disconnect();
   }, []);
 
-  return (
+    // Ensure the active nav item is visible in the desktop sidebar whenever it changes.
+    useEffect(() => {
+      if (!navListRef.current) return;
+      try {
+        const selector = `[data-section="${activeSection}"]`;
+        const el = navListRef.current.querySelector(selector) as HTMLElement | null;
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (e) {
+        // ignore
+      }
+    }, [activeSection]);
+
+    return (
     <>
       {/* Mobile Top Navbar with Hamburger */}
       <motion.nav
@@ -402,7 +415,7 @@ export const HolographicNav = () => {
 
       {/* Desktop Sidebar */}
       <motion.nav
-        className="hidden md:flex fixed right-0 top-0 bottom-0 w-64 bg-[#0a0a0a]/30 backdrop-blur-sm border-l border-[#1a1a1a]/30 z-50 flex-col overflow-hidden"
+        className="hidden md:flex fixed right-0 top-0 bottom-0 w-64 bg-[#0a0a0a]/30 backdrop-blur-sm border-l border-[#1a1a1a]/30 z-50 flex-col overflow-auto"
         initial={false}
         style={{
           backgroundColor: `rgba(10, 10, 10, ${navOpacity})`,
@@ -411,19 +424,20 @@ export const HolographicNav = () => {
       >
       {/* Logo Section - Hide on mobile */}
       <div className="hidden md:block p-6 border-b border-[#1a1a1a]">
-        <motion.div className="text-2xl font-bold bg-gradient-to-r from-emerald-400 via-blue-500 to-violet-600 bg-clip-text text-transparent" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+        <div className="text-2xl font-bold bg-gradient-to-r from-emerald-400 via-blue-500 to-violet-600 bg-clip-text text-transparent">
           Neural Path
-        </motion.div>
+        </div>
       </div>
 
       {/* Navigation Links */}
       <div className="flex-1 py-8 overflow-auto min-h-0">
-        <div className="flex flex-col px-4 space-y-2">
+        <div ref={navListRef} className="flex flex-col px-4 space-y-2">
           {MENU_ITEMS.map((item) => {
             const isActive = activeSection === item.href.replace('#', '');
             return (
               <motion.div
                 key={item.href}
+                data-section={item.href.replace('#', '')}
                 className="relative"
                 whileHover={{ x: 4 }}
                 transition={{ duration: 0.2 }}
@@ -483,6 +497,8 @@ export const HolographicNav = () => {
           })}
         </div>
       </div>
+
+      
 
       {/* Footer Section */}
       <div id="social-links" className="p-6 border-t border-[#1a1a1a]/30">
