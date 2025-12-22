@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import React, { useMemo, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import ParticleFieldSmall from './ParticleFieldSmall';
 import HorizontalScroller from './animations/HorizontalScroller';
-import RevealOnScroll from './animations/RevealOnScroll';
 
 export const AchievementShowcase = () => {
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const isInView = useInView(headerRef, { amount: 'some', once: true });
   const achievements = [
     {
   type: "hackathon",
@@ -122,7 +123,7 @@ export const AchievementShowcase = () => {
   return (
     <section className="bg-black text-white py-24 md:py-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 md:mb-16 px-4">
+        <div ref={headerRef} className="text-center mb-12 md:mb-16 px-4">
           <motion.h2
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
             initial={{ opacity: 0, y: 20 }}
@@ -140,7 +141,7 @@ export const AchievementShowcase = () => {
         </div>
 
         {/* Horizontal pinned scroller for achievements */}
-        <HorizontalScroller items={panels} height={380} />
+        <HorizontalScroller items={panels} height={380} startAnimations={isInView} />
       </div>
     </section>
   );
