@@ -7,9 +7,10 @@ type Props = {
   // `whileInView` / `viewport` by default so you don't need to toggle this.
   startAnimations?: boolean;
   gap?: number;
+  height?: number;
 };
 
-export function HorizontalScroller({ items, startAnimations = true, gap = 24 }: Props) {
+export function HorizontalScroller({ items, startAnimations = true, gap = 24, height = 360 }: Props) {
   // Restore horizontal sticky scroller layout, but add two motion layers:
   // 1) outer motion for reveal-on-scroll (y / opacity)
   // 2) inner motion for continuous horizontal movement (x keyframes loop)
@@ -24,7 +25,7 @@ export function HorizontalScroller({ items, startAnimations = true, gap = 24 }: 
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
       >
-        <div className="sticky top-0 w-full" style={{ height: 360 }}>
+        <div className="sticky top-0 w-full" style={{ height }}>
           <div className="h-full flex items-center overflow-hidden">
             {/* track: duplicated items for seamless looping */}
             <motion.div
