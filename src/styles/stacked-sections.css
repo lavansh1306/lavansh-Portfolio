@@ -1,0 +1,75 @@
+/* Stacked Sections Effect */
+
+/* Main wrapper for all sections */
+.stacked-sections-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Individual section styling */
+[data-stacked-section] {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
+  will-change: transform, opacity;
+  transform: translateZ(0); /* Enable hardware acceleration */
+  z-index: 1;
+
+  /* Smooth transitions for scale and opacity */
+  transition: transform 0.05s linear, opacity 0.05s linear;
+}
+
+/* Add depth effect with shadow on sections being covered */
+[data-stacked-section]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 50% 0%,
+    rgba(0, 255, 136, 0.05) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Optional: Clip edges during stacking for a clean "breaking" effect */
+[data-stacked-section] {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Ensure content inside sections has proper positioning context */
+[data-stacked-section] > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Special styling for the first section - always visible */
+[data-stacked-section]:first-of-type {
+  position: relative;
+  z-index: 100;
+}
+
+/* Sections being covered get slightly darker */
+[data-stacked-section][data-covered='true'] {
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.3);
+}
+
+/* Support for responsive behavior */
+@media (max-width: 768px) {
+  [data-stacked-section] {
+    min-height: 80vh;
+  }
+}
+
+/* Ensure smooth skew transformation */
+[data-stacked-section] {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}

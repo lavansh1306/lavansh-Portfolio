@@ -30,6 +30,18 @@ export const MainHero = () => {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 300], [0, -50]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  
+  // Scroll-bound zoom: zooms in as you scroll down
+  const scale = useTransform(scrollY, [0, 800], [1, 1.5]);
+  const [localScrollY, setLocalScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setLocalScrollY(window.scrollY);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -105,7 +117,12 @@ export const MainHero = () => {
       `}</style>
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
       
-      <div className="relative z-10 h-full min-h-screen flex items-center justify-center py-20 px-4 md:px-6">
+      <motion.div 
+        className="relative z-10 h-full min-h-screen flex items-center justify-center py-20 px-4 md:px-6"
+        style={{
+          scale: scale,
+        }}
+      >
         <div className="max-w-7xl mx-auto w-full">
           {/* Two-column grid layout */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center">
@@ -207,7 +224,7 @@ export const MainHero = () => {
 
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

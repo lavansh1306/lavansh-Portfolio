@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { MainHero } from "../components/MainHero";
@@ -11,48 +11,120 @@ import { InternshipShowcase } from "../components/InternshipShowcase";
 import { HolographicNav } from "../components/HolographicNav";
 import { NeuralBridge } from "../components/NeuralBridge";
 import RevealOnScroll from "../components/animations/RevealOnScroll";
-// ScrollShowcase removed (unused placeholder)
 
 const IndexPage = () => {
   const [isBooted, setIsBooted] = useState(false);
   const [isTerminalHovered, setIsTerminalHovered] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   if (!isBooted) {
     return <BootSequence onComplete={() => setIsBooted(true)} />;
   }
 
   return (
-    <div className="bg-black min-h-screen relative overflow-hidden">
+    <div className="bg-black min-h-screen relative">
       <HolographicNav />
       <CyberGrid />
       <div className="relative z-10 pt-16 md:pt-0 pb-20 md:pb-0 w-full md:pr-64 px-4 md:px-0">
-        <section id="intro" className="min-h-screen">
+        {/* Section 1 */}
+        <motion.div
+          id="intro"
+          data-stacked-section
+          className="min-h-screen relative"
+          style={{
+            y: scrollY * 0.2,
+            opacity: Math.max(0, 1 - scrollY / 2000),
+            scale: 1 - (scrollY / 10000) * 0.1,
+          }}
+        >
           <MainHero />
-        </section>
+        </motion.div>
+
+        {/* Depth spacer */}
+        <div className="h-40" />
+
+        {/* Section 2 */}
         <RevealOnScroll>
-          <section id="skills">
+          <motion.div
+            id="skills"
+            data-stacked-section
+            className="relative"
+            style={{
+              y: scrollY * 0.15,
+              scale: 1 - (Math.max(0, scrollY - 1000) / 10000) * 0.1,
+            }}
+          >
             <SkillMatrix />
-          </section>
+          </motion.div>
         </RevealOnScroll>
+
+        <div className="h-40" />
+
+        {/* Section 3 */}
         <RevealOnScroll>
-          <section id="internship">
+          <motion.div
+            id="internship"
+            data-stacked-section
+            className="relative"
+            style={{
+              y: scrollY * 0.1,
+              scale: 1 - (Math.max(0, scrollY - 2000) / 10000) * 0.1,
+            }}
+          >
             <InternshipShowcase />
-          </section>
+          </motion.div>
         </RevealOnScroll>
+
+        <div className="h-40" />
+
+        {/* Section 4 */}
         <RevealOnScroll>
-          <section id="projects">
+          <motion.div
+            id="projects"
+            data-stacked-section
+            className="relative"
+            style={{
+              y: scrollY * 0.05,
+              scale: 1 - (Math.max(0, scrollY - 3000) / 10000) * 0.1,
+            }}
+          >
             <ProjectShowcase />
-          </section>
+          </motion.div>
         </RevealOnScroll>
+
+        <div className="h-40" />
+
+        {/* Section 5 */}
         <RevealOnScroll>
-          <section id="achievements">
+          <motion.div
+            id="achievements"
+            data-stacked-section
+            className="relative"
+          >
             <AchievementShowcase />
-          </section>
+          </motion.div>
         </RevealOnScroll>
+
+        <div className="h-40" />
+
+        {/* Section 6 */}
         <RevealOnScroll>
-          <section id="contact">
+          <motion.div
+            id="contact"
+            data-stacked-section
+            className="relative"
+          >
             <NeuralBridge />
-          </section>
+          </motion.div>
         </RevealOnScroll>
 
         {/* ScrollTrigger demo section removed */}

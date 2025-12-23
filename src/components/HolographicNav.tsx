@@ -220,13 +220,8 @@ export const HolographicNav = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.querySelector(sectionId);
     if (element) {
-      const elementRect = element.getBoundingClientRect();
-      const absoluteElementTop = elementRect.top + window.pageYOffset;
-      const middle = elementRect.height / 3;
-      const offsetTop = absoluteElementTop - middle;
-      
       window.scrollTo({
-        top: offsetTop,
+        top: element.getBoundingClientRect().top + window.scrollY,
         behavior: 'smooth'
       });
     }
@@ -234,8 +229,8 @@ export const HolographicNav = () => {
 
   useEffect(() => {
     const options = {
-      rootMargin: '-40% 0px -40% 0px', // Creates a smaller intersection zone in the middle
-      threshold: Array.from({ length: 100 }, (_, i) => i / 100) // Creates 100 thresholds for smooth tracking
+      rootMargin: '-35% 0px -35% 0px',
+      threshold: Array.from({ length: 100 }, (_, i) => i / 100)
     };
 
     const handleIntersect = (entries: IntersectionObserverEntry[]) => {
@@ -243,7 +238,6 @@ export const HolographicNav = () => {
       
       if (intersectingEntries.length > 0) {
         const mostVisible = intersectingEntries.reduce((prev, current) => {
-          // Calculate center point of the element
           const prevRect = prev.boundingClientRect;
           const currentRect = current.boundingClientRect;
           
@@ -251,7 +245,6 @@ export const HolographicNav = () => {
           const prevDistanceToCenter = Math.abs((prevRect.top + prevRect.bottom) / 2 - viewportCenter);
           const currentDistanceToCenter = Math.abs((currentRect.top + currentRect.bottom) / 2 - viewportCenter);
           
-          // Consider both intersection ratio and distance from center
           const prevScore = prev.intersectionRatio * (1 - prevDistanceToCenter / window.innerHeight);
           const currentScore = current.intersectionRatio * (1 - currentDistanceToCenter / window.innerHeight);
           
@@ -261,13 +254,10 @@ export const HolographicNav = () => {
         const newActiveSection = mostVisible.target.id;
         setActiveSection(newActiveSection);
       }
-      
-      setIsScrolled(window.scrollY > 50);
     };
 
     const observer = new IntersectionObserver(handleIntersect, options);
     
-    // Observe all sections
     MENU_ITEMS.forEach(item => {
       const sectionId = item.href.replace('#', '');
       const element = document.getElementById(sectionId);
@@ -277,6 +267,15 @@ export const HolographicNav = () => {
     });
 
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
     // Ensure the active nav item is visible in the desktop sidebar whenever it changes.
