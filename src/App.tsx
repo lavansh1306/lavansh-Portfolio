@@ -11,12 +11,12 @@ import MouseTrail from "./components/MouseTrail";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <MouseTrail />
-    <Toaster />
-    <Sonner />
-    <BrowserRouter>
+const AppContent = () => {
+  return (
+    <>
+      <MouseTrail />
+      <Toaster />
+      <Sonner />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/contact" element={<Contact />} />
@@ -25,6 +25,14 @@ const App = () => (
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+    </>
+  );
+};
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   </QueryClientProvider>
 );

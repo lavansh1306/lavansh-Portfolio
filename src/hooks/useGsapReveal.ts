@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import getGsap, { ScrollTrigger } from '../lib/gsap-setup';
 
 type RevealOptions = {
   root?: React.RefObject<HTMLElement | null> | HTMLElement | null;
-  targets?: string; // child selector
+  targets?: string;
   from?: gsap.TweenVars;
   to?: gsap.TweenVars;
   stagger?: number;
@@ -16,43 +15,10 @@ type RevealOptions = {
 
 export function useGsapReveal(options: RevealOptions) {
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const gsap = getGsap();
-
-    const rootEl = (options.root && 'current' in options.root ? options.root.current : options.root) as HTMLElement | null;
-    if (!rootEl) return;
-
-    const ctx = gsap.context(() => {
-      // normalize targets to an array and guard if empty
-      const items = options.targets
-        ? gsap.utils.toArray(rootEl.querySelectorAll(options.targets))
-        : [rootEl];
-
-      if (!items || items.length === 0) {
-        // nothing to animate
-        return;
-      }
-
-      const from = options.from ?? { opacity: 0, y: 40 };
-      const to = options.to ?? { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' };
-
-      gsap.set(items, from);
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: rootEl,
-          start: options.start ?? 'top 80%',
-          end: options.end ?? 'bottom 60%',
-          toggleActions: options.once ? 'play none none none' : 'play reverse play reverse',
-          scrub: options.scrub ?? false,
-        },
-      });
-
-      tl.to(items, { ...to, stagger: options.stagger ?? 0.08 });
-    }, rootEl);
-
-    return () => ctx.revert();
-  }, [options.root, options.targets, options.once, options.stagger, options.scrub, options.start, options.end]);
+    // This hook is disabled - use Framer Motion instead
+    // GSAP ScrollTrigger conflicts with Lenis
+    return;
+  }, []);
 }
 
 export default useGsapReveal;

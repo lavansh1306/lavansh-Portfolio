@@ -103,17 +103,18 @@ const skills = {
 };
 
 export const SkillMatrix = () => {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+  const skillEntries = Object.entries(skills);
 
   return (
-    <section className="py-20 relative">
+    <section className="py-20 relative z-0">
       {/* Neural network background effect */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.1)_1px,transparent_1px)] bg-[size:50px_50px] opacity-10"></div>
       
-      <div className="container mx-auto px-4 relative z-10">
+      {/* Container with proper spacing for right sidebar */}
+      <div className="container mx-auto px-4 md:pr-72 relative z-0">
         {/* Section Header */}
-        <div className="text-center mb-12 md:mb-16 px-4">
+        <div className="text-center mb-16 md:mb-20">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-cyber text-primary animate-neon-pulse mb-4">
             NEURAL SKILLSET
           </h2>
@@ -123,79 +124,102 @@ export const SkillMatrix = () => {
           </p>
         </div>
 
-        {/* Skills Grid */}
-        <div className="grid grid-cols-1 gap-8 px-4 md:px-0">
-          {Object.entries(skills).map(([category, { icon, color, items }]) => (
-            <HolographicCard 
-              key={category}
-              className="p-8 hover:shadow-[0_0_30px_rgba(0,255,136,0.2)] transition-shadow duration-300 ease-out-expo"
-              onClick={() => setActiveCategory(activeCategory === category ? null : category)}
-            >
-              <div className="space-y-6">
-                {/* Category Header */}
-                <div className="flex items-center gap-4">
-                  {icon}
-                  <h3 className={`text-2xl font-cyber text-${color}`}>{category}</h3>
-                </div>
+        {/* Stacked Sections per category - use main page scroll, no internal scrollbars */}
+        {skillEntries.map(([category, { icon, color, items }]) => (
+          <section key={category} className="relative min-h-screen">
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 py-12">
 
-                {/* Skills Content */}
-                <motion.div 
-                  initial={false}
-                  animate={{ height: activeCategory === category ? "auto" : "0" }}
-                  className="overflow-hidden"
-                >
-                  <div className="grid gap-6 py-4">
-                    {Object.entries(items).map(([subCategory, skillList]) => (
-                      <div key={subCategory} className="space-y-3">
-                        <h4 className="text-lg font-matrix text-foreground">{subCategory}</h4>
-                        <div className="flex flex-wrap gap-3">
-                          {skillList.map((skill) => {
-                            const skillName = typeof skill === 'string' ? skill : skill.name;
-                            const SkillIcon = typeof skill === 'string' ? null : skill.icon;
-                            
-                            return (
-                              <motion.div
-                                key={skillName}
-                                className={`px-3.5 py-2 border rounded-md font-matrix text-sm transition-colors cursor-pointer shadow-[0_0_8px_rgba(120,160,255,0.15)] card-hover flex items-center gap-2
-                                  ${hoveredSkill === skillName 
-                                    ? `border-${color} text-${color} bg-${color}/10`
-                                    : 'border-primary/30 text-white/90 hover:border-primary'
-                                  }`}
-                                onMouseEnter={() => setHoveredSkill(skillName)}
-                                onMouseLeave={() => setHoveredSkill(null)}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                              >
-                                {SkillIcon && <SkillIcon className="w-4 h-4" style={{ color: 'currentColor' }} />}
-                                {skillName}
-                              </motion.div>
-                            );
-                          })}
+              {/* LEFT - Sticky card pinned while this section is in view */}
+              <div className="lg:w-1/3 flex-shrink-0">
+                <div className="sticky top-24 self-start">
+                  <HolographicCard className="p-6 lg:p-8 bg-black/80 backdrop-blur-md border-2 border-primary/30 hover:border-primary/50 transition-all duration-300">
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-4">
+                        <div className={`p-3 rounded-lg bg-${color}/10 border border-${color}/30`}>
+                          {icon}
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </motion.div>
-
-                {/* Interactive Elements */}
-                <div className="flex justify-between items-center pt-4 border-t border-primary/10">
-                  <div className="text-sm font-matrix text-primary/60">
-                    {Object.values(items).flat().filter(item => typeof item === 'object' ? item.name : item).length} capabilities
-                  </div>
-                  <motion.div 
-                    animate={{ rotate: activeCategory === category ? 180 : 0 }}
-                    className={`w-6 h-6 border border-${color}/30 rounded-full flex items-center justify-center`}
-                  >
-                    <span className={`text-${color}`}>⌄</span>
-                  </motion.div>
+                      <h3 className={`text-2xl lg:text-3xl font-cyber text-${color} leading-tight`}>
+                        {category}
+                      </h3>
+                      <div className={`w-16 h-1 bg-gradient-to-r from-${color} to-transparent`}></div>
+                      <p className="text-xs lg:text-sm text-muted-foreground font-matrix">
+                        {Object.values(items).flat().length} capabilities loaded
+                      </p>
+                      <div className="flex items-center gap-2 pt-2">
+                        <div className={`w-2 h-2 rounded-full bg-${color} animate-pulse`}></div>
+                        <span className="text-xs text-primary/60 font-matrix">ACTIVE</span>
+                      </div>
+                    </div>
+                  </HolographicCard>
                 </div>
               </div>
-            </HolographicCard>
-          ))}
-        </div>
+
+              {/* RIGHT - Skill lists (grow naturally; no overflow or internal scroll) */}
+              <div className="lg:w-2/3">
+                <div className="space-y-12">
+                  {Object.entries(items).map(([subCategory, skillList], subIndex) => (
+                    <motion.div
+                      key={subCategory}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      transition={{ duration: 0.6, delay: subIndex * 0.1 }}
+                      className="space-y-6"
+                    >
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className={`w-1 h-8 bg-gradient-to-b from-${color} to-transparent`}></div>
+                        <h4 className="text-lg lg:text-xl font-matrix text-primary/90">{subCategory}</h4>
+                        <div className="flex-1 h-px bg-gradient-to-r from-primary/30 to-transparent"></div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
+                        {skillList.map((skill, skillIndex) => {
+                          const skillName = typeof skill === 'string' ? skill : skill.name;
+                          const SkillIcon = typeof skill === 'string' ? null : skill.icon;
+
+                          return (
+                            <motion.div
+                              key={skillName}
+                              initial={{ opacity: 0, x: -20 }}
+                              whileInView={{ opacity: 1, x: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.4, delay: skillIndex * 0.05 }}
+                              className={`group relative px-4 py-4 border rounded-lg font-matrix text-sm transition-all duration-300 cursor-pointer flex items-center gap-3
+                                ${hoveredSkill === skillName ? `border-${color} text-${color} bg-${color}/10 shadow-[0_0_20px_rgba(0,255,136,0.3)] scale-[1.02]` : 'border-primary/20 text-white/90 hover:border-primary/50 bg-black/30 backdrop-blur-sm hover:bg-black/40'}`}
+                              onMouseEnter={() => setHoveredSkill(skillName)}
+                              onMouseLeave={() => setHoveredSkill(null)}
+                              whileHover={{ x: 6 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              {SkillIcon && (
+                                <div className={`flex-shrink-0 transition-transform duration-300 ${hoveredSkill === skillName ? 'scale-110 rotate-12' : ''}`}>
+                                  <SkillIcon className="w-5 h-5" />
+                                </div>
+                              )}
+
+                              <span className="flex-1 leading-tight">{skillName}</span>
+
+                              <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${hoveredSkill === skillName ? `bg-${color} shadow-[0_0_8px_currentColor] scale-150` : 'bg-primary/30'}`}></div>
+
+                              {hoveredSkill === skillName && (
+                                <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-${color}/5 to-transparent rounded-lg pointer-events-none`}></div>
+                              )}
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </section>
+        ))}
 
         {/* Matrix Effect */}
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 pointer-events-none z-0">
           {Array.from({ length: 20 }).map((_, i) => (
             <div
               key={i}

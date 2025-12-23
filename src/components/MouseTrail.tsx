@@ -471,7 +471,6 @@ const MouseTrail: React.FC = () => {
         observer.observe(section);
       });
       
-      // Initial detection: find which section is currently visible
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
       let initialVariant: CursorVariant = 'code-tail';
@@ -482,7 +481,6 @@ const MouseTrail: React.FC = () => {
         const sectionBottom = sectionTop + rect.height;
         const viewportCenter = scrollY + viewportHeight / 2;
         
-        // Check if viewport center is within this section
         if (viewportCenter >= sectionTop && viewportCenter <= sectionBottom) {
           const sectionId = section.id;
           if (sectionId === 'intro' || sectionId === 'hero') {
@@ -504,7 +502,7 @@ const MouseTrail: React.FC = () => {
       });
       
       setCursorVariant(initialVariant);
-    }, 100);
+    }, 50);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
