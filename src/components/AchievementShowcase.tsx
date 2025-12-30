@@ -23,7 +23,7 @@ export const AchievementShowcase = () => {
   position: "2nd Place",
   prize: "—",
   description: "Built Emulsify, a high-performance real-time data processing & visualization platform enabling fast analytics and decision-making.",
-  tech: ["Rust", "ClickHouse", "Apache Flink", "React"],
+  tech: ["RAG", "GEMINI", "Weavieate", "React"],
   image: "/achievements/hackpick.png",
   link: "https://www.linkedin.com/posts/paridhi-babel-39105033a_24-hours-one-idea-endless-coffee-ugcPost-7360613015026606081-CbOO?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE_JHoMBDGQ2FfJepNd7G5lBWyKXQ9UbkVA"
 },
@@ -33,7 +33,7 @@ export const AchievementShowcase = () => {
   position: "2nd Place",
   prize: "—",
   description: "Created Connectfy — an AI-powered networking app for events, matching attendees based on interests to enable smarter professional connections.",
-  tech: ["Next.js", "Flask", "AI Matching"],
+  tech: ["React", "Flask", "NCL" , "NLP"],
   image: "/achievements/connectfy.png",
   link: "https://www.linkedin.com/posts/lavansh-choubey-683355314_hackathon-producting101-networkingrevolution-activity-7304886181022842880-opqB?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE_JHoMBDGQ2FfJepNd7G5lBWyKXQ9UbkVA"
 },
@@ -52,7 +52,7 @@ export const AchievementShowcase = () => {
   name: "INN-ING 2K24 (SRM University)",
   position: "Winner",
   prize: "—",
-  description: "Developed BioSync, an AI-powered personalized health platform delivering tailored wellness insights for better lifestyle tracking.",
+  description: "Pitched BioSync, an AI-powered personalized health platform delivering tailored wellness insights for better lifestyle tracking.",
   tech: ["AI", "Health Tech", "Data Analytics"],
   image: "/achievements/biosync.png",
   link: "https://www.linkedin.com/posts/lavansh-choubey-683355314_innovation-healthtech-studentproject-activity-7271149816326369280-o13d?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE_JHoMBDGQ2FfJepNd7G5lBWyKXQ9UbkVA"
@@ -72,7 +72,7 @@ export const AchievementShowcase = () => {
   name: "CHEMFLUX 12.0 (SRM IST)",
   position: "2nd Prize",
   prize: "—",
-  description: "Built WasteWise, a gamified AI & AR solution that makes waste management rewarding through AI-powered waste analysis, AR upcycling, and eco-missions.",
+  description: "Pitched WasteWise, a gamified AI & AR solution that makes waste management rewarding through AI-powered waste analysis, AR upcycling, and eco-missions.",
   tech: ["AI", "AR", "Gamification"],
   image: "/achievements/wastewise.png",
   link: "https://www.linkedin.com/posts/sistla-priya-375a67340_chemflux12-wastewise-aiforgood-ugcPost-7308825316565606401-U1Tn?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE_JHoMBDGQ2FfJepNd7G5lBWyKXQ9UbkVA"
