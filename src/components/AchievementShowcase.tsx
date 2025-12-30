@@ -11,11 +11,11 @@ export const AchievementShowcase = () => {
   type: "hackathon",
   name: "GeoNova Hackathon 2025 (SRM Easwari Engineering College)",
   position: "Winner",
-  prize: "₹12,000",
+  prize: "—",
   description: "Developed HydroSense — an AI-based smart water management system using IoT to monitor consumption, detect leaks, and optimize water flow for sustainable living.",
   tech: ["Python", "IoT", "TensorFlow", "Flask"],
   image: "/achievements/geonova.png",
-  link: "https://devpost.com/software/hydrosense"
+  link: "https://www.linkedin.com/posts/aakarsh-kumar25_%F0%9D%97%AA%F0%9D%97%B6%F0%9D%97%BB%F0%9D%97%BB%F0%9D%97%B2%F0%9D%97%BF%F0%9D%98%80-%F0%9D%97%BC%F0%9D%97%B3-%F0%9D%97%9A%F0%9D%97%B2%F0%9D%97%BC%F0%9D%97%A1%F0%9D%97%BC%F0%9D%98%83%F0%9D%97%AE%F0%9D%9F%AE%F0%9D%9F%B1-ugcPost-7314327913577738242-dT59?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE_JHoMBDGQ2FfJepNd7G5lBWyKXQ9UbkVA"
 },
 {
   type: "hackathon",
@@ -25,7 +25,7 @@ export const AchievementShowcase = () => {
   description: "Built Emulsify, a high-performance real-time data processing & visualization platform enabling fast analytics and decision-making.",
   tech: ["Rust", "ClickHouse", "Apache Flink", "React"],
   image: "/achievements/hackpick.png",
-  link: "https://devpost.com/software/emulsify"
+  link: "https://www.linkedin.com/posts/paridhi-babel-39105033a_24-hours-one-idea-endless-coffee-ugcPost-7360613015026606081-CbOO?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE_JHoMBDGQ2FfJepNd7G5lBWyKXQ9UbkVA"
 },
 {
   type: "hackathon",
@@ -35,7 +35,7 @@ export const AchievementShowcase = () => {
   description: "Created Connectfy — an AI-powered networking app for events, matching attendees based on interests to enable smarter professional connections.",
   tech: ["Next.js", "Flask", "AI Matching"],
   image: "/achievements/connectfy.png",
-  link: "https://devpost.com/software/connectfy"
+  link: "https://www.linkedin.com/posts/lavansh-choubey-683355314_hackathon-producting101-networkingrevolution-activity-7304886181022842880-opqB?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE_JHoMBDGQ2FfJepNd7G5lBWyKXQ9UbkVA"
 },
 {
   type: "hackathon",
@@ -45,7 +45,7 @@ export const AchievementShowcase = () => {
   description: "Built B-Break, an AI chatbot supporting individuals facing gender discrimination & mental health challenges with real-time resources and safe guidance.",
   tech: ["Flask", "TensorFlow", "Gemini API"],
   image: "/achievements/bbreak.png",
-  link: "https://devpost.com/software/b-break"
+  link: "https://www.linkedin.com/posts/lavansh-choubey-683355314_hackathon-genderequality-aiforgood-activity-7301246732061851648-JkjO?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE_JHoMBDGQ2FfJepNd7G5lBWyKXQ9UbkVA"
 },
 {
   type: "ideathon",
@@ -55,7 +55,7 @@ export const AchievementShowcase = () => {
   description: "Developed BioSync, an AI-powered personalized health platform delivering tailored wellness insights for better lifestyle tracking.",
   tech: ["AI", "Health Tech", "Data Analytics"],
   image: "/achievements/biosync.png",
-  link: "#"
+  link: "https://www.linkedin.com/posts/lavansh-choubey-683355314_innovation-healthtech-studentproject-activity-7271149816326369280-o13d?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE_JHoMBDGQ2FfJepNd7G5lBWyKXQ9UbkVA"
 },
 {
   type: "ideathon",
@@ -65,7 +65,7 @@ export const AchievementShowcase = () => {
   description: "Pitched Costwise, an AI-powered personal finance assistant that simplifies budgeting, tracks expenses, and promotes smart saving.",
   tech: ["AI", "Finance Tech", "Flask"],
   image: "/achievements/costwise.png",
-  link: "#"
+  link: "https://www.linkedin.com/posts/lavansh-choubey-683355314_thrilled-to-share-that-our-teambinarycrz-activity-7323785884309331969-a5qY?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE_JHoMBDGQ2FfJepNd7G5lBWyKXQ9UbkVA"
 },
 {
   type: "ideathon",
@@ -75,7 +75,7 @@ export const AchievementShowcase = () => {
   description: "Built WasteWise, a gamified AI & AR solution that makes waste management rewarding through AI-powered waste analysis, AR upcycling, and eco-missions.",
   tech: ["AI", "AR", "Gamification"],
   image: "/achievements/wastewise.png",
-  link: "#"
+  link: "https://www.linkedin.com/posts/sistla-priya-375a67340_chemflux12-wastewise-aiforgood-ugcPost-7308825316565606401-U1Tn?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE_JHoMBDGQ2FfJepNd7G5lBWyKXQ9UbkVA"
 }
 
   ];
