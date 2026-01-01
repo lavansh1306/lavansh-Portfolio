@@ -111,8 +111,8 @@ export const SkillMatrix = () => {
       {/* Neural network background effect */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.1)_1px,transparent_1px)] bg-[size:50px_50px] opacity-10"></div>
       
-      {/* Container with proper spacing for right sidebar */}
-      <div className="container mx-auto px-4 md:pr-72 relative z-0">
+      {/* Container - NO PADDING ON RIGHT, let sections handle it */}
+      <div className="container mx-auto px-4 relative z-0">
         {/* Section Header */}
         <div className="text-center mb-16 md:mb-20">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-cyber text-primary animate-neon-pulse mb-4">
@@ -124,40 +124,41 @@ export const SkillMatrix = () => {
           </p>
         </div>
 
-        {/* Stacked Sections per category - use main page scroll, no internal scrollbars */}
+        {/* Stacked Sections per category - EXACT SAME LAYOUT ON MOBILE & DESKTOP */}
         {skillEntries.map(([category, { icon, color, items }]) => (
           <section key={category} className="relative min-h-screen">
-            <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 py-12">
+            {/* LEFT + RIGHT SIDE-BY-SIDE ON ALL SCREENS */}
+            <div className="flex flex-row gap-6 lg:gap-16 py-12 pr-2 sm:pr-4 md:pr-72">
 
-              {/* LEFT - Sticky card pinned while this section is in view */}
-              <div className="lg:w-1/3 flex-shrink-0">
+              {/* LEFT - Sticky card pinned (ALWAYS 25% width) */}
+              <div className="w-1/4 sm:w-1/3 flex-shrink-0">
                 <div className="sticky top-24 self-start">
-                  <HolographicCard className="p-6 lg:p-8 bg-black/80 backdrop-blur-md border-2 border-primary/30 hover:border-primary/50 transition-all duration-300">
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-4">
-                        <div className={`p-3 rounded-lg bg-${color}/10 border border-${color}/30`}>
+                  <HolographicCard className="p-3 sm:p-4 md:p-6 lg:p-8 bg-black/80 backdrop-blur-md border-2 border-primary/30 hover:border-primary/50 transition-all duration-300">
+                    <div className="space-y-2 sm:space-y-3 md:space-y-4">
+                      <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+                        <div className={`p-2 sm:p-2.5 md:p-3 rounded-lg bg-${color}/10 border border-${color}/30`}>
                           {icon}
                         </div>
                       </div>
-                      <h3 className={`text-2xl lg:text-3xl font-cyber text-${color} leading-tight`}>
+                      <h3 className={`text-sm sm:text-lg md:text-2xl lg:text-3xl font-cyber text-${color} leading-tight`}>
                         {category}
                       </h3>
-                      <div className={`w-16 h-1 bg-gradient-to-r from-${color} to-transparent`}></div>
-                      <p className="text-xs lg:text-sm text-muted-foreground font-matrix">
+                      <div className={`w-12 sm:w-14 md:w-16 h-1 bg-gradient-to-r from-${color} to-transparent`}></div>
+                      <p className="text-[10px] sm:text-xs md:text-sm text-muted-foreground font-matrix">
                         {Object.values(items).flat().length} capabilities loaded
                       </p>
-                      <div className="flex items-center gap-2 pt-2">
+                      <div className="flex items-center gap-2 pt-1 sm:pt-2 md:pt-2">
                         <div className={`w-2 h-2 rounded-full bg-${color} animate-pulse`}></div>
-                        <span className="text-xs text-primary/60 font-matrix">ACTIVE</span>
+                        <span className="text-[10px] sm:text-xs text-primary/60 font-matrix">ACTIVE</span>
                       </div>
                     </div>
                   </HolographicCard>
                 </div>
               </div>
 
-              {/* RIGHT - Skill lists (grow naturally; no overflow or internal scroll) */}
-              <div className="lg:w-2/3">
-                <div className="space-y-12">
+              {/* RIGHT - Skill lists (ALWAYS 75% width) */}
+              <div className="w-3/4 sm:w-2/3">
+                <div className="space-y-8 sm:space-y-10 md:space-y-12">
                   {Object.entries(items).map(([subCategory, skillList], subIndex) => (
                     <motion.div
                       key={subCategory}
@@ -165,15 +166,15 @@ export const SkillMatrix = () => {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "-50px" }}
                       transition={{ duration: 0.6, delay: subIndex * 0.1 }}
-                      className="space-y-6"
+                      className="space-y-4 sm:space-y-5 md:space-y-6"
                     >
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className={`w-1 h-8 bg-gradient-to-b from-${color} to-transparent`}></div>
-                        <h4 className="text-lg lg:text-xl font-matrix text-primary/90">{subCategory}</h4>
+                      <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-5 md:mb-6">
+                        <div className={`w-1 h-6 sm:h-7 md:h-8 bg-gradient-to-b from-${color} to-transparent`}></div>
+                        <h4 className="text-xs sm:text-sm md:text-lg lg:text-xl font-matrix text-primary/90">{subCategory}</h4>
                         <div className="flex-1 h-px bg-gradient-to-r from-primary/30 to-transparent"></div>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
+                      <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
                         {skillList.map((skill, skillIndex) => {
                           const skillName = typeof skill === 'string' ? skill : skill.name;
                           const SkillIcon = typeof skill === 'string' ? null : skill.icon;
@@ -185,7 +186,7 @@ export const SkillMatrix = () => {
                               whileInView={{ opacity: 1, x: 0 }}
                               viewport={{ once: true }}
                               transition={{ duration: 0.4, delay: skillIndex * 0.05 }}
-                              className={`group relative px-4 py-4 border rounded-lg font-matrix text-sm transition-all duration-300 cursor-pointer flex items-center gap-3
+                              className={`group relative px-2 sm:px-3 md:px-4 py-2 sm:py-3 md:py-4 border rounded-lg font-matrix text-[11px] sm:text-xs md:text-sm transition-all duration-300 cursor-pointer flex items-center gap-1.5 sm:gap-2 md:gap-3
                                 ${hoveredSkill === skillName ? `border-${color} text-${color} bg-${color}/10 shadow-[0_0_20px_rgba(0,255,136,0.3)] scale-[1.02]` : 'border-primary/20 text-white/90 hover:border-primary/50 bg-black/30 backdrop-blur-sm hover:bg-black/40'}`}
                               onMouseEnter={() => setHoveredSkill(skillName)}
                               onMouseLeave={() => setHoveredSkill(null)}
@@ -194,13 +195,13 @@ export const SkillMatrix = () => {
                             >
                               {SkillIcon && (
                                 <div className={`flex-shrink-0 transition-transform duration-300 ${hoveredSkill === skillName ? 'scale-110 rotate-12' : ''}`}>
-                                  <SkillIcon className="w-5 h-5" />
+                                  <SkillIcon className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
                                 </div>
                               )}
 
-                              <span className="flex-1 leading-tight">{skillName}</span>
+                              <span className="flex-1 leading-tight line-clamp-1">{skillName}</span>
 
-                              <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${hoveredSkill === skillName ? `bg-${color} shadow-[0_0_8px_currentColor] scale-150` : 'bg-primary/30'}`}></div>
+                              <div className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full transition-all duration-300 flex-shrink-0 ${hoveredSkill === skillName ? `bg-${color} shadow-[0_0_8px_currentColor] scale-150` : 'bg-primary/30'}`}></div>
 
                               {hoveredSkill === skillName && (
                                 <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-${color}/5 to-transparent rounded-lg pointer-events-none`}></div>
