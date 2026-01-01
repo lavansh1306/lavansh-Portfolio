@@ -84,7 +84,7 @@ export const AchievementShowcase = () => {
     () =>
       achievements.map((achievement, index) => (
         <a key={`achv-${index}-${(achievement.name || '').replace(/\s+/g, '-').toLowerCase()}`} href={(achievement as any).link || '#'} target="_blank" rel="noopener noreferrer" className="victory-card group h-full relative block">
-          <div className="relative overflow-hidden rounded-lg bg-gray-900 p-3 sm:p-4 md:p-5 hover:bg-gray-800 transition-all duration-300 border border-gray-800 hover:border-[#00ff88]/50 h-full min-w-[280px] sm:min-w-[320px]">
+          <div className="relative overflow-hidden rounded-lg bg-gray-900 p-3 sm:p-4 md:p-5 hover:bg-gray-800 transition-all duration-300 border border-gray-800 hover:border-[#00ff88]/50 h-full">
             {/* Subtle particle background (toned down for Victory Archives) */}
             <div className="absolute inset-0 pointer-events-none z-0">
               <ParticleFieldSmall density={0.00012} className="opacity-20" />
@@ -102,9 +102,9 @@ export const AchievementShowcase = () => {
                 <span className="text-[#00ff88] font-mono text-xs sm:text-sm flex-shrink-0">{achievement.prize}</span>
               </div>
 
-              <h3 className="text-base md:text-lg lg:text-xl font-bold mb-1.5 text-white break-words leading-tight">{achievement.name}</h3>
-              <p className="text-[#00ff88] font-semibold mb-2 text-sm md:text-base break-words">{achievement.position}</p>
-              <p className="text-gray-400 mb-3 text-xs sm:text-sm leading-relaxed break-words">{achievement.description}</p>
+              <h3 className="text-sm sm:text-base md:text-lg font-bold mb-1.5 text-white break-words leading-tight">{achievement.name}</h3>
+              <p className="text-[#00ff88] font-semibold mb-2 text-xs sm:text-sm break-words">{achievement.position}</p>
+              <p className="text-gray-400 mb-3 text-xs sm:text-sm leading-relaxed break-words line-clamp-3">{achievement.description}</p>
 
               <div className="flex flex-wrap gap-1.5">
                 {(achievement.tech || []).map((tech, techIndex) => (
@@ -121,11 +121,11 @@ export const AchievementShowcase = () => {
   );
 
   return (
-    <section id="victory-archives" className="bg-black text-white py-24 md:py-28">
+    <section id="victory-archives" className="bg-black text-white py-16 sm:py-20 md:py-24 lg:py-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div ref={headerRef} className="text-center mb-12 md:mb-16 px-4">
+        <div ref={headerRef} className="text-center mb-8 sm:mb-12 md:mb-16 px-2">
           <motion.h2
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -133,7 +133,7 @@ export const AchievementShowcase = () => {
             Victory Archives
           </motion.h2>
           <motion.div
-            className="h-1 w-24 sm:w-32 bg-gradient-to-r from-[#00ff88] to-[#00a2ff] mx-auto"
+            className="h-1 w-16 sm:w-24 md:w-32 bg-gradient-to-r from-[#00ff88] to-[#00a2ff] mx-auto"
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
