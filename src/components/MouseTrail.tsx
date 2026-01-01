@@ -66,9 +66,21 @@ const MouseTrail: React.FC = () => {
   const [isHovering, setIsHovering] = useState(false);
   const [hoveredElement, setHoveredElement] = useState<HTMLElement | null>(null);
   const [cursorVariant, setCursorVariant] = useState<CursorVariant>('code-tail');
+  // Keep a ref mirror to avoid unnecessary re-renders and allow immediate checks
+  const cursorVariantRef = useRef<CursorVariant>(cursorVariant);
+  const setVariantFast = (v: CursorVariant) => {
+    if (cursorVariantRef.current !== v) {
+      cursorVariantRef.current = v;
+      setCursorVariant(v);
+    }
+  };
   const [codeTrail, setCodeTrail] = useState<CodeChar[]>([]);
   const trailIdCounter = useRef(0);
   const lastTrailTime = useRef(0);
+  // rAF batching refs for mousemove
+  const rafRef = useRef<number | null>(null);
+  const lastMousePosRef = useRef<{ x: number; y: number } | null>(null);
+  const lastMouseTimeRef = useRef(0);
   
   // Victory mode particle system
   const [victoryParticles, setVictoryParticles] = useState<VictoryParticle[]>([]);
@@ -375,34 +387,54 @@ const MouseTrail: React.FC = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [cursorVariant]);
 
+  // Simple mapping: section ID -> cursor variant
+  const mapIdToVariant = (id: string | undefined): CursorVariant => {
+    if (!id) return 'code-tail';
+    if (id === 'intro' || id === 'hero') return 'code-tail';
+    if (id === 'skills') return 'scanning';
+    if (id === 'internship' || id === 'internships') return 'internship';
+    if (id === 'projects') return 'projects';
+    if (id === 'experience') return 'analysis';
+    if (id === 'contact') return 'signal';
+    if (id === 'achievements' || id === 'victory-archives') return 'victory';
+    return 'code-tail';
+  };
+
   useEffect(() => {
     // Hide default cursor globally
     document.body.style.cursor = 'none';
     
-    // Track mouse position and generate code trail
+    // Track mouse position
     const handleMouseMove = (e: MouseEvent) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
+      lastMouseTimeRef.current = Date.now();
+      lastMousePosRef.current = { x: e.clientX, y: e.clientY };
+      if (rafRef.current == null) {
+        rafRef.current = requestAnimationFrame(() => {
+          const p = lastMousePosRef.current;
+          if (p) {
+            cursorX.set(p.x);
+            cursorY.set(p.y);
+          }
+          rafRef.current = null;
+          lastMousePosRef.current = null;
+        });
+      }
 
       // Generate code trail for 'code-tail' variant
-      if (cursorVariant === 'code-tail') {
+      if (cursorVariantRef.current === 'code-tail') {
         const now = Date.now();
-        // Throttle trail generation (every 80ms for performance)
         if (now - lastTrailTime.current > 80) {
           lastTrailTime.current = now;
-          
           const randomChar = CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)];
-          const newChar: CodeChar = {
-            id: trailIdCounter.current++,
-            char: randomChar,
-            x: e.clientX + (Math.random() - 0.5) * 20, // Add slight randomness
-            y: e.clientY + (Math.random() - 0.5) * 20,
-            createdAt: now,
-          };
-
           setCodeTrail((prev) => {
-            const updated = [...prev, newChar];
-            return updated.slice(-TRAIL_LIMIT); // Keep only last N characters
+            const updated = [...prev, {
+              id: trailIdCounter.current++,
+              char: randomChar,
+              x: e.clientX + (Math.random() - 0.5) * 20,
+              y: e.clientY + (Math.random() - 0.5) * 20,
+              createdAt: now,
+            }];
+            return updated.slice(-TRAIL_LIMIT);
           });
         }
       }
@@ -413,7 +445,7 @@ const MouseTrail: React.FC = () => {
       setIsHovering(!!isInteractive);
       
       // For scanning mode: detect skill cards
-      if (cursorVariant === 'scanning') {
+      if (cursorVariantRef.current === 'scanning') {
         const skillCard = target.closest('[data-skill-card]') as HTMLElement;
         setHoveredElement(skillCard);
       } else {
@@ -423,93 +455,43 @@ const MouseTrail: React.FC = () => {
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    // Intersection Observer to detect section changes
-    const observerOptions = {
-      root: null,
-      rootMargin: '-20% 0px -20% 0px',
-      threshold: [0, 0.1, 0.5],
-    };
+    // Simple scroll-based section detection (direct and reliable)
+    let lastScrollTime = 0;
+    const handleScroll = () => {
+      const now = Date.now();
+      if (now - lastScrollTime < 30) return; // Throttle to 30ms
+      lastScrollTime = now;
 
-    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      // Find the entry with highest intersection ratio
-      const sortedEntries = entries
-        .filter(entry => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-      
-      if (sortedEntries.length === 0) return;
-      
-      const mostVisible = sortedEntries[0];
-      const sectionId = mostVisible.target.id;
-      
-      // Map section IDs to cursor variants
-      if (sectionId === 'intro' || sectionId === 'hero') {
-        setCursorVariant('code-tail');
-      } else if (sectionId === 'skills') {
-        setCursorVariant('scanning');
-      } else if (sectionId === 'internships' || sectionId === 'internship') {
-        setCursorVariant('internship');
-      } else if (sectionId === 'projects') {
-        setCursorVariant('projects');
-      } else if (sectionId === 'experience') {
-        setCursorVariant('analysis');
-      } else if (sectionId === 'contact') {
-        setCursorVariant('signal');
-      } else if (sectionId === 'achievements' || sectionId === 'victory-archives') {
-        setCursorVariant('victory');
-      }
-    };
-
-    const observer = new IntersectionObserver(handleIntersect, observerOptions);
-
-    // Observe all major sections - use a timeout to ensure DOM is ready
-    setTimeout(() => {
+      // Find section at viewport center
+      const viewportCenter = window.scrollY + window.innerHeight / 2;
       const sections = document.querySelectorAll(
         '#intro, #hero, #skills, #internship, #internships, #projects, #experience, #contact, #achievements, #victory-archives'
       );
-      
-      sections.forEach((section) => {
-        observer.observe(section);
-      });
-      
-      const scrollY = window.scrollY;
-      const viewportHeight = window.innerHeight;
-      let initialVariant: CursorVariant = 'code-tail';
-      
-      sections.forEach((section) => {
-        const rect = section.getBoundingClientRect();
-        const sectionTop = rect.top + scrollY;
-        const sectionBottom = sectionTop + rect.height;
-        const viewportCenter = scrollY + viewportHeight / 2;
-        
-        if (viewportCenter >= sectionTop && viewportCenter <= sectionBottom) {
-          const sectionId = section.id;
-          if (sectionId === 'intro' || sectionId === 'hero') {
-            initialVariant = 'code-tail';
-          } else if (sectionId === 'skills') {
-            initialVariant = 'scanning';
-          } else if (sectionId === 'internship' || sectionId === 'internships') {
-            initialVariant = 'internship';
-          } else if (sectionId === 'projects') {
-            initialVariant = 'projects';
-          } else if (sectionId === 'experience') {
-            initialVariant = 'analysis';
-          } else if (sectionId === 'contact') {
-            initialVariant = 'signal';
-          } else if (sectionId === 'achievements' || sectionId === 'victory-archives') {
-            initialVariant = 'victory';
-          }
+
+      for (const sec of Array.from(sections)) {
+        const rect = sec.getBoundingClientRect();
+        const secTop = rect.top + window.scrollY;
+        const secBottom = secTop + rect.height;
+        if (viewportCenter >= secTop && viewportCenter <= secBottom) {
+          const v = mapIdToVariant(sec.id);
+          setVariantFast(v);
+          break;
         }
-      });
-      
-      setCursorVariant(initialVariant);
-    }, 50);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Set initial variant on mount
+    handleScroll();
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
       document.body.style.cursor = 'auto';
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [cursorX, cursorY, cursorVariant]);
+  }, []);
 
   // Get snapped position for scanning mode
   const getSnappedPosition = () => {
