@@ -67,6 +67,7 @@ export default {
 					dark: 'hsl(var(--void-dark))',
 				},
 				neon: {
+					DEFAULT: '#00ff88',
 					cyan: 'hsl(var(--neon-cyan))',
 					purple: 'hsl(var(--neon-purple))',
 					green: 'hsl(var(--neon-green))',

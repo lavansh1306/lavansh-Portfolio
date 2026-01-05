@@ -20,6 +20,16 @@
 
   /* Smooth transitions for scale and opacity */
   transition: transform 0.05s linear, opacity 0.05s linear;
+
+  /* CRITICAL: Prevent transformed elements from blocking pointer events on sections below.
+     Default to blocking; only active section allows clicks via data-active attribute. */
+  pointer-events: none;
+}
+
+/* Only allow pointer events on the active/current section.
+   This prevents transformed container divs from blocking clicks on sections below. */
+[data-stacked-section][data-active='true'] {
+  pointer-events: auto;
 }
 
 /* Add depth effect with shadow on sections being covered */
