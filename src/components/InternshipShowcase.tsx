@@ -163,8 +163,20 @@ export const InternshipShowcase = () => {
           />
         </div>
 
-        {/* Expandable internship summary + timeline (three identical cards) */}
+        {/* Expandable internship cards */}
         <div className="space-y-6">
+          <ExpandableInternshipCard
+            title="AI/Software Intern"
+            organization="Niramaya Health"
+            dateRange="17/01/2025 – 14/09/2025"
+            techStack={['Python', 'React', 'TensorFlow', 'Flask', 'PaddleOCR', 'TrOCR', 'AI/ML', 'Data Analysis']}
+            contributions={[
+              'Built and experimented with AI/ML models for healthcare applications.',
+              'Developed OCR pipeline using PaddleOCR and TrOCR for prescription digitization.',
+              'Implemented RAG with SentenceTransformers for medical query responses.',
+              'Created responsive frontend prototypes with React and Tailwind CSS.'
+            ]}
+          />
           <ExpandableInternshipCard
             title="Technical Intern"
             organization="Skill First Labs"
@@ -187,9 +199,65 @@ export const InternshipShowcase = () => {
               'Managed business development pipeline through lead tracking and CRM documentation.'
             ]}
           />
-          <ExpandableInternshipCard
-            techStack={['Python', 'React', 'TensorFlow', 'Flask', 'PaddleOCR', 'TrOCR', 'AI/ML', 'Data Analysis']}
-          />
+          {/* Next Internship Loading */}
+          <motion.div
+            className="max-w-3xl mx-auto"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-black/60 to-black/40 border border-cyan-500/20 backdrop-blur-sm p-8 sm:p-10 flex flex-col items-center justify-center min-h-[300px]">
+              {/* Animated glow background */}
+              <div
+                aria-hidden
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: 'radial-gradient(circle at 50% 50%, rgba(6,182,212,0.08), transparent 70%)',
+                }}
+              />
+
+              {/* Content */}
+              <div className="relative z-10 text-center">
+                <motion.div
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                  className="mb-6"
+                >
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full border-2 border-cyan-500/30 bg-cyan-500/5">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 3, repeat: Infinity, linear: true }}
+                      className="w-8 h-8 border-2 border-transparent border-t-cyan-400 rounded-full"
+                    />
+                  </div>
+                </motion.div>
+
+                <h3 className="text-2xl sm:text-3xl font-bold text-cyan-400 mb-3" style={{ textShadow: '0 0 12px rgba(6,182,212,0.35)' }}>
+                  Next Internship
+                </h3>
+
+                <p className="text-gray-400 mb-2 text-sm sm:text-base">
+                  Scanning for exciting opportunities...
+                </p>
+
+                <motion.div
+                  className="flex items-center justify-center gap-1 mt-4"
+                  initial={{ opacity: 0.6 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                  <span className="w-2 h-2 rounded-full bg-cyan-400/70" />
+                  <span className="w-2 h-2 rounded-full bg-cyan-400/40" />
+                </motion.div>
+
+                <p className="text-xs text-cyan-400/60 mt-6 font-mono">
+                  [ LOADING... ]
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </motion.div>
 
