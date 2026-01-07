@@ -163,42 +163,81 @@ export const InternshipShowcase = () => {
           />
         </div>
 
-        {/* Expandable internship cards */}
+        {/* Expandable internship cards (rendered in date order) */}
         <div className="space-y-6">
-          <ExpandableInternshipCard
-            title="AI/Software Intern"
-            organization="Niramaya Health"
-            dateRange="17/01/2025 – 14/09/2025"
-            techStack={['Python', 'React', 'TensorFlow', 'Flask', 'PaddleOCR', 'TrOCR', 'AI/ML', 'Data Analysis']}
-            contributions={[
-              'Built and experimented with AI/ML models for healthcare applications.',
-              'Developed OCR pipeline using PaddleOCR and TrOCR for prescription digitization.',
-              'Implemented RAG with SentenceTransformers for medical query responses.',
-              'Created responsive frontend prototypes with React and Tailwind CSS.'
-            ]}
-          />
-          <ExpandableInternshipCard
-            title="Technical Intern"
-            organization="Skill First Labs"
-            dateRange="09/10/2025 – Present"
-            techStack={['Figma', 'Notion', 'Excel', 'CRM Tools', 'Project Management', 'Certification Frameworks']}
-            contributions={[
-              'Researched certification programs aligned with company frameworks and client requirements.',
-              'Mapped certifications to technical roles for candidate evaluation with the Product team.',
-              'Created certification matrix to identify skill gaps and optimize hiring decisions.'
-            ]}
-          />
-          <ExpandableInternshipCard
-            title="Business Development Intern"
-            organization="Phoenix Global"
-            dateRange="10/06/2025 – 10/08/2025"
-            techStack={['LinkedIn', 'Excel', 'CRM', 'Cold Outreach', 'Lead Generation', 'Business Strategy']}
-            contributions={[
-              'Conducted outreach to MBA colleges for corporate training program partnerships.',
-              'Led meetings with academic decision-makers to present training offerings.',
-              'Managed business development pipeline through lead tracking and CRM documentation.'
-            ]}
-          />
+          {(() => {
+            type Internship = {
+              title: string;
+              organization: string;
+              dateRange: string;
+              start: string; // dd/MM/yyyy
+              techStack: string[];
+              contributions: string[];
+            };
+
+            const internships: Internship[] = [
+              {
+                title: 'AI/Software Intern',
+                organization: 'Niramaya Health',
+                dateRange: '17/01/2025 – 14/09/2025',
+                start: '17/01/2025',
+                techStack: ['Python', 'React', 'TensorFlow', 'Flask', 'PaddleOCR', 'TrOCR', 'AI/ML', 'Data Analysis'],
+                contributions: [
+                  'Built and experimented with AI/ML models for healthcare applications.',
+                  'Developed OCR pipeline using PaddleOCR and TrOCR for prescription digitization.',
+                  'Implemented RAG with SentenceTransformers for medical query responses.',
+                  'Created responsive frontend prototypes with React and Tailwind CSS.'
+                ]
+              },
+              {
+                title: 'Technical Intern',
+                organization: 'Skill First Labs',
+                dateRange: '09/10/2025 – Present',
+                start: '09/10/2025',
+                techStack: ['Figma', 'Notion', 'Excel', 'CRM Tools', 'Project Management', 'Certification Frameworks'],
+                contributions: [
+                  'Researched certification programs aligned with company frameworks and client requirements.',
+                  'Mapped certifications to technical roles for candidate evaluation with the Product team.',
+                  'Created certification matrix to identify skill gaps and optimize hiring decisions.'
+                ]
+              },
+              {
+                title: 'Business Development Intern',
+                organization: 'Phoenix Global',
+                dateRange: '10/06/2025 – 10/08/2025',
+                start: '10/06/2025',
+                techStack: ['LinkedIn', 'Excel', 'CRM', 'Cold Outreach', 'Lead Generation', 'Business Strategy'],
+                contributions: [
+                  'Conducted outreach to MBA colleges for corporate training program partnerships.',
+                  'Led meetings with academic decision-makers to present training offerings.',
+                  'Managed business development pipeline through lead tracking and CRM documentation.'
+                ]
+              }
+            ];
+
+            const parseDMY = (s: string) => {
+              const m = s.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+              if (!m) return new Date(0);
+              const day = Number(m[1]);
+              const month = Number(m[2]) - 1;
+              const year = Number(m[3]);
+              return new Date(year, month, day);
+            };
+
+            // Sort by start date descending (most recent first)
+            const sorted = internships.slice().sort((a, b) => parseDMY(b.start).getTime() - parseDMY(a.start).getTime());
+
+            return sorted.map((it) => (
+              <ExpandableInternshipCard
+                key={`${it.organization}-${it.start}`}
+                title={it.title}
+                organization={it.organization}
+                dateRange={it.dateRange}
+                techStack={it.techStack}
+                contributions={it.contributions}
+              />
+            ));
+          })()}
           {/* Next Internship Loading */}
           <motion.div
             className="max-w-3xl mx-auto"
