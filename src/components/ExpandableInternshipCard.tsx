@@ -33,7 +33,7 @@ export const ExpandableInternshipCard: React.FC<ExpandableInternshipCardProps> =
   const certLinks: Record<string, string> = {
     'Niramaya Health': 'https://drive.google.com/file/d/1XPd7dv-5HnnDJ-qxP92bBGHLL5ZcTnfL/view?usp=sharing',
     'Phoenix Global': 'https://drive.google.com/file/d/1Hc6r0Sx1ZfWPgFOHipjNEI4bJrFCzVge/view?usp=sharing',
-    'Skill First Labs': 'https://drive.google.com/file/d/1rLhKtw6PiLhF5qNaTamE-Q3h8zlFpPHl/view?usp=sharing'
+    'Skill First Labs': 'https://drive.google.com/file/d/1y6_B9Bw6wZpb308hTeDko7KUvo0eI4P4/view?usp=sharing'
   };
 
   const certificateLink = certLinks[organization];
