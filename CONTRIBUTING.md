@@ -38,7 +38,7 @@ git checkout -b feat/my-feature
 
 2. Make small, focused commits. Rebase or merge `main` before opening a PR.
 
-3. Push your branch and open a Pull Request against `main`.
+3. Push your branch and open a Pull Request against  `main`.
 
 ## Coding Style
 
