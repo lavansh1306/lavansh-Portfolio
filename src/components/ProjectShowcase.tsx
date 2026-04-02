@@ -156,33 +156,31 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 // --- Main Section Component ---
 export const ProjectShowcase = () => {
   const projects: Project[] = [
-    {
-      title: "Stock_Verse",
-      description: "A gamified platform teaching stock-market fundamentals via real-time data & AI. Features a FastAPI proxy for Yahoo Finance and a Gemini-powered trading mentor.",
-      impact: "Achieved 3× higher user retention through gamification and boosted financial literacy with personalized AI guidance.",
-      techStack: ["React", "TypeScript", "FastAPI", "Python", "Gemini API", "Tailwind", "Vite", "Chart.js"],
-      metrics: ["1,000+ simulated sessions", "Real-time Yahoo Finance proxy", "Production-ready CORS setup"],
-      link: "https://stockver.vercel.app",
-      github: "https://github.com/yourusername/stockverse" 
-    },
-    {
-      title: "PDF Policy Query System",
-      description: "AI tool converting complex policy PDFs into conversational answers. Uses OCR (PaddleOCR) and Vector Search (Weaviate) to handle dense documentation.",
-      impact: "Reduces policy review time by turning dense legal documents into instant, actionable insights.",
-      techStack: ["LangChain", "Weaviate", "Gemini 2.0", "PaddleOCR", "Docker", "Redis", "React"],
-      metrics: ["Multi-engine OCR pipeline", "Semantic Chunking", "Sub-second retrieval latency"],
-      link: "#",
-      github: "#"
-    },
-    {
-      title: "RAKSHA X",
-      description: "Safety ecosystem integrating real-time sound detection (gunshots, screams) with SOS alerts. Merges physical safety monitoring with mental health chat support.",
-      impact: "Bridged the gap between physical emergency response and emotional well-being using edge-AI sound analysis.",
-      techStack: ["TensorFlow", "YAMNet", "Flask", "Twilio", "Vosk", "Librosa", "Gemini API"],
-      metrics: ["Real-time audio classification", "Automated SMS/Call via Twilio", "Integrated Chatbot"],
-      link: "https://github.com/lavansh1306/RAKSHA_X",
-      github: "https://github.com/lavansh1306/RAKSHA_X"
-    }
+  {
+    title: "Velocity AI",
+  description: "A multi-tenant B2B SaaS platform that integrates with Jira Cloud to analyze sprint velocity, workload distribution, and team productivity through real-time analytics dashboards",
+    impact: "Enhanced engineering team insights by processing 500+ issues and reduced dashboard load time by 35% using optimized caching and backend performance tuning",
+    techStack: ["React", "TypeScript", "Node.js", "Express", "Supabase","Redis", "Python", "Vercel", "Render"],
+    metrics: ["500+ Jira issues processed", "35% faster dashboard load time", "<250ms API response latency", "OAuth-based Jira integration", "Multi-tenant SaaS architecture"],
+    link: "joinvelocity.co",
+  },
+  {
+    title: "PDF Policy Query System",
+    description: "AI tool converting complex policy PDFs into conversational answers. Uses OCR (PaddleOCR) and Vector Search (Weaviate) to handle dense documentation.",
+    impact: "Reduces policy review time by turning dense legal documents into instant, actionable insights.",
+    techStack: ["LangChain", "Weaviate", "Gemini 2.0", "PaddleOCR", "Docker", "Redis", "React"],
+    metrics: ["Multi-engine OCR pipeline", "Semantic Chunking", "Sub-second retrieval latency"],
+    link: "#",
+    github: "#"
+  },
+  {
+  title: "TANFI-NET",
+  description: "A real-time network fault detection system that monitors devices using ICMP diagnostics and streams telemetry data to dashboards via WebSockets for instant visibility",
+  impact: "Reduced manual troubleshooting time by 40% through automated fault detection and real-time monitoring of 50+ devices",
+  techStack: ["Python", "FastAPI", "WebSockets", "Docker", "Llama-3.3-70B"],
+  metrics: ["50+ devices monitored", "2s probing interval", "~1s telemetry latency", "Real-time fault detection pipeline", "Async data streaming via WebSockets"],
+  link: "#",
+}
   ];
 
   return (
