@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌐 Cyberpunk Developer Portfolio
+# 🌐 Cyberpunk Developer Portfolo
 
 ![CI](https://github.com/lavansh1306/lavansh-Portfolio/workflows/CI/badge.svg?style=for-the-badge)
 ![Status](https://img.shields.io/badge/SYSTEM-ONLINE-00ff41?style=for-the-badge&logo=voidlinux&logoColor=white)
